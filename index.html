@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <link rel="icon" type="image/svg+xml" href="assets/images/trisonic-icon.svg">
-    <link rel="apple-touch-icon" href="assets/images/trisonic-icon.png">
-
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>TriSonic AI Studio</title>
     
-    <link rel="icon" type="image/svg+xml" href="assets/images/trisonic-logo.svg" />
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/images/trisonic-icon.svg" />
+    <link rel="apple-touch-icon" href="assets/images/trisonic-icon.svg" />
     
+    <!-- CSS -->
     <link rel="stylesheet" href="css/main.css" />
     <link rel="stylesheet" href="css/layout.css" />
     <link rel="stylesheet" href="css/components.css" />
@@ -19,7 +19,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
     
     <style>
-        /* LANDING PAGE */
+        /* ============================================================
+           STYLE LANGSUNG UNTUK LANDING PAGE
+           ============================================================ */
         #landing-page {
             position: fixed;
             top: 0;
@@ -27,9 +29,6 @@
             width: 100%;
             height: 100%;
             background: #0a0e17;
-            background-image: 
-                radial-gradient(ellipse at 10% 20%, rgba(33, 150, 243, 0.08) 0%, transparent 50%),
-                radial-gradient(ellipse at 90% 80%, rgba(233, 30, 99, 0.06) 0%, transparent 50%);
             display: flex !important;
             align-items: center;
             justify-content: center;
@@ -37,25 +36,21 @@
             padding: 2rem;
             transition: opacity 0.8s ease, transform 0.8s ease;
         }
-        
         #landing-page.hidden {
             opacity: 0;
             transform: scale(1.05);
             pointer-events: none !important;
         }
-        
         #landing-page .landing-content {
             text-align: center;
             max-width: 500px;
             width: 100%;
             animation: landingFadeIn 1s ease-out;
         }
-        
         @keyframes landingFadeIn {
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        
         #landing-page .landing-logo {
             width: 140px;
             height: 140px;
@@ -64,12 +59,10 @@
             box-shadow: 0 0 60px rgba(33, 150, 243, 0.15);
             animation: logoPulse 3s ease-in-out infinite;
         }
-        
         @keyframes logoPulse {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.05); }
         }
-        
         #landing-page .landing-title {
             font-size: 2.8rem;
             font-weight: 800;
@@ -79,21 +72,15 @@
             background-clip: text;
             margin-bottom: 0.5rem;
         }
-        
         #landing-page .landing-subtitle {
             font-size: 1.2rem;
             color: #8899aa;
         }
-        
         #landing-page .landing-description {
             font-size: 0.95rem;
             color: #556677;
             margin-bottom: 2.5rem;
-            max-width: 400px;
-            margin-left: auto;
-            margin-right: auto;
         }
-        
         #btnMulai {
             padding: 0.9rem 3rem !important;
             font-size: 1.2rem !important;
@@ -104,15 +91,12 @@
             border-radius: 50px !important;
             cursor: pointer !important;
             box-shadow: 0 4px 30px rgba(33, 150, 243, 0.35) !important;
-            z-index: 999999 !important;
             transition: all 0.3s ease !important;
         }
-        
         #btnMulai:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 40px rgba(33, 150, 243, 0.5);
         }
-        
         #landing-page .landing-version {
             margin-top: 2rem;
             font-size: 0.75rem;
@@ -133,23 +117,15 @@
             justify-content: center;
             flex-direction: column;
         }
-        
         #splash-screen.show {
             display: flex !important;
         }
-        
-        #splash-screen .splash-content {
-            text-align: center;
-            padding: 2rem;
-        }
-        
         #splash-screen .splash-logo {
             width: 120px;
             height: 120px;
             margin: 0 auto 1.5rem;
             display: block;
         }
-        
         #splash-screen .splash-title {
             font-size: 2.5rem;
             font-weight: 800;
@@ -157,19 +133,15 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 0.25rem;
         }
-        
         #splash-screen .splash-tagline {
             color: #8899aa;
             font-size: 1.1rem;
         }
-        
         #splash-screen .splash-sub {
             color: #556677;
             font-size: 0.85rem;
         }
-        
         #splash-screen .splash-loader {
             width: 200px;
             height: 4px;
@@ -178,7 +150,6 @@
             margin: 1.5rem auto 0.5rem;
             overflow: hidden;
         }
-        
         #splash-screen .loader-bar {
             height: 100%;
             width: 0%;
@@ -186,7 +157,6 @@
             border-radius: 4px;
             transition: width 0.15s linear;
         }
-        
         #splash-screen .splash-version {
             color: #556677;
             font-size: 0.75rem;
@@ -199,15 +169,12 @@
             flex-direction: column;
             min-height: 100vh;
         }
-        
         #app.show {
             display: flex !important;
         }
         
         @media (max-width: 480px) {
             #landing-page .landing-title { font-size: 2rem; }
-            #landing-page .landing-subtitle { font-size: 1rem; }
-            #landing-page .landing-description { font-size: 0.85rem; }
             #landing-page .landing-logo { width: 100px; height: 100px; }
             #btnMulai { padding: 0.7rem 2rem !important; font-size: 1rem !important; }
             #splash-screen .splash-title { font-size: 1.8rem; }
@@ -274,64 +241,71 @@
     </div>
     
     <!-- ============================================ -->
-    <!-- MAIN APP (ISI LENGKAP)                       -->
+    <!-- MAIN APP - WIREFRAME LAYOUT                 -->
     <!-- ============================================ -->
     <div id="app">
-        <!-- HEADER -->
+        <!-- HEADER: Logo + Tab Navigator -->
         <header class="app-header">
             <div class="header-left">
+                <!-- Logo TriSonic -->
                 <svg class="header-logo" viewBox="0 0 200 200" width="36" height="36">
                     <defs>
-                        <linearGradient id="blueGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <linearGradient id="blueGradH" x1="0%" y1="0%" x2="100%" y2="100%">
                             <stop offset="0%" style="stop-color:#0F3460" />
                             <stop offset="100%" style="stop-color:#2196F3" />
                         </linearGradient>
-                        <linearGradient id="greenGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <linearGradient id="greenGradH" x1="0%" y1="0%" x2="100%" y2="100%">
                             <stop offset="0%" style="stop-color:#2E7D32" />
                             <stop offset="100%" style="stop-color:#4CAF50" />
                         </linearGradient>
-                        <linearGradient id="magentaGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <linearGradient id="magentaGradH" x1="0%" y1="0%" x2="100%" y2="100%">
                             <stop offset="0%" style="stop-color:#C2185B" />
                             <stop offset="100%" style="stop-color:#E91E63" />
                         </linearGradient>
                     </defs>
-                    <polygon points="50,60 90,140 10,140" fill="url(#blueGrad2)" />
-                    <rect x="80" y="70" width="70" height="70" rx="15" fill="url(#greenGrad2)" />
-                    <circle cx="145" cy="135" r="40" fill="url(#magentaGrad2)" />
+                    <polygon points="50,60 90,140 10,140" fill="url(#blueGradH)" />
+                    <rect x="80" y="70" width="70" height="70" rx="15" fill="url(#greenGradH)" />
+                    <circle cx="145" cy="135" r="40" fill="url(#magentaGradH)" />
                 </svg>
                 <span class="app-title">TriSonic AI Studio</span>
             </div>
+            
+            <!-- Tab Navigator -->
             <nav class="tab-nav" id="tabNav">
                 <button class="tab-btn active" data-tab="keyboard">🎹 Keyboard</button>
                 <button class="tab-btn" data-tab="composer">🤖 AI Composer</button>
                 <button class="tab-btn" data-tab="partitur">📝 Partitur</button>
-                <button class="tab-btn" data-tab="dashboard">📊 Dashboard AI</button>
+                <button class="tab-btn" data-tab="dashboard">📊 Dashboard</button>
                 <button class="tab-btn" data-tab="tutorial">📚 Tutorial</button>
                 <button class="tab-btn" data-tab="about">ℹ️ About</button>
             </nav>
+            
             <button class="menu-toggle" id="menuToggle">☰</button>
         </header>
         
-        <!-- MAIN CONTENT -->
+        <!-- MAIN CONTENT: Sidebar + Content Area -->
         <main class="main-content">
             <div class="content-wrapper">
+                <!-- SIDEBAR -->
                 <aside class="sidebar" id="sidebar">
                     <nav class="sidebar-nav">
                         <button class="sidebar-btn active" data-tab="keyboard">🎹 Keyboard</button>
                         <button class="sidebar-btn" data-tab="composer">🤖 AI Composer</button>
                         <button class="sidebar-btn" data-tab="partitur">📝 Partitur</button>
-                        <button class="sidebar-btn" data-tab="dashboard">📊 Dashboard AI</button>
+                        <button class="sidebar-btn" data-tab="dashboard">📊 Dashboard</button>
                         <button class="sidebar-btn" data-tab="tutorial">📚 Tutorial</button>
                         <button class="sidebar-btn" data-tab="about">ℹ️ About</button>
                     </nav>
                     <div class="sidebar-footer">
                         <p class="sidebar-version">TriSonic v2.0</p>
-                        <p class="sidebar-credit">A 20-Note Microtonal Ecosystem</p>
+                        <p class="sidebar-credit">20-Note Microtonal Ecosystem</p>
                     </div>
                 </aside>
                 
+                <!-- CONTENT AREA -->
                 <section class="content-area" id="contentArea">
-                    <!-- KEYBOARD TAB -->
+                    
+                    <!-- ===== TAB 1: KEYBOARD ===== -->
                     <div class="tab-content active" id="tab-keyboard">
                         <div class="tab-header">
                             <h2>🎹 Keyboard 20 Nada</h2>
@@ -360,14 +334,14 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="pitch-display" id="pitchDisplay">
+                            <div class="pitch-display">
                                 <span>Nada: <strong id="currentNote">-</strong></span>
                                 <span>Frekuensi: <strong id="currentFreq">-</strong> Hz</span>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- COMPOSER TAB -->
+                    <!-- ===== TAB 2: AI COMPOSER ===== -->
                     <div class="tab-content" id="tab-composer">
                         <div class="tab-header">
                             <h2>🤖 AI Composer</h2>
@@ -386,7 +360,7 @@
                                     </select>
                                 </div>
                                 <div class="control-group">
-                                    <label>Panjang (bisa)</label>
+                                    <label>Panjang</label>
                                     <input type="number" id="composerLength" value="8" min="4" max="32" />
                                 </div>
                                 <div class="control-group">
@@ -410,7 +384,7 @@
                         </div>
                     </div>
                     
-                    <!-- PARTITUR TAB -->
+                    <!-- ===== TAB 3: PARTITUR ===== -->
                     <div class="tab-content" id="tab-partitur">
                         <div class="tab-header">
                             <h2>📝 Editor Partitur Notasi Angka</h2>
@@ -427,7 +401,7 @@
                             </div>
                             <div class="partitur-editor">
                                 <div class="partitur-header-info">
-                                    <input type="text" id="scoreTitle" placeholder="Judul Partitur" value="Komposisi Baru" />
+                                    <input type="text" id="scoreTitle" placeholder="Judul" value="Komposisi Baru" />
                                     <input type="text" id="scoreComposer" placeholder="Komposer" value="TriSonic AI" />
                                     <input type="text" id="scoreTempo" placeholder="Tempo" value="120 BPM" />
                                 </div>
@@ -465,13 +439,14 @@
                         </div>
                     </div>
                     
-                    <!-- DASHBOARD TAB -->
+                    <!-- ===== TAB 4: DASHBOARD AI ===== -->
                     <div class="tab-content" id="tab-dashboard">
                         <div class="tab-header">
                             <h2>📊 Dashboard AI</h2>
                             <p>Simulasi Agen AI: Desain · Proses · Pasar</p>
                         </div>
                         <div class="dashboard-container">
+                            <!-- Agen Desain -->
                             <div class="dashboard-card">
                                 <div class="card-header">
                                     <span class="card-icon">🎨</span>
@@ -480,7 +455,7 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="design-simulator">
-                                        <svg viewBox="0 0 200 100" class="design-svg">
+                                        <svg viewBox="0 0 200 100">
                                             <rect x="10" y="10" width="180" height="80" rx="5" fill="#1a2332" />
                                             <path d="M 30 50 L 50 30 L 80 60 L 110 20 L 140 70 L 170 40" stroke="#2196F3" stroke-width="2" fill="none" />
                                             <circle cx="50" cy="30" r="4" fill="#4CAF50" />
@@ -488,7 +463,6 @@
                                             <circle cx="110" cy="20" r="4" fill="#FFC107" />
                                             <circle cx="140" cy="70" r="4" fill="#2196F3" />
                                             <circle cx="170" cy="40" r="4" fill="#4CAF50" />
-                                            <text x="20" y="85" fill="#888" font-size="8">PCB Design v3.2</text>
                                         </svg>
                                     </div>
                                     <div class="design-specs">
@@ -498,6 +472,8 @@
                                     </div>
                                 </div>
                             </div>
+                            
+                            <!-- Agen Proses -->
                             <div class="dashboard-card">
                                 <div class="card-header">
                                     <span class="card-icon">⚙️</span>
@@ -506,12 +482,10 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="process-chart">
-                                        <svg viewBox="0 0 200 80" class="process-svg">
+                                        <svg viewBox="0 0 200 80">
                                             <rect x="10" y="5" width="180" height="70" rx="5" fill="#1a2332" />
                                             <path d="M 20 50 L 40 45 L 60 55 L 80 30 L 100 50 L 120 35 L 140 60 L 160 25 L 180 40" stroke="#FFC107" stroke-width="2" fill="none" />
                                             <line x1="20" y1="60" x2="180" y2="60" stroke="#E91E63" stroke-width="1" stroke-dasharray="4" />
-                                            <text x="20" y="72" fill="#888" font-size="7">Suhu: 72°C</text>
-                                            <text x="120" y="72" fill="#888" font-size="7">Getaran: 0.4mm</text>
                                         </svg>
                                     </div>
                                     <div class="process-metrics">
@@ -520,6 +494,8 @@
                                     </div>
                                 </div>
                             </div>
+                            
+                            <!-- Agen Pasar -->
                             <div class="dashboard-card">
                                 <div class="card-header">
                                     <span class="card-icon">📈</span>
@@ -551,6 +527,8 @@
                                     </div>
                                 </div>
                             </div>
+                            
+                            <!-- Agen Pelatih -->
                             <div class="dashboard-card">
                                 <div class="card-header">
                                     <span class="card-icon">🧠</span>
@@ -578,7 +556,7 @@
                         </div>
                     </div>
                     
-                    <!-- TUTORIAL TAB -->
+                    <!-- ===== TAB 5: TUTORIAL ===== -->
                     <div class="tab-content" id="tab-tutorial">
                         <div class="tab-header">
                             <h2>📚 Tutorial Notasi Angka</h2>
@@ -589,7 +567,7 @@
                         </div>
                     </div>
                     
-                    <!-- ABOUT TAB -->
+                    <!-- ===== TAB 6: ABOUT ===== -->
                     <div class="tab-content" id="tab-about">
                         <div class="tab-header">
                             <h2>ℹ️ Tentang TriSonic AI Studio</h2>
@@ -598,25 +576,25 @@
                         <div class="about-container">
                             <div class="about-card">
                                 <h3>🚀 TriSonic AI Studio</h3>
-                                <p>TriSonic AI Studio adalah platform musik mikrotonal berbasis kecerdasan buatan yang menghadirkan 20 nada per oktaf untuk eksplorasi harmoni tanpa batas.</p>
-                                <p>Dikembangkan sebagai bagian dari ekosistem AI industri untuk ASEAN, menggabungkan tiga pilar: Hardware, Software, dan AI.</p>
+                                <p>TriSonic AI Studio adalah platform musik mikrotonal berbasis kecerdasan buatan yang menghadirkan 20 nada per oktaf.</p>
+                                <p>Dikembangkan sebagai bagian dari ekosistem AI industri untuk ASEAN.</p>
                             </div>
                             <div class="about-grid">
                                 <div class="about-item">
                                     <h4>🎵 20 Nada</h4>
-                                    <p>Sistem mikrotonal dengan 20 interval per oktaf, membuka harmoni baru</p>
+                                    <p>Sistem mikrotonal dengan 20 interval per oktaf</p>
                                 </div>
                                 <div class="about-item">
                                     <h4>🤖 Multi-Agent AI</h4>
-                                    <p>Agen Desain, Proses, Pasar, dan Pelatih bekerja terintegrasi</p>
+                                    <p>Agen Desain, Proses, Pasar, dan Pelatih</p>
                                 </div>
                                 <div class="about-item">
                                     <h4>🌏 ASEAN</h4>
-                                    <p>Didesain untuk ekosistem kreatif dan industri di kawasan ASEAN</p>
+                                    <p>Untuk ekosistem kreatif dan industri ASEAN</p>
                                 </div>
                                 <div class="about-item">
                                     <h4>📝 Open Source</h4>
-                                    <p>Kode terbuka untuk pengembangan dan kolaborasi komunitas</p>
+                                    <p>Kode terbuka untuk kolaborasi komunitas</p>
                                 </div>
                             </div>
                             <div class="about-credits">
@@ -626,6 +604,7 @@
                             </div>
                         </div>
                     </div>
+                    
                 </section>
             </div>
         </main>
@@ -645,40 +624,31 @@
     </div>
     
     <!-- ============================================ -->
-    <!-- JAVASCRIPT - SEMUA DI SATU TEMPAT           -->
+    <!-- JAVASCRIPT                                  -->
     <!-- ============================================ -->
     <script>
         // ============================================================
-        // APP.JS - VERSI SEDERHANA DAN TERUJI
+        // APP.JS - VERSI SEDERHANA
         // ============================================================
         
         (function() {
             'use strict';
             
-            console.log('📄 DOM siap, memulai setup...');
+            console.log('📄 TriSonic AI Studio dimulai...');
             
-            // ---------- DOM References ----------
+            // ---------- DOM ----------
             const landingPage = document.getElementById('landing-page');
             const splashScreen = document.getElementById('splash-screen');
             const appContainer = document.getElementById('app');
             const btnMulai = document.getElementById('btnMulai');
             const loaderBar = document.getElementById('loaderBar');
             
-            // ---------- Fungsi Transisi ----------
+            // ---------- Transisi ----------
             function showSplash() {
-                console.log('🟡 Menampilkan splash screen...');
+                console.log('🟡 Menampilkan splash...');
+                if (landingPage) landingPage.classList.add('hidden');
+                if (splashScreen) splashScreen.classList.add('show');
                 
-                // Sembunyikan landing
-                if (landingPage) {
-                    landingPage.classList.add('hidden');
-                }
-                
-                // Tampilkan splash
-                if (splashScreen) {
-                    splashScreen.classList.add('show');
-                }
-                
-                // Jalankan animasi loader
                 if (loaderBar) {
                     loaderBar.style.width = '0%';
                     let progress = 0;
@@ -688,91 +658,54 @@
                             progress = 100;
                             clearInterval(interval);
                             loaderBar.style.width = '100%';
-                            // Tunggu sebentar lalu buka app
-                            setTimeout(function() {
+                            setTimeout(() => {
                                 hideSplashAndShowApp();
                             }, 500);
                         }
                         loaderBar.style.width = progress + '%';
                     }, 120);
                 } else {
-                    // Fallback jika loader tidak ditemukan
-                    setTimeout(function() {
-                        hideSplashAndShowApp();
-                    }, 2500);
+                    setTimeout(hideSplashAndShowApp, 2500);
                 }
             }
             
             function hideSplashAndShowApp() {
-                console.log('🟢 Menyembunyikan splash, menampilkan aplikasi...');
-                
-                // Sembunyikan splash
+                console.log('🟢 Menampilkan aplikasi...');
                 if (splashScreen) {
                     splashScreen.classList.remove('show');
                     splashScreen.style.display = 'none';
                 }
-                
-                // Tampilkan app
                 if (appContainer) {
                     appContainer.classList.add('show');
                     appContainer.style.display = 'flex';
                 }
+                console.log('✅ Aplikasi siap!');
                 
-                console.log('✅ Aplikasi siap digunakan!');
-                
-                // Panggil inisialisasi tambahan jika perlu
-                if (typeof initApp === 'function') {
-                    try {
-                        initApp();
-                    } catch(e) {
-                        console.warn('⚠️ initApp tidak ditemukan atau error:', e);
-                    }
-                }
+                // Panggil init jika ada
+                if (typeof initApp === 'function') initApp();
             }
             
-            // ---------- Event Listener Tombol ----------
+            // ---------- Event Tombol ----------
             if (btnMulai) {
-                console.log('🔵 Tombol Mulai ditemukan, memasang event listener...');
-                
-                // Hapus semua event listener dengan clone
                 const newBtn = btnMulai.cloneNode(true);
                 btnMulai.parentNode.replaceChild(newBtn, btnMulai);
-                
-                // Pasang event listener baru
                 newBtn.addEventListener('click', function(e) {
                     e.preventDefault();
-                    e.stopPropagation();
                     console.log('🟢 Tombol Mulai DIKLIK!');
                     showSplash();
                 });
-                
-                console.log('✅ Event listener tombol Mulai terpasang!');
-            } else {
-                console.error('❌ Tombol Mulai TIDAK DITEMUKAN!');
             }
             
-            // ---------- Fallback: Coba pasang ulang ----------
-            setTimeout(function() {
+            // ---------- Fallback ----------
+            setTimeout(() => {
                 const btn = document.getElementById('btnMulai');
                 if (btn) {
-                    btn.addEventListener('click', function(e) {
+                    btn.addEventListener('click', function() {
                         console.log('🟢 Tombol Mulai DIKLIK (fallback)!');
                         showSplash();
                     });
                 }
             }, 1000);
-            
-            // ---------- Inisialisasi Aplikasi Utama ----------
-            // Fungsi initApp akan dipanggil dari hideSplashAndShowApp
-            // Tapi kita juga definisikan di sini sebagai fallback
-            
-            window.initApp = function() {
-                console.log('🚀 Memulai inisialisasi aplikasi...');
-                // Panggil init dari file external jika ada
-                if (typeof initAppExternal === 'function') {
-                    initAppExternal();
-                }
-            };
             
         })();
     </script>
