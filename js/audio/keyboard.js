@@ -326,4 +326,24 @@ class KeyboardRenderer {
      * Update display
      */
     updateDisplay(noteName, freq, octave) {
-        const noteDisplay = document.getElementById('currentNote
+        const noteDisplay = document.getElementById('currentNote');
+        const freqDisplay = document.getElementById('currentFreq');
+        const octaveDisplay = document.getElementById('currentOctave');
+        
+        if (noteDisplay) noteDisplay.textContent = noteName || '-';
+        if (freqDisplay) freqDisplay.textContent = freq ? freq.toFixed(2) : '-';
+        if (octaveDisplay) octaveDisplay.textContent = octave || '-';
+    }
+
+    /**
+     * Set octave untuk keyboard shortcut
+     */
+    setOctave(octave) {
+        this.currentOctave = Math.max(this.startOctave, Math.min(this.endOctave, octave));
+    }
+}
+
+// Export untuk browser
+if (typeof window !== 'undefined') {
+    window.KeyboardRenderer = KeyboardRenderer;
+}
