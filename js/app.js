@@ -1,10 +1,7 @@
 // ============================================================
-// app.js - Entry Point (Landing, Splash, Inisialisasi, Tab Nav)
+// app.js - Entry Point (Landing, Splash, Inisialisasi)
 // TriSonic AI Studio
 // ============================================================
-
-// ---------- Dependencies ----------
-// (Semua file sudah di-load via script tags di index.html)
 
 // ---------- App State ----------
 const AppState = {
@@ -20,13 +17,12 @@ const DOM = {
     landing: document.getElementById('landing-page'),
     splash: document.getElementById('splash-screen'),
     app: document.getElementById('app'),
-    tabNav: document.getElementById('tabNav'),
-    sidebar: document.getElementById('sidebar'),
-    contentArea: document.getElementById('contentArea'),
+    btnMulai: document.getElementById('btnMulai'),
     menuToggle: document.getElementById('menuToggle'),
+    sidebar: document.getElementById('sidebar'),
     modalOverlay: document.getElementById('modalOverlay'),
     modalClose: document.getElementById('modalClose'),
-    btnMulai: document.getElementById('btnMulai'),
+    modalBody: document.getElementById('modalBody'),
 };
 
 // ---------- Instances ----------
@@ -38,18 +34,25 @@ let tutorialManager = null;
 let dashboardManager = null;
 
 // ============================================================
-// LANDING PAGE HANDLER
+// LANDING PAGE
 // ============================================================
 
-/**
- * Setup landing page - tampilkan pertama kali
- */
 function setupLandingPage() {
-    if (!DOM.landing || !DOM.btnMulai) return;
+    console.log('🔵 setupLandingPage() dipanggil');
+    
+    if (!DOM.landing) {
+        console.error('❌ Landing page tidak ditemukan!');
+        return;
+    }
+    
+    if (!DOM.btnMulai) {
+        console.error('❌ Tombol Mulai tidak ditemukan!');
+        return;
+    }
     
     // Pastikan landing page terlihat
-    DOM.landing.classList.remove('hidden');
     DOM.landing.style.display = 'flex';
+    DOM.landing.classList.remove('hidden');
     
     // Sembunyikan splash dan app
     if (DOM.splash) {
@@ -60,22 +63,20 @@ function setupLandingPage() {
         DOM.app.style.display = 'none';
     }
     
-    // Event listener tombol Mulai
+    // Hapus event listener lama (untuk menghindari duplikasi)
+    DOM.btnMulai.removeEventListener('click', handleMulaiClick);
     DOM.btnMulai.addEventListener('click', handleMulaiClick);
     
-    console.log('Landing page siap');
+    console.log('✅ Landing page siap, tombol Mulai terdaftar');
 }
 
-/**
- * Handler untuk tombol Mulai
- */
 function handleMulaiClick() {
-    console.log('Tombol Mulai diklik!');
+    console.log('🟢 Tombol Mulai diklik!');
     
     // Animasi keluar landing page
     DOM.landing.classList.add('hidden');
     
-    // Setelah animasi selesai, tampilkan splash
+    // Setelah animasi, tampilkan splash
     setTimeout(() => {
         DOM.landing.style.display = 'none';
         showSplashAndInit();
@@ -83,13 +84,12 @@ function handleMulaiClick() {
 }
 
 // ============================================================
-// SPLASH & INITIALIZATION
+// SPLASH & INIT
 // ============================================================
 
-/**
- * Tampilkan splash screen dan inisialisasi aplikasi
- */
 function showSplashAndInit() {
+    console.log('🟡 Menampilkan splash screen...');
+    
     // Tampilkan splash
     if (DOM.splash) {
         DOM.splash.style.display = 'flex';
@@ -97,24 +97,22 @@ function showSplashAndInit() {
         AppState.isSplashVisible = true;
     }
     
-    // Mulai animasi loader
+    // Jalankan animasi loader
     const loaderBar = document.querySelector('.loader-bar');
     if (loaderBar) {
         loaderBar.style.animation = 'none';
-        void loaderBar.offsetWidth; // Trigger reflow
+        void loaderBar.offsetWidth;
         loaderBar.style.animation = 'loadBar 2s ease-in-out forwards';
     }
     
-    // Inisialisasi aplikasi setelah splash selesai
+    // Inisialisasi setelah splash selesai
     setTimeout(() => {
+        console.log('🟢 Memulai inisialisasi aplikasi...');
         initApp();
         hideSplash();
     }, 2500);
 }
 
-/**
- * Hide splash screen dan tampilkan aplikasi utama
- */
 function hideSplash() {
     if (DOM.splash) {
         DOM.splash.classList.add('hidden');
@@ -124,76 +122,70 @@ function hideSplash() {
     if (DOM.app) {
         DOM.app.style.display = 'flex';
         AppState.isAppReady = true;
+        console.log('✅ Aplikasi siap digunakan!');
     }
-    
-    console.log('Aplikasi siap digunakan!');
 }
 
 // ============================================================
-// INISIALISASI APLIKASI UTAMA
+// INIT APP
 // ============================================================
 
-/**
- * Initialize application
- */
 function initApp() {
-    // Audio Engine
-    audioEngine = window.audioEngine || new AudioEngine();
-    audioEngine.init();
+    console.log('🚀 initApp() dipanggil');
     
-    // Keyboard
-    keyboardRenderer = new KeyboardRenderer();
-    keyboardRenderer.init(audioEngine);
-    
-    // AI Composer
-    aiComposer = new AIComposer();
-    aiComposer.init(audioEngine);
-    
-    // Partitur Editor
-    partiturEditor = new PartiturEditor();
-    partiturEditor.init();
-    
-    // Tutorial Manager
-    tutorialManager = new TutorialManager();
-    const tutorialContainer = document.getElementById('tutorialContainer');
-    if (tutorialContainer) {
-        tutorialManager.renderTo(tutorialContainer);
+    try {
+        // Audio Engine
+        audioEngine = window.audioEngine || new AudioEngine();
+        audioEngine.init();
+        console.log('✅ Audio Engine siap');
+        
+        // Keyboard
+        keyboardRenderer = new KeyboardRenderer();
+        keyboardRenderer.init(audioEngine);
+        console.log('✅ Keyboard siap');
+        
+        // AI Composer
+        aiComposer = new AIComposer();
+        aiComposer.init(audioEngine);
+        console.log('✅ AI Composer siap');
+        
+        // Partitur Editor
+        partiturEditor = new PartiturEditor();
+        partiturEditor.init();
+        console.log('✅ Partitur Editor siap');
+        
+        // Tutorial Manager
+        tutorialManager = new TutorialManager();
+        const tutorialContainer = document.getElementById('tutorialContainer');
+        if (tutorialContainer) {
+            tutorialManager.renderTo(tutorialContainer);
+        }
+        console.log('✅ Tutorial Manager siap');
+        
+        // Dashboard Manager
+        dashboardManager = new DashboardManager();
+        dashboardManager.init();
+        console.log('✅ Dashboard Manager siap');
+        
+        // Setup UI
+        setupControls();
+        setupTabs();
+        setupSidebar();
+        setupModal();
+        setupResizeHandler();
+        setupComposerButtons();
+        
+        console.log('🎉 TriSonic AI Studio initialized successfully!');
+    } catch (error) {
+        console.error('❌ Error saat inisialisasi:', error);
     }
-    
-    // Dashboard Manager
-    dashboardManager = new DashboardManager();
-    dashboardManager.init();
-    
-    // Setup controls
-    setupControls();
-    
-    // Setup tab navigation
-    setupTabs();
-    
-    // Setup sidebar toggle
-    setupSidebar();
-    
-    // Setup modal
-    setupModal();
-    
-    // Setup resize handler
-    setupResizeHandler();
-    
-    // Setup composer buttons
-    setupComposerButtons();
-    
-    console.log('TriSonic AI Studio initialized successfully!');
 }
 
 // ============================================================
-// CONTROLS & UI SETUP
+// UI SETUP FUNCTIONS
 // ============================================================
 
-/**
- * Setup audio controls
- */
 function setupControls() {
-    // Volume
     const volumeControl = document.getElementById('volumeControl');
     if (volumeControl && audioEngine) {
         volumeControl.addEventListener('input', (e) => {
@@ -202,7 +194,6 @@ function setupControls() {
         audioEngine.setVolume(parseFloat(volumeControl.value));
     }
     
-    // Reverb
     const reverbControl = document.getElementById('reverbControl');
     if (reverbControl && audioEngine) {
         reverbControl.addEventListener('input', (e) => {
@@ -211,7 +202,6 @@ function setupControls() {
         audioEngine.setReverb(parseFloat(reverbControl.value));
     }
     
-    // Waveform
     const waveformSelect = document.getElementById('waveformSelect');
     if (waveformSelect && audioEngine) {
         waveformSelect.addEventListener('change', (e) => {
@@ -220,49 +210,33 @@ function setupControls() {
     }
 }
 
-/**
- * Setup tab navigation
- */
 function setupTabs() {
     const tabBtns = document.querySelectorAll('.tab-btn, .sidebar-btn');
-    
     tabBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             const tabId = btn.dataset.tab;
             if (tabId) {
                 switchTab(tabId);
-                if (window.innerWidth <= 768) {
-                    closeSidebar();
-                }
+                if (window.innerWidth <= 768) closeSidebar();
             }
         });
     });
 }
 
-/**
- * Switch to a tab
- */
 function switchTab(tabId) {
     document.querySelectorAll('.tab-btn, .sidebar-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.tab === tabId);
     });
-    
     document.querySelectorAll('.tab-content').forEach(content => {
         content.classList.toggle('active', content.id === `tab-${tabId}`);
     });
-    
     AppState.currentTab = tabId;
 }
-
-// ============================================================
-// SIDEBAR
-// ============================================================
 
 function setupSidebar() {
     if (DOM.menuToggle) {
         DOM.menuToggle.addEventListener('click', toggleSidebar);
     }
-    
     document.addEventListener('click', (e) => {
         if (window.innerWidth <= 768 && AppState.isSidebarOpen) {
             const sidebar = DOM.sidebar;
@@ -292,20 +266,14 @@ function closeSidebar() {
     }
 }
 
-// ============================================================
-// MODAL
-// ============================================================
-
 function setupModal() {
     if (DOM.modalClose) {
         DOM.modalClose.addEventListener('click', closeModal);
     }
-    
     if (DOM.modalOverlay) {
         DOM.modalOverlay.addEventListener('click', (e) => {
             if (e.target === DOM.modalOverlay) closeModal();
         });
-        
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') closeModal();
         });
@@ -327,19 +295,13 @@ function closeModal() {
     }
 }
 
-// ============================================================
-// RESIZE HANDLER
-// ============================================================
-
 function setupResizeHandler() {
     let resizeTimeout;
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimeout);
         resizeTimeout = setTimeout(() => {
             AppState.isMobile = window.innerWidth <= 768;
-            if (!AppState.isMobile && AppState.isSidebarOpen) {
-                closeSidebar();
-            }
+            if (!AppState.isMobile && AppState.isSidebarOpen) closeSidebar();
         }, 200);
     });
 }
@@ -391,7 +353,6 @@ function displayComposition(composition) {
             ? `<span style="color:var(--color-secondary);">${composition.map(item => item.note).join(' ')}</span>`
             : '<p class="placeholder">Tidak ada nada yang dihasilkan.</p>';
     }
-    
     if (noteCount) noteCount.textContent = composition ? composition.length : 0;
     if (duration && composition) {
         const totalDuration = composition.reduce((sum, item) => sum + item.duration, 0);
@@ -401,19 +362,16 @@ function displayComposition(composition) {
 
 function playComposition() {
     if (!aiComposer) return;
-    
     const composition = aiComposer.currentComposition;
     if (!composition || composition.length === 0) {
         alert('Silakan buat komposisi terlebih dahulu!');
         return;
     }
-    
     const playBtn = document.getElementById('playCompositionBtn');
     if (playBtn) {
         playBtn.textContent = '▶️ Memutar...';
         playBtn.disabled = true;
     }
-    
     aiComposer.playComposition(composition, null, () => {
         if (playBtn) {
             playBtn.textContent = '▶️ Putar';
@@ -424,7 +382,6 @@ function playComposition() {
 
 function stopComposition() {
     if (aiComposer) aiComposer.stopComposition();
-    
     const playBtn = document.getElementById('playCompositionBtn');
     if (playBtn) {
         playBtn.textContent = '▶️ Putar';
@@ -443,7 +400,6 @@ document.addEventListener('keydown', (e) => {
         const index = parseInt(e.key) - 1;
         if (tabs[index]) switchTab(tabs[index]);
     }
-    
     if (e.key === 'Escape') {
         closeModal();
         if (AppState.isSidebarOpen) closeSidebar();
@@ -451,16 +407,16 @@ document.addEventListener('keydown', (e) => {
 });
 
 // ============================================================
-// STARTUP - Tampilkan Landing Page Terlebih Dahulu
+// STARTUP
 // ============================================================
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Selalu tampilkan landing page terlebih dahulu
+    console.log('📄 DOM siap, memulai setup landing page...');
     setupLandingPage();
 });
 
 // ============================================================
-// EXPORT FOR DEBUGGING
+// EXPORT
 // ============================================================
 
 window.__TRI_SONIC = {
