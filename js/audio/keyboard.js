@@ -13,22 +13,21 @@ class KeyboardRenderer {
         this.startOctave = 2;
         this.endOctave = 6;
         this.notesPerOctave = 20;
+        this.totalKeys = (this.endOctave - this.startOctave + 1) * this.notesPerOctave; // 5 * 20 = 100 tuts
+        this.isMouseDown = false;
+        this.noteDisplay = document.getElementById('currentNote');
+        this.freqDisplay = document.getElementById('currentFreq');
+        this.octaveDisplay = document.getElementById('currentOctave');
     }
 
-    /**
-     * Inisialisasi keyboard
-     * @param {AudioEngine} audioEngine - Instance AudioEngine
-     */
     init(audioEngine) {
         this.audioEngine = audioEngine;
         this.render();
         this.bindEvents();
         this.updateDisplay(null, null, null);
+        console.log('✅ Keyboard siap dengan 5 oktaf (C2 - D6)');
     }
 
-    /**
-     * Render keyboard 5 oktaf (C2 - D6)
-     */
     render() {
         if (!this.container) return;
         
@@ -36,13 +35,7 @@ class KeyboardRenderer {
         this.keyElements = {};
         this.activeKeys.clear();
         
-        const totalKeys = (this.endOctave - this.startOctave + 1) * this.notesPerOctave;
-        const keyWidth = 30;
-        const keyHeight = 120;
-        const blackKeyWidth = 18;
-        const blackKeyHeight = 70;
-        
-        // Gunakan flex layout
+        // Gunakan flex layout untuk keyboard
         const keyboardWrapper = document.createElement('div');
         keyboardWrapper.className = 'keyboard-flex';
         keyboardWrapper.style.cssText = `
@@ -50,9 +43,11 @@ class KeyboardRenderer {
             gap: 2px;
             padding: 4px;
             min-width: max-content;
+            position: relative;
         `;
         
         let whiteCount = 0;
+        const totalKeys = this.totalKeys;
         
         for (let i = 0; i < totalKeys; i++) {
             const noteIndex = i % this.notesPerOctave;
@@ -61,7 +56,7 @@ class KeyboardRenderer {
             const fullName = noteName + octave;
             const freq = window.getFrequency ? window.getFrequency(noteIndex, octave) : 440;
             
-            // Determine if it's a "white" key (even index)
+            // Tuts putih = index genap, tuts hitam = index ganjil
             const isWhite = noteIndex % 2 === 0;
             
             const key = document.createElement('div');
@@ -70,41 +65,44 @@ class KeyboardRenderer {
             key.dataset.freq = freq;
             key.dataset.index = noteIndex;
             key.dataset.octave = octave;
+            key.dataset.isWhite = isWhite;
             
+            // Styling
             if (isWhite) {
                 key.style.cssText = `
-                    flex: 0 0 ${keyWidth}px;
-                    height: ${keyHeight}px;
+                    flex: 0 0 32px;
+                    height: 140px;
                     background: #1a2332;
                     border: 1px solid #2a3a4a;
-                    border-radius: 0 0 4px 4px;
+                    border-radius: 0 0 6px 6px;
                     cursor: pointer;
                     position: relative;
                     display: flex;
                     flex-direction: column;
                     align-items: center;
                     justify-content: flex-end;
-                    padding-bottom: 6px;
+                    padding-bottom: 8px;
                     transition: all 0.08s ease;
                     user-select: none;
+                    z-index: 1;
                 `;
                 whiteCount++;
             } else {
                 key.style.cssText = `
-                    flex: 0 0 ${blackKeyWidth}px;
-                    height: ${blackKeyHeight}px;
+                    flex: 0 0 20px;
+                    height: 85px;
                     background: #0a0e17;
                     border: 1px solid #1a2a3a;
-                    border-radius: 0 0 4px 4px;
+                    border-radius: 0 0 6px 6px;
                     cursor: pointer;
                     position: relative;
                     display: flex;
                     flex-direction: column;
                     align-items: center;
                     justify-content: flex-end;
-                    padding-bottom: 3px;
-                    margin-left: -${blackKeyWidth/2}px;
-                    margin-right: -${blackKeyWidth/2}px;
+                    padding-bottom: 4px;
+                    margin-left: -10px;
+                    margin-right: -10px;
                     z-index: 2;
                     transition: all 0.08s ease;
                     user-select: none;
@@ -120,95 +118,81 @@ class KeyboardRenderer {
                 color: ${isWhite ? '#8899aa' : '#556677'};
                 pointer-events: none;
                 text-align: center;
+                font-weight: 600;
             `;
             key.appendChild(label);
             
             // Tooltip
             key.title = `${fullName} - ${freq.toFixed(2)} Hz`;
             
+            // Event listeners
+            key.addEventListener('mousedown', (e) => {
+                e.preventDefault();
+                this.activateKey(key);
+                this.isMouseDown = true;
+            });
+            
+            key.addEventListener('mouseup', (e) => {
+                e.preventDefault();
+                this.deactivateKey(key);
+                this.isMouseDown = false;
+            });
+            
+            key.addEventListener('mouseleave', () => {
+                if (this.isMouseDown) {
+                    this.deactivateKey(key);
+                    this.isMouseDown = false;
+                }
+            });
+            
+            key.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                this.activateKey(key);
+            }, { passive: false });
+            
+            key.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                this.deactivateKey(key);
+            }, { passive: false });
+            
             keyboardWrapper.appendChild(key);
             this.keyElements[fullName] = key;
         }
         
         this.container.appendChild(keyboardWrapper);
-        
-        // Add octave labels
-        this.addOctaveLabels(keyboardWrapper);
+        this.addOctaveLabels();
     }
 
-    /**
-     * Tambahkan label oktaf
-     */
-    addOctaveLabels(container) {
-        const labels = document.createElement('div');
-        labels.style.cssText = `
+    addOctaveLabels() {
+        const container = this.container;
+        const labelsWrapper = document.createElement('div');
+        labelsWrapper.style.cssText = `
             display: flex;
             justify-content: space-around;
-            padding: 4px 10px 0;
+            padding: 6px 4px 0;
             font-size: 0.7rem;
-            color: var(--text-muted);
+            color: var(--text-muted, #556677);
             width: 100%;
+            border-top: 1px solid #1a2a3a;
+            margin-top: 4px;
         `;
         
         for (let octave = this.startOctave; octave <= this.endOctave; octave++) {
             const label = document.createElement('span');
             label.textContent = `Oktaf ${octave}`;
-            labels.appendChild(label);
+            label.style.cssText = `
+                color: #556677;
+                font-weight: 600;
+                letter-spacing: 0.5px;
+            `;
+            labelsWrapper.appendChild(label);
         }
         
-        this.container.appendChild(labels);
+        container.appendChild(labelsWrapper);
     }
 
-    /**
-     * Bind event listeners
-     */
     bindEvents() {
-        // Mouse events
-        this.container.addEventListener('mousedown', (e) => {
-            const key = e.target.closest('.key');
-            if (key) {
-                e.preventDefault();
-                this.activateKey(key);
-            }
-        });
-        
-        this.container.addEventListener('mouseup', (e) => {
-            const key = e.target.closest('.key');
-            if (key) {
-                this.deactivateKey(key);
-            }
-        });
-        
-        this.container.addEventListener('mouseleave', () => {
-            this.deactivateAll();
-        });
-        
-        // Touch events
-        this.container.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            const touch = e.touches[0];
-            const target = document.elementFromPoint(touch.clientX, touch.clientY);
-            const key = target ? target.closest('.key') : null;
-            if (key) this.activateKey(key);
-        });
-        
-        this.container.addEventListener('touchmove', (e) => {
-            e.preventDefault();
-            const touch = e.touches[0];
-            const target = document.elementFromPoint(touch.clientX, touch.clientY);
-            const key = target ? target.closest('.key') : null;
-            if (key) {
-                this.deactivateAll();
-                this.activateKey(key);
-            }
-        });
-        
-        this.container.addEventListener('touchend', (e) => {
-            e.preventDefault();
-            this.deactivateAll();
-        });
-        
-        // Keyboard (Q-W-E-R-T-Y-U-I-O-P-A-S-D-F-G-H-J-K-L)
+        // Keyboard computer (QWERTY)
         document.addEventListener('keydown', (e) => {
             const keyMap = {
                 'q': 0, 'w': 1, 'e': 2, 'r': 3, 't': 4, 'y': 5,
@@ -250,22 +234,30 @@ class KeyboardRenderer {
                 }
             }
         });
+        
+        // Octave selector
+        const octaveSelect = document.getElementById('octaveSelect');
+        if (octaveSelect) {
+            octaveSelect.addEventListener('change', () => {
+                this.currentOctave = parseInt(octaveSelect.value);
+                this.updateDisplay(null, null, this.currentOctave);
+            });
+        }
     }
 
-    /**
-     * Aktivasi key
-     * @param {HTMLElement} key - Elemen key
-     */
     activateKey(key) {
         if (!key) return;
         
         const noteName = key.dataset.note;
         const freq = parseFloat(key.dataset.freq);
+        const octave = key.dataset.octave;
+        const isWhite = key.dataset.isWhite === 'true';
         
         // Visual
-        key.classList.add('active');
+        key.style.background = isWhite ? '#2196F3' : '#4CAF50';
         key.style.transform = 'scale(0.95)';
-        key.style.boxShadow = '0 0 20px rgba(33,150,243,0.3)';
+        key.style.boxShadow = '0 0 25px rgba(33,150,243,0.4)';
+        key.style.borderColor = '#2196F3';
         
         // Audio
         if (this.audioEngine && freq > 0) {
@@ -273,24 +265,22 @@ class KeyboardRenderer {
         }
         
         this.activeKeys.add(noteName);
-        this.updateDisplay(noteName, freq, key.dataset.octave);
+        this.updateDisplay(noteName, freq, octave);
     }
 
-    /**
-     * Deaktivasi key
-     * @param {HTMLElement} key - Elemen key
-     */
     deactivateKey(key) {
         if (!key) return;
         
         const noteName = key.dataset.note;
+        const isWhite = key.dataset.isWhite === 'true';
         
         // Visual
-        key.classList.remove('active');
+        key.style.background = isWhite ? '#1a2332' : '#0a0e17';
         key.style.transform = '';
         key.style.boxShadow = '';
+        key.style.borderColor = isWhite ? '#2a3a4a' : '#1a2a3a';
         
-        // Audio (dihentikan otomatis oleh durasi)
+        // Audio
         if (this.audioEngine) {
             this.audioEngine.stopNote(noteName);
         }
@@ -301,16 +291,15 @@ class KeyboardRenderer {
         }
     }
 
-    /**
-     * Deaktivasi semua key
-     */
     deactivateAll() {
         Object.keys(this.keyElements).forEach(noteName => {
             const key = this.keyElements[noteName];
             if (key) {
-                key.classList.remove('active');
+                const isWhite = key.dataset.isWhite === 'true';
+                key.style.background = isWhite ? '#1a2332' : '#0a0e17';
                 key.style.transform = '';
                 key.style.boxShadow = '';
+                key.style.borderColor = isWhite ? '#2a3a4a' : '#1a2a3a';
             }
         });
         
@@ -322,28 +311,19 @@ class KeyboardRenderer {
         this.updateDisplay(null, null, null);
     }
 
-    /**
-     * Update display
-     */
     updateDisplay(noteName, freq, octave) {
-        const noteDisplay = document.getElementById('currentNote');
-        const freqDisplay = document.getElementById('currentFreq');
-        const octaveDisplay = document.getElementById('currentOctave');
-        
-        if (noteDisplay) noteDisplay.textContent = noteName || '-';
-        if (freqDisplay) freqDisplay.textContent = freq ? freq.toFixed(2) : '-';
-        if (octaveDisplay) octaveDisplay.textContent = octave || '-';
+        if (this.noteDisplay) this.noteDisplay.textContent = noteName || '-';
+        if (this.freqDisplay) this.freqDisplay.textContent = freq ? freq.toFixed(2) : '-';
+        if (this.octaveDisplay) this.octaveDisplay.textContent = octave || '-';
     }
 
-    /**
-     * Set octave untuk keyboard shortcut
-     */
     setOctave(octave) {
         this.currentOctave = Math.max(this.startOctave, Math.min(this.endOctave, octave));
+        const octaveSelect = document.getElementById('octaveSelect');
+        if (octaveSelect) octaveSelect.value = this.currentOctave;
     }
 }
 
-// Export untuk browser
 if (typeof window !== 'undefined') {
     window.KeyboardRenderer = KeyboardRenderer;
 }
