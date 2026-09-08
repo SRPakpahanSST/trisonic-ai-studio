@@ -9,6 +9,11 @@
         grid-template-columns: 1fr;
     }
     
+    .keyboard-controls {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
     .composer-controls {
         flex-direction: column;
         align-items: stretch;
@@ -39,20 +44,18 @@
         font-size: 1rem;
     }
     
-    .keyboard-controls {
-        flex-direction: column;
-        gap: 0.75rem;
-    }
-    
     .about-grid {
         grid-template-columns: 1fr 1fr;
     }
     
-    .splash-title {
-        font-size: 1.4rem;
+    .pitch-display {
+        flex-direction: column;
+        gap: 0.25rem;
+        font-size: 0.85rem;
     }
-    .splash-tagline {
-        font-size: 0.9rem;
+    
+    .tab-header h2 {
+        font-size: 1.1rem;
     }
 }
 
@@ -91,7 +94,14 @@
 
 /* ---------- Print Styles ---------- */
 @media print {
-    .app-header, .sidebar, .app-footer, .partitur-toolbar, .notation-controls, .keyboard-controls {
+    .app-header,
+    .sidebar,
+    .app-footer,
+    .partitur-toolbar,
+    .notation-controls,
+    .keyboard-controls,
+    .menu-toggle,
+    .tab-nav {
         display: none !important;
     }
     
@@ -113,17 +123,20 @@
         background: white !important;
         color: black !important;
     }
-    .partitur-editor, .partitur-preview {
+    .partitur-editor,
+    .partitur-preview {
         border: 1px solid #ccc !important;
         background: white !important;
     }
     .notation-notes {
         color: black !important;
     }
+    .preview-content {
+        color: black !important;
+    }
 }
 
 /* ---------- Dark Mode Preference ---------- */
 @media (prefers-color-scheme: light) {
-    /* Fallback untuk browser yang mendukung */
-    /* Tapi kita paksa dark mode karena ini adalah aplikasi dengan tema gelap */
+    /* Aplikasi tetap menggunakan dark theme */
 }
