@@ -1,5 +1,5 @@
 // ============================================================
-// partiturEditor.js - Simpan/Buka/Cetak/Simbol
+// partiturEditor.js - Partitur Editor (20 Nada per Oktaf)
 // TriSonic AI Studio
 // ============================================================
 
@@ -11,6 +11,7 @@ class PartiturEditor {
         this.tempo = '120 BPM';
         this.history = [];
         this.historyIndex = -1;
+        this.maxHistory = 50;
         
         // DOM references
         this.notationDisplay = document.getElementById('notationNotes');
@@ -19,12 +20,12 @@ class PartiturEditor {
         this.composerInput = document.getElementById('scoreComposer');
         this.tempoInput = document.getElementById('scoreTempo');
     }
-    
+
     /**
      * Inisialisasi editor
      */
     init() {
-        // Bind note buttons
+        // Note buttons
         document.querySelectorAll('.note-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 const note = btn.dataset.note;
@@ -33,46 +34,39 @@ class PartiturEditor {
         });
         
         // Clear button
-        const clearBtn = document.getElementById('clearNotationBtn');
-        if (clearBtn) {
-            clearBtn.addEventListener('click', () => this.clearNotation());
-        }
+        document.getElementById('clearNotationBtn')?.addEventListener('click', () => {
+            this.clearNotation();
+        });
         
         // New score
-        const newBtn = document.getElementById('newScoreBtn');
-        if (newBtn) {
-            newBtn.addEventListener('click', () => this.newScore());
-        }
+        document.getElementById('newScoreBtn')?.addEventListener('click', () => {
+            this.newScore();
+        });
         
         // Save
-        const saveBtn = document.getElementById('saveScoreBtn');
-        if (saveBtn) {
-            saveBtn.addEventListener('click', () => this.saveScore());
-        }
+        document.getElementById('saveScoreBtn')?.addEventListener('click', () => {
+            this.saveScore();
+        });
         
         // Load
-        const loadBtn = document.getElementById('loadScoreBtn');
-        if (loadBtn) {
-            loadBtn.addEventListener('click', () => document.getElementById('scoreFileInput').click());
-        }
-        const fileInput = document.getElementById('scoreFileInput');
-        if (fileInput) {
-            fileInput.addEventListener('change', (e) => this.loadScore(e));
-        }
+        document.getElementById('loadScoreBtn')?.addEventListener('click', () => {
+            document.getElementById('scoreFileInput')?.click();
+        });
+        document.getElementById('scoreFileInput')?.addEventListener('change', (e) => {
+            this.loadScore(e);
+        });
         
         // Export
-        const exportBtn = document.getElementById('exportScoreBtn');
-        if (exportBtn) {
-            exportBtn.addEventListener('click', () => this.exportScore());
-        }
+        document.getElementById('exportScoreBtn')?.addEventListener('click', () => {
+            this.exportScore();
+        });
         
         // Print
-        const printBtn = document.getElementById('printScoreBtn');
-        if (printBtn) {
-            printBtn.addEventListener('click', () => this.printScore());
-        }
+        document.getElementById('printScoreBtn')?.addEventListener('click', () => {
+            this.printScore();
+        });
         
-        // Inputs
+        // Input changes
         if (this.titleInput) {
             this.titleInput.addEventListener('change', () => {
                 this.title = this.titleInput.value;
@@ -92,12 +86,14 @@ class PartiturEditor {
             });
         }
         
-        // Load saved notation from localStorage
+        // Load saved
         this.loadFromLocalStorage();
+        this.updateDisplay();
+        this.updatePreview();
     }
-    
+
     /**
-     * Menyisipkan notasi
+     * Insert note
      */
     insertNote(note) {
         this.notation += note + ' ';
@@ -106,27 +102,28 @@ class PartiturEditor {
         this.saveToLocalStorage();
         this.pushHistory();
     }
-    
+
     /**
-     * Menghapus semua notasi
+     * Clear notation
      */
     clearNotation() {
+        if (this.notation && !confirm('Hapus semua notasi?')) return;
         this.notation = '';
         this.updateDisplay();
         this.updatePreview();
         this.saveToLocalStorage();
         this.pushHistory();
     }
-    
+
     /**
-     * Update display notasi
+     * Update display
      */
     updateDisplay() {
         if (this.notationDisplay) {
             this.notationDisplay.textContent = this.notation.trim() || 'Kosong';
         }
     }
-    
+
     /**
      * Update preview
      */
@@ -138,18 +135,18 @@ class PartiturEditor {
             const notes = this.notation.trim() || '(kosong)';
             
             this.previewDisplay.innerHTML = `
-                <div style="font-size:0.9rem; color:var(--text-secondary); margin-bottom:0.25rem;">
+                <div style="font-size:0.9rem;color:var(--text-secondary);margin-bottom:0.25rem;">
                     <strong>${title}</strong> · ${composer} · ${tempo}
                 </div>
-                <div style="font-size:1.4rem; letter-spacing:0.1em; color:var(--text-primary);">
+                <div style="font-size:1.4rem;letter-spacing:0.1em;color:var(--text-primary);">
                     ${notes}
                 </div>
             `;
         }
     }
-    
+
     /**
-     * New score (reset)
+     * New score
      */
     newScore() {
         if (this.notation && !confirm('Hapus partitur saat ini?')) return;
@@ -166,9 +163,9 @@ class PartiturEditor {
         this.history = [];
         this.historyIndex = -1;
     }
-    
+
     /**
-     * Save ke localStorage
+     * Save to localStorage
      */
     saveToLocalStorage() {
         try {
@@ -184,9 +181,9 @@ class PartiturEditor {
             console.warn('Failed to save to localStorage:', e);
         }
     }
-    
+
     /**
-     * Load dari localStorage
+     * Load from localStorage
      */
     loadFromLocalStorage() {
         try {
@@ -200,25 +197,24 @@ class PartiturEditor {
                 if (this.titleInput) this.titleInput.value = this.title;
                 if (this.composerInput) this.composerInput.value = this.composer;
                 if (this.tempoInput) this.tempoInput.value = this.tempo;
-                this.updateDisplay();
-                this.updatePreview();
             }
         } catch (e) {
             console.warn('Failed to load from localStorage:', e);
         }
     }
-    
+
     /**
-     * Save score sebagai file
+     * Save score as file
      */
     saveScore() {
         const data = {
-            version: '1.0',
+            version: '2.0',
             title: this.title,
             composer: this.composer,
             tempo: this.tempo,
             notation: this.notation,
-            timestamp: new Date().toISOString(),
+            scale: '20-note microtonal',
+            timestamp: new Date().toISOString()
         };
         
         const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -229,9 +225,9 @@ class PartiturEditor {
         a.click();
         URL.revokeObjectURL(url);
     }
-    
+
     /**
-     * Load score dari file
+     * Load score from file
      */
     loadScore(event) {
         const file = event.target.files[0];
@@ -258,12 +254,12 @@ class PartiturEditor {
         reader.readAsText(file);
         event.target.value = '';
     }
-    
+
     /**
-     * Export sebagai teks
+     * Export as text
      */
     exportScore() {
-        const text = `Judul: ${this.title}\nKomposer: ${this.composer}\nTempo: ${this.tempo}\nNotasi: ${this.notation.trim()}`;
+        const text = `Judul: ${this.title}\nKomposer: ${this.composer}\nTempo: ${this.tempo}\nNotasi: ${this.notation.trim()}\nSistem: 20 Nada per Oktaf (A4=440Hz)`;
         const blob = new Blob([text], { type: 'text/plain' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -272,12 +268,11 @@ class PartiturEditor {
         a.click();
         URL.revokeObjectURL(url);
     }
-    
+
     /**
-     * Cetak partitur
+     * Print score
      */
     printScore() {
-        // Untuk cetak, kita buat jendela baru dengan styling sederhana
         const printWindow = window.open('', '_blank', 'width=800,height=600');
         if (!printWindow) {
             alert('Mohon izinkan popup untuk mencetak.');
@@ -290,17 +285,14 @@ class PartiturEditor {
             <head>
                 <title>${this.title}</title>
                 <style>
-                    body { font-family: 'Georgia', serif; padding: 40px; max-width: 700px; margin: 0 auto; }
+                    body { font-family: Georgia, serif; padding: 40px; max-width: 700px; margin: 0 auto; }
                     h1 { text-align: center; font-size: 24px; margin-bottom: 4px; }
                     .composer { text-align: center; color: #666; margin-bottom: 20px; }
                     .tempo { text-align: center; color: #888; margin-bottom: 30px; }
-                    .notation { font-size: 28px; letter-spacing: 0.15em; text-align: center; padding: 20px; 
-                               background: #f5f5f5; border-radius: 8px; font-family: monospace; }
+                    .notation { font-size: 28px; letter-spacing: 0.15em; text-align: center; padding: 20px; background: #f5f5f5; border-radius: 8px; font-family: monospace; }
+                    .info { text-align: center; margin-top: 20px; color: #aaa; font-size: 12px; }
                     .footer { text-align: center; margin-top: 40px; color: #aaa; font-size: 12px; }
-                    @media print {
-                        body { padding: 20px; }
-                        .no-print { display: none; }
-                    }
+                    @media print { body { padding: 20px; } .no-print { display: none; } }
                 </style>
             </head>
             <body>
@@ -308,30 +300,58 @@ class PartiturEditor {
                 <div class="composer">${this.composer}</div>
                 <div class="tempo">${this.tempo}</div>
                 <div class="notation">${this.notation.trim() || '(kosong)'}</div>
+                <div class="info">Sistem 20 Nada per Oktaf · A4 = 440 Hz</div>
                 <div class="footer">TriSonic AI Studio · Partitur Notasi Angka</div>
                 <div class="no-print" style="text-align:center;margin-top:20px;">
-                    <button onclick="window.print()" style="padding:8px 24px;font-size:16px;cursor:pointer;">
-                        🖨️ Cetak
-                    </button>
+                    <button onclick="window.print()" style="padding:8px 24px;font-size:16px;cursor:pointer;">🖨️ Cetak</button>
                 </div>
             </body>
             </html>
         `);
         printWindow.document.close();
     }
-    
+
     /**
-     * Push ke history
+     * Push to history
      */
     pushHistory() {
-        // Hapus history setelah index
         this.history = this.history.slice(0, this.historyIndex + 1);
         this.history.push(this.notation);
         this.historyIndex = this.history.length - 1;
+        if (this.history.length > this.maxHistory) {
+            this.history.shift();
+            this.historyIndex--;
+        }
+    }
+
+    /**
+     * Undo
+     */
+    undo() {
+        if (this.historyIndex > 0) {
+            this.historyIndex--;
+            this.notation = this.history[this.historyIndex] || '';
+            this.updateDisplay();
+            this.updatePreview();
+            this.saveToLocalStorage();
+        }
+    }
+
+    /**
+     * Redo
+     */
+    redo() {
+        if (this.historyIndex < this.history.length - 1) {
+            this.historyIndex++;
+            this.notation = this.history[this.historyIndex] || '';
+            this.updateDisplay();
+            this.updatePreview();
+            this.saveToLocalStorage();
+        }
     }
 }
 
-// Export
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = PartiturEditor;
+// Export untuk browser
+if (typeof window !== 'undefined') {
+    window.PartiturEditor = PartiturEditor;
 }
