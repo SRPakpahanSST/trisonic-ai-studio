@@ -2,6 +2,20 @@
   "version": "2.0.0",
   "appName": "TriSonic AI Studio",
   "description": "20-Note Microtonal Ecosystem Powered by Multi-Agent AI for ASEAN",
+  "system": {
+    "notesPerOctave": 20,
+    "referenceFrequency": 440,
+    "referenceNote": "A4",
+    "ratio": 1.0352649238413775,
+    "octaveRange": {
+      "start": 2,
+      "end": 6
+    },
+    "scale": {
+      "mayor": ["E", "E#", "F", "F#", "G", "G#", "H", "H#", "I", "J", "J#", "K", "K#", "A", "A#", "B", "B#", "C", "C#", "D"],
+      "minor": ["A", "A#", "B", "B#", "C", "C#", "D", "E", "E#", "F", "F#", "G", "G#", "H", "H#", "I", "J", "J#", "K", "K#"]
+    }
+  },
   "audio": {
     "defaultVolume": 0.7,
     "defaultReverb": 0.3,
@@ -9,10 +23,10 @@
     "masterVolume": 0.8
   },
   "keyboard": {
-    "startOctave": 3,
+    "startOctave": 2,
     "endOctave": 6,
     "keysPerOctave": 20,
-    "totalKeys": 80
+    "totalKeys": 100
   },
   "composer": {
     "defaultGenre": "classical",
@@ -21,34 +35,7 @@
     "baseOctave": 4
   },
   "dashboard": {
-    "autoUpdateInterval": 3000,
-    "metrics": {
-      "design": {
-        "progress": 92,
-        "status": "online"
-      },
-      "process": {
-        "temperature": 72,
-        "vibration": 0.4,
-        "status": "warning"
-      },
-      "market": {
-        "prices": {
-          "Indonesia": 2450000,
-          "Malaysia": 850,
-          "Singapura": 320,
-          "Thailand": 8900
-        },
-        "recommendation": 245
-      },
-      "training": {
-        "modules": [
-          { "name": "Teori 20 Nada", "progress": 80 },
-          { "name": "Kalibrasi Keyboard", "progress": 45 },
-          { "name": "Harmoni Mikrotonal", "progress": 30 }
-        ]
-      }
-    }
+    "autoUpdateInterval": 3000
   },
   "theme": {
     "primary": "#0F3460",
