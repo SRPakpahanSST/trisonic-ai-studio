@@ -1,5 +1,5 @@
 // ============================================================
-// dashboard.js - Demo Agen AI (Desain, Proses, Pasar)
+// dashboard.js - Dashboard AI (Simulasi Agen)
 // TriSonic AI Studio
 // ============================================================
 
@@ -10,25 +10,25 @@ class DashboardManager {
         this.metrics = {
             design: { progress: 92, status: 'online' },
             process: { temperature: 72, vibration: 0.4, status: 'warning' },
-            market: { 
+            market: {
                 prices: {
                     'Indonesia': 2450000,
                     'Malaysia': 850,
                     'Singapura': 320,
-                    'Thailand': 8900,
+                    'Thailand': 8900
                 },
-                recommendation: 245,
+                recommendation: 245
             },
             training: {
                 modules: [
                     { name: 'Teori 20 Nada', progress: 80 },
                     { name: 'Kalibrasi Keyboard', progress: 45 },
-                    { name: 'Harmoni Mikrotonal', progress: 30 },
+                    { name: 'Harmoni Mikrotonal', progress: 30 }
                 ]
             }
         };
     }
-    
+
     /**
      * Inisialisasi dashboard
      */
@@ -37,12 +37,11 @@ class DashboardManager {
         this.startAutoUpdate();
         this.bindEvents();
     }
-    
+
     /**
      * Bind events
      */
     bindEvents() {
-        // Training button
         const trainingBtn = document.getElementById('startTrainingBtn');
         if (trainingBtn) {
             trainingBtn.addEventListener('click', () => {
@@ -50,20 +49,19 @@ class DashboardManager {
             });
         }
     }
-    
+
     /**
-     * Start auto-update (simulasi)
+     * Start auto-update
      */
     startAutoUpdate() {
         if (this.intervalId) return;
-        
         this.isRunning = true;
         this.intervalId = setInterval(() => {
             this.simulateMetricsUpdate();
             this.updateAllMetrics();
         }, 3000);
     }
-    
+
     /**
      * Stop auto-update
      */
@@ -74,39 +72,39 @@ class DashboardManager {
         }
         this.isRunning = false;
     }
-    
+
     /**
      * Simulate metrics update
      */
     simulateMetricsUpdate() {
-        // Desain - random progress
+        // Design
         this.metrics.design.progress = Math.min(100, this.metrics.design.progress + (Math.random() - 0.5) * 3);
         this.metrics.design.progress = Math.max(70, this.metrics.design.progress);
         this.metrics.design.status = this.metrics.design.progress > 85 ? 'online' : 'warning';
         
-        // Proses - random temperature
+        // Process
         this.metrics.process.temperature = 65 + Math.random() * 15;
         this.metrics.process.vibration = 0.3 + Math.random() * 0.3;
         this.metrics.process.status = this.metrics.process.temperature > 78 ? 'warning' : 'online';
         
-        // Market - random price fluctuation
+        // Market
         for (const key in this.metrics.market.prices) {
             const change = (Math.random() - 0.5) * 0.03;
             this.metrics.market.prices[key] = Math.round(this.metrics.market.prices[key] * (1 + change));
         }
         
-        // Training - slow progress
+        // Training
         this.metrics.training.modules.forEach(module => {
             if (module.progress < 100 && Math.random() > 0.7) {
                 module.progress = Math.min(100, module.progress + Math.random() * 2);
             }
         });
         
-        // Update recommendation
+        // Recommendation
         const basePrice = this.metrics.market.prices['Indonesia'] || 2450000;
         this.metrics.market.recommendation = Math.round(basePrice / 10000);
     }
-    
+
     /**
      * Update all metrics display
      */
@@ -116,7 +114,7 @@ class DashboardManager {
         this.updateMarketDisplay();
         this.updateTrainingDisplay();
     }
-    
+
     /**
      * Update design display
      */
@@ -137,7 +135,7 @@ class DashboardManager {
             status.className = `card-status ${this.metrics.design.status}`;
         }
     }
-    
+
     /**
      * Update process display
      */
@@ -160,7 +158,7 @@ class DashboardManager {
             status.className = `card-status ${this.metrics.process.status}`;
         }
     }
-    
+
     /**
      * Update market display
      */
@@ -193,7 +191,7 @@ class DashboardManager {
             rec.textContent = `$${this.metrics.market.recommendation} USD`;
         }
     }
-    
+
     /**
      * Update training display
      */
@@ -208,9 +206,43 @@ class DashboardManager {
             `).join('');
         }
     }
+
+    /**
+     * Start training
+     */
+    startTraining() {
+        const modules = this.metrics.training.modules;
+        let completed = 0;
+        let total = modules.length;
+        
+        modules.forEach(m => {
+            if (m.progress >= 100) completed++;
+        });
+        
+        if (completed === total) {
+            alert('🎉 Selamat! Semua modul telah selesai!');
+            return;
+        }
+        
+        const nextModule = modules.find(m => m.progress < 100);
+        if (nextModule) {
+            alert(`🎯 Memulai modul: ${nextModule.name}\nProgress saat ini: ${Math.round(nextModule.progress)}%`);
+            // Simulasi progress
+            const interval = setInterval(() => {
+                if (nextModule.progress >= 100) {
+                    clearInterval(interval);
+                    alert(`✅ Modul "${nextModule.name}" selesai!`);
+                    this.updateAllMetrics();
+                    return;
+                }
+                nextModule.progress = Math.min(100, nextModule.progress + Math.random() * 3);
+                this.updateAllMetrics();
+            }, 1000);
+        }
+    }
 }
 
-// Export
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = DashboardManager;
+// Export untuk browser
+if (typeof window !== 'undefined') {
+    window.DashboardManager = DashboardManager;
 }
