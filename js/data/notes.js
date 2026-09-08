@@ -1,120 +1,141 @@
 // ============================================================
-// notes.js - NOTES_20, Interval Mayor/Minor
+// notes.js - Data 20 Nada per Oktaf
 // TriSonic AI Studio
 // ============================================================
 
 /**
- * Daftar 20 nada dengan nama dan properti interval
+ * Daftar 20 Nada per Oktaf
+ * Skala Mayor: E E# F F# G G# H H# I J J# K K# A A# B B# C C# D
+ * A4 = 440 Hz (referensi)
+ * Rasio: 2^(1/20) ≈ 1.0352649238413775
  */
 
-// 20 Nada per oktaf
-const NOTES_20 = [
-    { index: 0, name: 'C',  interval: '1',  cents: 0 },
-    { index: 1, name: 'C♯', interval: '2♯', cents: 60 },
-    { index: 2, name: 'D',  interval: '2',  cents: 120 },
-    { index: 3, name: 'D♯', interval: '3♯', cents: 180 },
-    { index: 4, name: 'E',  interval: '3',  cents: 240 },
-    { index: 5, name: 'E♯', interval: '4♯', cents: 300 },
-    { index: 6, name: 'F',  interval: '4',  cents: 360 },
-    { index: 7, name: 'F♯', interval: '5♯', cents: 420 },
-    { index: 8, name: 'G',  interval: '5',  cents: 480 },
-    { index: 9, name: 'G♯', interval: '6♯', cents: 540 },
-    { index: 10, name: 'A',  interval: '6',  cents: 600 },
-    { index: 11, name: 'A♯', interval: '7♯', cents: 660 },
-    { index: 12, name: 'B',  interval: '7',  cents: 720 },
-    { index: 13, name: 'B♯', interval: '8♯', cents: 780 },
-    { index: 14, name: 'C',  interval: '8',  cents: 840 },
-    { index: 15, name: 'C♯', interval: '9♯', cents: 900 },
-    { index: 16, name: 'D',  interval: '9',  cents: 960 },
-    { index: 17, name: 'D♯', interval: '10♯', cents: 1020 },
-    { index: 18, name: 'E',  interval: '10', cents: 1080 },
-    { index: 19, name: 'E♯', interval: '11♯', cents: 1140 },
+// 20 Nada per Oktaf (Mayor)
+const NOTES_20_MAYOR = [
+    'E',  // 0
+    'E#', // 1
+    'F',  // 2
+    'F#', // 3
+    'G',  // 4
+    'G#', // 5
+    'H',  // 6
+    'H#', // 7
+    'I',  // 8
+    'J',  // 9
+    'J#', // 10
+    'K',  // 11
+    'K#', // 12
+    'A',  // 13
+    'A#', // 14
+    'B',  // 15
+    'B#', // 16
+    'C',  // 17
+    'C#', // 18
+    'D'   // 19
 ];
 
-// Interval dalam jumlah step (mikrotonal)
-const INTERVALS = {
-    'unison': 0,
-    'minor2': 2,
-    'major2': 4,
-    'minor3': 6,
-    'major3': 8,
-    'perfect4': 10,
-    'aug4': 12,
-    'perfect5': 14,
-    'minor6': 16,
-    'major6': 18,
-    'minor7': 20,
-    'major7': 22,
-    'octave': 20,
-};
+// 20 Nada per Oktaf (Minor)
+const NOTES_20_MINOR = [
+    'A',  // 0
+    'A#', // 1
+    'B',  // 2
+    'B#', // 3
+    'C',  // 4
+    'C#', // 5
+    'D',  // 6
+    'E',  // 7
+    'E#', // 8
+    'F',  // 9
+    'F#', // 10
+    'G',  // 11
+    'G#', // 12
+    'H',  // 13
+    'H#', // 14
+    'I',  // 15
+    'J',  // 16
+    'J#', // 17
+    'K',  // 18
+    'K#'  // 19
+];
+
+// Interval skala Mayor (12 nada)
+const MAYOR_INTERVALS = [2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 1];
+
+// Interval skala Minor (12 nada)
+const MINOR_INTERVALS = [2, 2, 2, 1, 2, 2, 2, 2, 1, 2, 2];
+
+// Mapping nama nada ke index
+const NOTE_TO_INDEX = {};
+NOTES_20_MAYOR.forEach((note, index) => {
+    NOTE_TO_INDEX[note] = index;
+});
 
 /**
- * Mendapatkan nada berdasarkan index
- * @param {number} index - Indeks nada (0-19)
- * @returns {Object} Objek nada { index, name, interval, cents }
+ * Mendapatkan nama nada berdasarkan index
+ * @param {number} index - Index nada (0-19)
+ * @param {string} scale - 'mayor' atau 'minor'
+ * @returns {string} Nama nada
  */
-function getNoteByIndex(index) {
-    return NOTES_20[index % NOTES_20.length] || NOTES_20[0];
+function getNoteName(index, scale = 'mayor') {
+    const notes = scale === 'minor' ? NOTES_20_MINOR : NOTES_20_MAYOR;
+    return notes[index % 20] || 'E';
 }
 
 /**
- * Mendapatkan interval antara dua nada (dalam step)
- * @param {number} fromIndex - Indeks nada awal
- * @param {number} toIndex - Indeks nada akhir
- * @returns {number} Interval dalam step (dapat negatif)
+ * Mendapatkan index dari nama nada
+ * @param {string} noteName - Nama nada (contoh: 'A', 'F#')
+ * @returns {number} Index (0-19)
  */
-function getIntervalSteps(fromIndex, toIndex) {
-    return toIndex - fromIndex;
+function getNoteIndex(noteName) {
+    return NOTE_TO_INDEX[noteName] !== undefined ? NOTE_TO_INDEX[noteName] : 0;
 }
 
 /**
- * Mendapatkan nama interval antara dua nada
- * @param {number} fromIndex - Indeks nada awal
- * @param {number} toIndex - Indeks nada akhir
- * @returns {string} Nama interval
+ * Membangun skala dari root
+ * @param {string} root - Nada root (contoh: 'E', 'A')
+ * @param {string} scaleType - 'mayor' atau 'minor'
+ * @returns {Array} Array nama nada skala
  */
-function getIntervalName(fromIndex, toIndex) {
-    const steps = getIntervalSteps(fromIndex, toIndex);
-    const absSteps = Math.abs(steps);
-    
-    const intervalMap = {
-        0: 'Unison',
-        2: 'Minor Second',
-        4: 'Major Second',
-        6: 'Minor Third',
-        8: 'Major Third',
-        10: 'Perfect Fourth',
-        12: 'Augmented Fourth',
-        14: 'Perfect Fifth',
-        16: 'Minor Sixth',
-        18: 'Major Sixth',
-        20: 'Minor Seventh',
-        22: 'Major Seventh',
-        24: 'Octave',
-    };
-    
-    const name = intervalMap[absSteps] || `${absSteps} Step`;
-    return steps < 0 ? `Descending ${name}` : name;
+function buildScale(root, scaleType = 'mayor') {
+    const rootIdx = getNoteIndex(root);
+    const intervals = scaleType === 'minor' ? MINOR_INTERVALS : MAYOR_INTERVALS;
+    const scale = [root];
+    let current = rootIdx;
+    for (const step of intervals) {
+        current = (current + step) % 20;
+        scale.push(getNoteName(current));
+    }
+    return scale;
 }
 
 /**
- * Transpose nada dengan interval tertentu
- * @param {number} index - Indeks nada
- * @param {number} steps - Jumlah step transposisi
- * @returns {number} Indeks baru
+ * Membangun akord triad
+ * @param {string} root - Nada root
+ * @param {string} type - 'mayor', 'minor', 'diminished'
+ * @returns {Array} Array 3 nama nada
  */
-function transposeNote(index, steps) {
-    return (index + steps) % NOTES_20.length;
+function buildChord(root, type = 'mayor') {
+    const rootIdx = getNoteIndex(root);
+    let third = 4;
+    let fifth = 7;
+    if (type === 'minor') third = 3;
+    if (type === 'diminished') { third = 3; fifth = 6; }
+    return [
+        getNoteName(rootIdx),
+        getNoteName((rootIdx + third) % 20),
+        getNoteName((rootIdx + fifth) % 20)
+    ];
 }
 
 // Export untuk browser
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = {
-        NOTES_20,
-        INTERVALS,
-        getNoteByIndex,
-        getIntervalSteps,
-        getIntervalName,
-        transposeNote
-    };
+if (typeof window !== 'undefined') {
+    window.NOTES_20_MAYOR = NOTES_20_MAYOR;
+    window.NOTES_20_MINOR = NOTES_20_MINOR;
+    window.MAYOR_INTERVALS = MAYOR_INTERVALS;
+    window.MINOR_INTERVALS = MINOR_INTERVALS;
+    window.NOTE_TO_INDEX = NOTE_TO_INDEX;
+    window.getNoteName = getNoteName;
+    window.getNoteIndex = getNoteIndex;
+    window.buildScale = buildScale;
+    window.buildChord = buildChord;
 }
