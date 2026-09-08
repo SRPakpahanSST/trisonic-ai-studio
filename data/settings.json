@@ -1,1 +1,60 @@
-ff
+{
+  "version": "2.0.0",
+  "appName": "TriSonic AI Studio",
+  "description": "20-Note Microtonal Ecosystem Powered by Multi-Agent AI for ASEAN",
+  "audio": {
+    "defaultVolume": 0.7,
+    "defaultReverb": 0.3,
+    "defaultWaveform": "sine",
+    "masterVolume": 0.8
+  },
+  "keyboard": {
+    "startOctave": 3,
+    "endOctave": 6,
+    "keysPerOctave": 20,
+    "totalKeys": 80
+  },
+  "composer": {
+    "defaultGenre": "classical",
+    "defaultLength": 8,
+    "defaultTempo": 120,
+    "baseOctave": 4
+  },
+  "dashboard": {
+    "autoUpdateInterval": 3000,
+    "metrics": {
+      "design": {
+        "progress": 92,
+        "status": "online"
+      },
+      "process": {
+        "temperature": 72,
+        "vibration": 0.4,
+        "status": "warning"
+      },
+      "market": {
+        "prices": {
+          "Indonesia": 2450000,
+          "Malaysia": 850,
+          "Singapura": 320,
+          "Thailand": 8900
+        },
+        "recommendation": 245
+      },
+      "training": {
+        "modules": [
+          { "name": "Teori 20 Nada", "progress": 80 },
+          { "name": "Kalibrasi Keyboard", "progress": 45 },
+          { "name": "Harmoni Mikrotonal", "progress": 30 }
+        ]
+      }
+    }
+  },
+  "theme": {
+    "primary": "#0F3460",
+    "secondary": "#2196F3",
+    "accent": "#4CAF50",
+    "background": "#0a0e17",
+    "text": "#e8edf5"
+  }
+}
