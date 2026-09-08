@@ -3,7 +3,7 @@
    TriSonic AI Studio
    ============================================================ */
 
-/* ---------- App Layout ---------- */
+/* ---------- Header ---------- */
 .app-header {
     position: sticky;
     top: 0;
@@ -16,8 +16,82 @@
     background: var(--bg-card);
     border-bottom: 1px solid var(--border-color);
     flex-shrink: 0;
+    gap: 0.5rem;
+    flex-wrap: wrap;
 }
 
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.header-logo {
+    width: 36px;
+    height: 36px;
+}
+
+.app-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    background: var(--gradient-blue);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+}
+
+/* ---------- Tab Navigation ---------- */
+.tab-nav {
+    display: flex;
+    gap: 2px;
+    background: var(--bg-sidebar);
+    padding: 4px;
+    border-radius: var(--border-radius-sm);
+    overflow-x: auto;
+    scrollbar-width: none;
+    flex: 1;
+    min-width: 0;
+}
+
+.tab-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.tab-btn {
+    padding: 0.4rem 1rem;
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    color: var(--text-secondary);
+    font-family: var(--font-family);
+    font-size: 0.85rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: var(--transition-fast);
+}
+
+.tab-btn:hover {
+    color: var(--text-primary);
+    background: var(--bg-card-hover);
+}
+
+.tab-btn.active {
+    background: var(--color-primary);
+    color: white;
+}
+
+/* ---------- Main Content ---------- */
 .main-content {
     flex: 1;
     display: flex;
@@ -79,15 +153,6 @@
     box-shadow: var(--shadow-glow);
 }
 
-.sidebar-btn .badge {
-    margin-left: auto;
-    background: var(--color-accent-magenta);
-    color: white;
-    font-size: 0.65rem;
-    padding: 0.1rem 0.6rem;
-    border-radius: 10px;
-}
-
 .sidebar-footer {
     padding: 1rem 1rem 0.5rem;
     border-top: 1px solid var(--border-color);
@@ -128,82 +193,15 @@
 .tab-header {
     margin-bottom: 1.5rem;
 }
+
 .tab-header h2 {
     font-size: 1.6rem;
     font-weight: 700;
 }
+
 .tab-header p {
     color: var(--text-secondary);
     font-size: 0.95rem;
-}
-
-/* ---------- Header Left ---------- */
-.header-left {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.header-logo {
-    width: 36px;
-    height: 36px;
-}
-
-.app-title {
-    font-size: 1.1rem;
-    font-weight: 700;
-    background: var(--gradient-blue);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-/* ---------- Tab Navigation (Top) ---------- */
-.tab-nav {
-    display: flex;
-    gap: 2px;
-    background: var(--bg-sidebar);
-    padding: 4px;
-    border-radius: var(--border-radius-sm);
-    overflow-x: auto;
-    scrollbar-width: none;
-}
-
-.tab-nav::-webkit-scrollbar {
-    display: none;
-}
-
-.tab-btn {
-    padding: 0.4rem 1rem;
-    background: transparent;
-    border: none;
-    border-radius: 6px;
-    color: var(--text-secondary);
-    font-family: var(--font-family);
-    font-size: 0.85rem;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: var(--transition-fast);
-}
-
-.tab-btn:hover {
-    color: var(--text-primary);
-    background: var(--bg-card-hover);
-}
-
-.tab-btn.active {
-    background: var(--color-primary);
-    color: white;
-}
-
-.menu-toggle {
-    display: none;
-    background: none;
-    border: none;
-    color: var(--text-secondary);
-    font-size: 1.5rem;
-    cursor: pointer;
-    padding: 0.25rem 0.5rem;
 }
 
 /* ---------- Footer ---------- */
@@ -220,7 +218,37 @@
     flex-shrink: 0;
 }
 
-/* ---------- Responsive Layout ---------- */
+/* ---------- Keyboard Container ---------- */
+.keyboard-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.keyboard-wrapper {
+    overflow-x: auto;
+    padding: 1rem;
+    background: var(--bg-card);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+}
+
+.keyboard-info {
+    padding: 0.75rem 1rem;
+    background: var(--bg-card);
+    border-radius: var(--border-radius-sm);
+    border: 1px solid var(--border-color);
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    text-align: center;
+    line-height: 1.6;
+}
+
+.keyboard-info p {
+    margin: 0;
+}
+
+/* ---------- Responsive ---------- */
 @media (max-width: 1024px) {
     .content-area {
         padding: 1rem 1.5rem;
@@ -229,11 +257,9 @@
 
 @media (max-width: 768px) {
     .app-header {
-        padding: 0 0.75rem;
-        flex-wrap: wrap;
+        padding: 0.5rem 0.75rem;
         height: auto;
         min-height: var(--header-height);
-        gap: 4px;
     }
     
     .header-left {
@@ -246,9 +272,8 @@
     .tab-nav {
         order: 3;
         width: 100%;
-        padding: 4px;
-        gap: 2px;
         background: transparent;
+        padding: 0;
     }
     .tab-btn {
         font-size: 0.75rem;
@@ -298,5 +323,8 @@
     .header-logo {
         width: 28px;
         height: 28px;
+    }
+    .sidebar {
+        width: 250px;
     }
 }
