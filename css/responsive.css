@@ -1,1 +1,129 @@
-vv
+/* ============================================================
+   responsive.css - Media Query untuk HP / Tablet / Desktop
+   TriSonic AI Studio
+   ============================================================ */
+
+/* ---------- Small Devices (Phones) ---------- */
+@media (max-width: 480px) {
+    .dashboard-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .composer-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .composer-controls .control-group {
+        min-width: auto;
+    }
+    
+    .partitur-toolbar {
+        gap: 4px;
+    }
+    .partitur-toolbar .btn {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.5rem;
+    }
+    
+    .partitur-header-info {
+        flex-direction: column;
+    }
+    
+    .note-btn {
+        width: 30px;
+        height: 30px;
+        font-size: 0.75rem;
+    }
+    
+    .notation-notes {
+        font-size: 1rem;
+    }
+    
+    .keyboard-controls {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .about-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .splash-title {
+        font-size: 1.4rem;
+    }
+    .splash-tagline {
+        font-size: 0.9rem;
+    }
+}
+
+/* ---------- Medium Devices (Tablets) ---------- */
+@media (min-width: 481px) and (max-width: 768px) {
+    .dashboard-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .composer-controls {
+        flex-wrap: wrap;
+    }
+    .composer-controls .control-group {
+        flex: 1 1 auto;
+        min-width: 80px;
+    }
+    
+    .about-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* ---------- Large Devices (Desktops) ---------- */
+@media (min-width: 769px) and (max-width: 1200px) {
+    .dashboard-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* ---------- Extra Large Devices ---------- */
+@media (min-width: 1201px) {
+    .dashboard-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* ---------- Print Styles ---------- */
+@media print {
+    .app-header, .sidebar, .app-footer, .partitur-toolbar, .notation-controls, .keyboard-controls {
+        display: none !important;
+    }
+    
+    .content-wrapper {
+        display: block !important;
+    }
+    .content-area {
+        padding: 0.5in !important;
+        overflow: visible !important;
+        background: white !important;
+    }
+    .tab-content {
+        display: block !important;
+    }
+    .tab-content:not(.active) {
+        display: none !important;
+    }
+    body {
+        background: white !important;
+        color: black !important;
+    }
+    .partitur-editor, .partitur-preview {
+        border: 1px solid #ccc !important;
+        background: white !important;
+    }
+    .notation-notes {
+        color: black !important;
+    }
+}
+
+/* ---------- Dark Mode Preference ---------- */
+@media (prefers-color-scheme: light) {
+    /* Fallback untuk browser yang mendukung */
+    /* Tapi kita paksa dark mode karena ini adalah aplikasi dengan tema gelap */
+}
