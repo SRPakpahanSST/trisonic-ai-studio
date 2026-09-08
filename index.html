@@ -1,1 +1,497 @@
-nn
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>TriSonic AI Studio</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/images/trisonic-logo.svg" />
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/partitur.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+    <!-- ============================================ -->
+    <!-- SPLASH SCREEN / WELCOME                       -->
+    <!-- ============================================ -->
+    <div id="splash-screen" class="splash-screen">
+        <div class="splash-content">
+            <!-- Logo SVG -->
+            <svg class="splash-logo" viewBox="0 0 200 200" width="120" height="120">
+                <defs>
+                    <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#0F3460" />
+                        <stop offset="100%" style="stop-color:#2196F3" />
+                    </linearGradient>
+                    <linearGradient id="greenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#2E7D32" />
+                        <stop offset="100%" style="stop-color:#4CAF50" />
+                    </linearGradient>
+                    <linearGradient id="magentaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#C2185B" />
+                        <stop offset="100%" style="stop-color:#E91E63" />
+                    </linearGradient>
+                </defs>
+                <!-- Gelombang Suara -->
+                <path d="M 120 60 C 160 60, 180 90, 150 130 C 120 170, 60 160, 30 120 C 10 90, 30 50, 60 40" 
+                      fill="none" stroke="#0F3460" stroke-width="12" stroke-linecap="round" />
+                <!-- Segitiga Biru (Inovasi) -->
+                <polygon points="50,60 90,140 10,140" fill="url(#blueGrad)" />
+                <!-- Kotak Hijau (Struktur/Teknologi) -->
+                <rect x="80" y="70" width="70" height="70" rx="15" fill="url(#greenGrad)" />
+                <!-- Lingkaran Magenta (Kreativitas) -->
+                <circle cx="145" cy="135" r="40" fill="url(#magentaGrad)" />
+            </svg>
+            
+            <h1 class="splash-title">TriSonic AI Studio</h1>
+            <p class="splash-tagline">Eksplorasi Harmoni Tanpa Batas</p>
+            <p class="splash-sub">20-Note Microtonal Ecosystem · Multi-Agent AI</p>
+            <div class="splash-loader">
+                <div class="loader-bar"></div>
+            </div>
+            <p class="splash-version">v2.0.0</p>
+        </div>
+    </div>
+    
+    <!-- ============================================ -->
+    <!-- MAIN APP                                     -->
+    <!-- ============================================ -->
+    <div id="app" style="display:none;">
+        
+        <!-- TOP HEADER / NAVIGATION -->
+        <header class="app-header">
+            <div class="header-left">
+                <!-- Logo Mini -->
+                <svg class="header-logo" viewBox="0 0 200 200" width="36" height="36">
+                    <defs>
+                        <linearGradient id="blueGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#0F3460" />
+                            <stop offset="100%" style="stop-color:#2196F3" />
+                        </linearGradient>
+                        <linearGradient id="greenGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#2E7D32" />
+                            <stop offset="100%" style="stop-color:#4CAF50" />
+                        </linearGradient>
+                        <linearGradient id="magentaGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#C2185B" />
+                            <stop offset="100%" style="stop-color:#E91E63" />
+                        </linearGradient>
+                    </defs>
+                    <polygon points="50,60 90,140 10,140" fill="url(#blueGrad2)" />
+                    <rect x="80" y="70" width="70" height="70" rx="15" fill="url(#greenGrad2)" />
+                    <circle cx="145" cy="135" r="40" fill="url(#magentaGrad2)" />
+                </svg>
+                <span class="app-title">TriSonic AI Studio</span>
+            </div>
+            
+            <nav class="tab-nav" id="tabNav">
+                <button class="tab-btn active" data-tab="keyboard">🎹 Keyboard</button>
+                <button class="tab-btn" data-tab="composer">🤖 AI Composer</button>
+                <button class="tab-btn" data-tab="partitur">📝 Partitur</button>
+                <button class="tab-btn" data-tab="dashboard">📊 Dashboard AI</button>
+                <button class="tab-btn" data-tab="tutorial">📚 Tutorial</button>
+                <button class="tab-btn" data-tab="about">ℹ️ About</button>
+            </nav>
+            
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button>
+        </header>
+        
+        <!-- ============================================ -->
+        <!-- MAIN CONTENT AREA                            -->
+        <!-- ============================================ -->
+        <main class="main-content">
+            <div class="content-wrapper">
+                
+                <!-- SIDEBAR -->
+                <aside class="sidebar" id="sidebar">
+                    <nav class="sidebar-nav">
+                        <button class="sidebar-btn active" data-tab="keyboard">🎹 Keyboard</button>
+                        <button class="sidebar-btn" data-tab="composer">🤖 AI Composer</button>
+                        <button class="sidebar-btn" data-tab="partitur">📝 Partitur</button>
+                        <button class="sidebar-btn" data-tab="dashboard">📊 Dashboard AI</button>
+                        <button class="sidebar-btn" data-tab="tutorial">📚 Tutorial</button>
+                        <button class="sidebar-btn" data-tab="about">ℹ️ About</button>
+                    </nav>
+                    <div class="sidebar-footer">
+                        <p class="sidebar-version">TriSonic v2.0</p>
+                        <p class="sidebar-credit">A 20-Note Microtonal Ecosystem</p>
+                    </div>
+                </aside>
+                
+                <!-- CONTENT AREA -->
+                <section class="content-area" id="contentArea">
+                    
+                    <!-- ========================================== -->
+                    <!-- TAB 1: KEYBOARD                          -->
+                    <!-- ========================================== -->
+                    <div class="tab-content active" id="tab-keyboard">
+                        <div class="tab-header">
+                            <h2>🎹 Keyboard 20 Nada</h2>
+                            <p>Eksplorasi harmoni mikrotonal dengan 20 nada per oktaf</p>
+                        </div>
+                        <div class="keyboard-container" id="keyboardContainer">
+                            <!-- Keyboard akan dirender oleh JS -->
+                            <div class="keyboard-wrapper">
+                                <div class="keyboard" id="keyboard"></div>
+                            </div>
+                            <div class="keyboard-controls">
+                                <div class="control-group">
+                                    <label>Volume</label>
+                                    <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="0.7" />
+                                </div>
+                                <div class="control-group">
+                                    <label>Reverb</label>
+                                    <input type="range" id="reverbControl" min="0" max="1" step="0.01" value="0.3" />
+                                </div>
+                                <div class="control-group">
+                                    <label>Waveform</label>
+                                    <select id="waveformSelect">
+                                        <option value="sine">Sine</option>
+                                        <option value="square">Square</option>
+                                        <option value="sawtooth">Sawtooth</option>
+                                        <option value="triangle">Triangle</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="pitch-display" id="pitchDisplay">
+                                <span>Nada: <strong id="currentNote">-</strong></span>
+                                <span>Frekuensi: <strong id="currentFreq">-</strong> Hz</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- ========================================== -->
+                    <!-- TAB 2: AI COMPOSER                       -->
+                    <!-- ========================================== -->
+                    <div class="tab-content" id="tab-composer">
+                        <div class="tab-header">
+                            <h2>🤖 AI Composer</h2>
+                            <p>Buat melodi otomatis dengan kecerdasan buatan</p>
+                        </div>
+                        <div class="composer-container">
+                            <div class="composer-controls">
+                                <div class="control-group">
+                                    <label>Genre</label>
+                                    <select id="composerGenre">
+                                        <option value="classical">Klasik</option>
+                                        <option value="jazz">Jazz</option>
+                                        <option value="ambient">Ambient</option>
+                                        <option value="ethnic">Etnik</option>
+                                        <option value="experimental">Eksperimental</option>
+                                    </select>
+                                </div>
+                                <div class="control-group">
+                                    <label>Panjang (bisa)</label>
+                                    <input type="number" id="composerLength" value="8" min="4" max="32" />
+                                </div>
+                                <div class="control-group">
+                                    <label>Tempo (BPM)</label>
+                                    <input type="number" id="composerTempo" value="120" min="60" max="200" />
+                                </div>
+                                <button class="btn btn-primary" id="composeBtn">🎵 Komposisi</button>
+                                <button class="btn btn-secondary" id="playCompositionBtn">▶️ Putar</button>
+                                <button class="btn btn-secondary" id="stopCompositionBtn">⏹️ Stop</button>
+                            </div>
+                            <div class="composition-display" id="compositionDisplay">
+                                <h3>Hasil Komposisi</h3>
+                                <div class="composition-notes" id="compositionNotes">
+                                    <p class="placeholder">Tekan "Komposisi" untuk menghasilkan melodi...</p>
+                                </div>
+                                <div class="composition-stats">
+                                    <span>Nada: <strong id="compNoteCount">0</strong></span>
+                                    <span>Durasi: <strong id="compDuration">0</strong> detik</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- ========================================== -->
+                    <!-- TAB 3: PARTITUR                          -->
+                    <!-- ========================================== -->
+                    <div class="tab-content" id="tab-partitur">
+                        <div class="tab-header">
+                            <h2>📝 Editor Partitur Notasi Angka</h2>
+                            <p>Simpan, buka, dan edit partitur notasi angka</p>
+                        </div>
+                        <div class="partitur-container">
+                            <div class="partitur-toolbar">
+                                <button class="btn btn-primary" id="newScoreBtn">📄 Baru</button>
+                                <button class="btn btn-secondary" id="saveScoreBtn">💾 Simpan</button>
+                                <button class="btn btn-secondary" id="loadScoreBtn">📂 Buka</button>
+                                <button class="btn btn-secondary" id="exportScoreBtn">📤 Export</button>
+                                <button class="btn btn-secondary" id="printScoreBtn">🖨️ Cetak</button>
+                                <input type="file" id="scoreFileInput" accept=".json,.txt" style="display:none;" />
+                            </div>
+                            <div class="partitur-editor">
+                                <div class="partitur-header-info">
+                                    <input type="text" id="scoreTitle" placeholder="Judul Partitur" value="Komposisi Baru" />
+                                    <input type="text" id="scoreComposer" placeholder="Komposer" value="TriSonic AI" />
+                                    <input type="text" id="scoreTempo" placeholder="Tempo" value="120 BPM" />
+                                </div>
+                                <div class="partitur-notation" id="partiturNotation">
+                                    <div class="notation-line">
+                                        <span class="notation-clef">♩</span>
+                                        <span class="notation-notes" id="notationNotes">1 2 3 4 5 6 7 1'</span>
+                                    </div>
+                                    <div class="notation-controls">
+                                        <div class="note-input-group">
+                                            <button class="note-btn" data-note="1">1</button>
+                                            <button class="note-btn" data-note="2">2</button>
+                                            <button class="note-btn" data-note="3">3</button>
+                                            <button class="note-btn" data-note="4">4</button>
+                                            <button class="note-btn" data-note="5">5</button>
+                                            <button class="note-btn" data-note="6">6</button>
+                                            <button class="note-btn" data-note="7">7</button>
+                                            <button class="note-btn" data-note="1'">1'</button>
+                                            <button class="note-btn" data-note="♯">♯</button>
+                                            <button class="note-btn" data-note="♭">♭</button>
+                                            <button class="note-btn" data-note=" ">␣</button>
+                                            <button class="note-btn" data-note="|">|</button>
+                                            <button class="note-btn" data-note="||">||</button>
+                                        </div>
+                                        <button class="btn btn-sm btn-secondary" id="clearNotationBtn">Clear</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="partitur-preview" id="partiturPreview">
+                                <h4>Preview</h4>
+                                <div class="preview-content" id="previewContent">
+                                    <p class="placeholder">Notasi akan ditampilkan di sini...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- ========================================== -->
+                    <!-- TAB 4: DASHBOARD AI                      -->
+                    <!-- ========================================== -->
+                    <div class="tab-content" id="tab-dashboard">
+                        <div class="tab-header">
+                            <h2>📊 Dashboard AI</h2>
+                            <p>Simulasi Agen AI: Desain · Proses · Pasar</p>
+                        </div>
+                        <div class="dashboard-container">
+                            <!-- Agen Desain -->
+                            <div class="dashboard-card">
+                                <div class="card-header">
+                                    <span class="card-icon">🎨</span>
+                                    <h3>Agen AI Desain</h3>
+                                    <span class="card-status online">Online</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="design-simulator" id="designSimulator">
+                                        <svg viewBox="0 0 200 100" class="design-svg">
+                                            <rect x="10" y="10" width="180" height="80" rx="5" fill="#1a2332" />
+                                            <path d="M 30 50 L 50 30 L 80 60 L 110 20 L 140 70 L 170 40" 
+                                                  stroke="#2196F3" stroke-width="2" fill="none" />
+                                            <circle cx="50" cy="30" r="4" fill="#4CAF50" />
+                                            <circle cx="80" cy="60" r="4" fill="#E91E63" />
+                                            <circle cx="110" cy="20" r="4" fill="#FFC107" />
+                                            <circle cx="140" cy="70" r="4" fill="#2196F3" />
+                                            <circle cx="170" cy="40" r="4" fill="#4CAF50" />
+                                            <text x="20" y="85" fill="#888" font-size="8">PCB Design v3.2</text>
+                                        </svg>
+                                    </div>
+                                    <div class="design-specs">
+                                        <span>Material: FR-4</span>
+                                        <span>Layer: 4</span>
+                                        <span>Optimasi: 92%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Agen Proses -->
+                            <div class="dashboard-card">
+                                <div class="card-header">
+                                    <span class="card-icon">⚙️</span>
+                                    <h3>Agen AI Proses</h3>
+                                    <span class="card-status warning">Monitoring</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="process-chart" id="processChart">
+                                        <svg viewBox="0 0 200 80" class="process-svg">
+                                            <rect x="10" y="5" width="180" height="70" rx="5" fill="#1a2332" />
+                                            <path d="M 20 50 L 40 45 L 60 55 L 80 30 L 100 50 L 120 35 L 140 60 L 160 25 L 180 40" 
+                                                  stroke="#FFC107" stroke-width="2" fill="none" />
+                                            <line x1="20" y1="60" x2="180" y2="60" stroke="#E91E63" stroke-width="1" stroke-dasharray="4" />
+                                            <text x="20" y="72" fill="#888" font-size="7">Suhu: 72°C</text>
+                                            <text x="120" y="72" fill="#888" font-size="7">Getaran: 0.4mm</text>
+                                        </svg>
+                                    </div>
+                                    <div class="process-metrics">
+                                        <span>✅ Sistem Stabil</span>
+                                        <span>⚠️ Prediksi: 15 menit</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Agen Pasar -->
+                            <div class="dashboard-card">
+                                <div class="card-header">
+                                    <span class="card-icon">📈</span>
+                                    <h3>Agen AI Pasar</h3>
+                                    <span class="card-status online">Aktif</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="market-data">
+                                        <div class="market-item">
+                                            <span class="market-label">Indonesia</span>
+                                            <span class="market-price">Rp 2.450.000</span>
+                                        </div>
+                                        <div class="market-item">
+                                            <span class="market-label">Malaysia</span>
+                                            <span class="market-price">RM 850</span>
+                                        </div>
+                                        <div class="market-item">
+                                            <span class="market-label">Singapura</span>
+                                            <span class="market-price">S$ 320</span>
+                                        </div>
+                                        <div class="market-item">
+                                            <span class="market-label">Thailand</span>
+                                            <span class="market-price">฿ 8.900</span>
+                                        </div>
+                                    </div>
+                                    <div class="market-recommendation">
+                                        <span class="rec-label">💰 Rekomendasi Harga Ekspor:</span>
+                                        <span class="rec-value">$245 USD</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Agen Pelatih -->
+                            <div class="dashboard-card">
+                                <div class="card-header">
+                                    <span class="card-icon">🧠</span>
+                                    <h3>Agen AI Pelatih</h3>
+                                    <span class="card-status online">Siap</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="trainer-modules">
+                                        <div class="module-item">
+                                            <span>📖 Teori 20 Nada</span>
+                                            <span class="module-progress">80%</span>
+                                        </div>
+                                        <div class="module-item">
+                                            <span>🎯 Kalibrasi Keyboard</span>
+                                            <span class="module-progress">45%</span>
+                                        </div>
+                                        <div class="module-item">
+                                            <span>🎵 Harmoni Mikrotonal</span>
+                                            <span class="module-progress">30%</span>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-sm btn-primary" id="startTrainingBtn">Mulai Pelatihan</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- ========================================== -->
+                    <!-- TAB 5: TUTORIAL                          -->
+                    <!-- ========================================== -->
+                    <div class="tab-content" id="tab-tutorial">
+                        <div class="tab-header">
+                            <h2>📚 Tutorial Notasi Angka</h2>
+                            <p>Panduan lengkap notasi angka dan simbol mikrotonal</p>
+                        </div>
+                        <div class="tutorial-container" id="tutorialContainer">
+                            <!-- Konten tutorial akan dimuat dari pages/tutorial_notasi_angka.html -->
+                            <div class="tutorial-loading">Memuat tutorial...</div>
+                        </div>
+                    </div>
+                    
+                    <!-- ========================================== -->
+                    <!-- TAB 6: ABOUT                            -->
+                    <!-- ========================================== -->
+                    <div class="tab-content" id="tab-about">
+                        <div class="tab-header">
+                            <h2>ℹ️ Tentang TriSonic AI Studio</h2>
+                            <p>A 20-Note Microtonal Ecosystem Powered by Multi-Agent AI</p>
+                        </div>
+                        <div class="about-container">
+                            <div class="about-card">
+                                <h3>🚀 TriSonic AI Studio</h3>
+                                <p>
+                                    TriSonic AI Studio adalah platform musik mikrotonal berbasis kecerdasan buatan 
+                                    yang menghadirkan 20 nada per oktaf untuk eksplorasi harmoni tanpa batas.
+                                </p>
+                                <p>
+                                    Dikembangkan sebagai bagian dari ekosistem AI industri untuk ASEAN, 
+                                    menggabungkan tiga pilar: Hardware, Software, dan AI.
+                                </p>
+                            </div>
+                            <div class="about-grid">
+                                <div class="about-item">
+                                    <h4>🎵 20 Nada</h4>
+                                    <p>Sistem mikrotonal dengan 20 interval per oktaf, membuka harmoni baru</p>
+                                </div>
+                                <div class="about-item">
+                                    <h4>🤖 Multi-Agent AI</h4>
+                                    <p>Agen Desain, Proses, Pasar, dan Pelatih bekerja terintegrasi</p>
+                                </div>
+                                <div class="about-item">
+                                    <h4>🌏 ASEAN</h4>
+                                    <p>Didesain untuk ekosistem kreatif dan industri di kawasan ASEAN</p>
+                                </div>
+                                <div class="about-item">
+                                    <h4>📝 Open Source</h4>
+                                    <p>Kode terbuka untuk pengembangan dan kolaborasi komunitas</p>
+                                </div>
+                            </div>
+                            <div class="about-credits">
+                                <p><strong>Versi:</strong> 2.0.0</p>
+                                <p><strong>Lisensi:</strong> MIT</p>
+                                <p><strong>© 2026 TriSonic AI Studio</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </section>
+            </div>
+        </main>
+        
+        <!-- ============================================ -->
+        <!-- FOOTER                                      -->
+        <!-- ============================================ -->
+        <footer class="app-footer">
+            <p>&copy; 2026 TriSonic AI Studio · A 20-Note Microtonal Ecosystem</p>
+        </footer>
+    </div>
+    
+    <!-- ============================================ -->
+    <!-- MODAL / OVERLAY                             -->
+    <!-- ============================================ -->
+    <div class="modal-overlay" id="modalOverlay" style="display:none;">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <div class="modal-body" id="modalBody">
+                <!-- Konten modal dimuat dinamis -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- ============================================ -->
+    <!-- JAVASCRIPT                                  -->
+    <!-- ============================================ -->
+    <script src="js/data/frequencies.js"></script>
+    <script src="js/data/notes.js"></script>
+    <script src="js/audio/engine.js"></script>
+    <script src="js/audio/keyboard.js"></script>
+    <script src="js/features/aiComposer.js"></script>
+    <script src="js/features/aiTranscriber.js"></script>
+    <script src="js/features/chordProgression.js"></script>
+    <script src="js/features/partiturEditor.js"></script>
+    <script src="js/ui/tutorial.js"></script>
+    <script src="js/ui/dashboard.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
