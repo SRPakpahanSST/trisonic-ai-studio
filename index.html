@@ -18,12 +18,279 @@
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+    
+    <style>
+        /* ============================================================
+           PERBAIKAN LANDING PAGE - LANGSUNG DI SINI
+           ============================================================ */
+        #landing-page {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            background: #0a0e17 !important;
+            background-image: 
+                radial-gradient(ellipse at 10% 20%, rgba(33, 150, 243, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 90% 80%, rgba(233, 30, 99, 0.06) 0%, transparent 50%) !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            z-index: 999999 !important;
+            padding: 2rem !important;
+            transition: opacity 0.8s ease, transform 0.8s ease !important;
+            pointer-events: auto !important;
+        }
+        
+        #landing-page.hidden {
+            opacity: 0 !important;
+            transform: scale(1.05) !important;
+            pointer-events: none !important;
+        }
+        
+        #landing-page .landing-content {
+            text-align: center !important;
+            max-width: 500px !important;
+            width: 100% !important;
+            animation: landingFadeIn 1s ease-out !important;
+            pointer-events: auto !important;
+        }
+        
+        @keyframes landingFadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        #landing-page .landing-image {
+            margin-bottom: 2rem !important;
+        }
+        
+        #landing-page .landing-logo {
+            width: 140px !important;
+            height: 140px !important;
+            object-fit: cover !important;
+            border-radius: 50% !important;
+            box-shadow: 0 0 60px rgba(33, 150, 243, 0.15) !important;
+            animation: logoPulse 3s ease-in-out infinite !important;
+        }
+        
+        @keyframes logoPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        #landing-page .landing-title {
+            font-size: 2.8rem !important;
+            font-weight: 800 !important;
+            background: linear-gradient(135deg, #0F3460, #2196F3) !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            background-clip: text !important;
+            margin-bottom: 0.5rem !important;
+            letter-spacing: -0.5px !important;
+        }
+        
+        #landing-page .landing-subtitle {
+            font-size: 1.2rem !important;
+            color: #8899aa !important;
+            font-weight: 400 !important;
+            margin-bottom: 0.25rem !important;
+        }
+        
+        #landing-page .landing-description {
+            font-size: 0.95rem !important;
+            color: #556677 !important;
+            margin-bottom: 2.5rem !important;
+            line-height: 1.5 !important;
+            max-width: 400px !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+        
+        /* ============================================================
+           TOMBOL MULAI - PASTI BISA DIKLIK
+           ============================================================ */
+        #btnMulai {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 10px !important;
+            padding: 0.9rem 3rem !important;
+            font-size: 1.2rem !important;
+            font-weight: 700 !important;
+            font-family: 'Inter', sans-serif !important;
+            background: linear-gradient(135deg, #0F3460, #2196F3) !important;
+            color: white !important;
+            border: none !important;
+            border-radius: 50px !important;
+            cursor: pointer !important;
+            transition: all 0.3s ease !important;
+            box-shadow: 0 4px 30px rgba(33, 150, 243, 0.35) !important;
+            position: relative !important;
+            z-index: 9999999 !important;
+            pointer-events: auto !important;
+            user-select: none !important;
+            touch-action: manipulation !important;
+        }
+        
+        #btnMulai::after {
+            content: '' !important;
+            position: absolute !important;
+            top: -50% !important;
+            left: -50% !important;
+            width: 200% !important;
+            height: 200% !important;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 60%) !important;
+            opacity: 0 !important;
+            transition: opacity 0.4s ease !important;
+            pointer-events: none !important;
+        }
+        
+        #btnMulai:hover {
+            transform: translateY(-3px) !important;
+            box-shadow: 0 8px 40px rgba(33, 150, 243, 0.5) !important;
+        }
+        
+        #btnMulai:hover::after {
+            opacity: 1 !important;
+        }
+        
+        #btnMulai:active {
+            transform: scale(0.96) !important;
+        }
+        
+        #landing-page .landing-version {
+            margin-top: 2rem !important;
+            font-size: 0.75rem !important;
+            color: #556677 !important;
+            letter-spacing: 1px !important;
+        }
+        
+        /* ============================================================
+           SPLASH SCREEN
+           ============================================================ */
+        #splash-screen {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            background: #0a0e17 !important;
+            z-index: 999998 !important;
+            display: none !important;
+            align-items: center !important;
+            justify-content: center !important;
+            flex-direction: column !important;
+        }
+        
+        #splash-screen.show {
+            display: flex !important;
+        }
+        
+        #splash-screen .splash-content {
+            text-align: center !important;
+            padding: 2rem !important;
+        }
+        
+        #splash-screen .splash-logo {
+            width: 120px !important;
+            height: 120px !important;
+            margin: 0 auto 1.5rem !important;
+            display: block !important;
+        }
+        
+        #splash-screen .splash-title {
+            font-size: 2.5rem !important;
+            font-weight: 800 !important;
+            background: linear-gradient(135deg, #0F3460, #2196F3) !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            background-clip: text !important;
+            margin-bottom: 0.25rem !important;
+        }
+        
+        #splash-screen .splash-tagline {
+            color: #8899aa !important;
+            font-size: 1.1rem !important;
+        }
+        
+        #splash-screen .splash-sub {
+            color: #556677 !important;
+            font-size: 0.85rem !important;
+        }
+        
+        #splash-screen .splash-loader {
+            width: 200px !important;
+            height: 4px !important;
+            background: #1a2332 !important;
+            border-radius: 4px !important;
+            margin: 1.5rem auto 0.5rem !important;
+            overflow: hidden !important;
+        }
+        
+        #splash-screen .loader-bar {
+            height: 100% !important;
+            width: 0% !important;
+            background: linear-gradient(90deg, #0F3460, #2196F3) !important;
+            border-radius: 4px !important;
+            transition: width 0.15s linear !important;
+        }
+        
+        #splash-screen .splash-version {
+            color: #556677 !important;
+            font-size: 0.75rem !important;
+            margin-top: 0.5rem !important;
+        }
+        
+        /* ============================================================
+           APP
+           ============================================================ */
+        #app {
+            display: none !important;
+            flex-direction: column !important;
+            min-height: 100vh !important;
+        }
+        
+        #app.show {
+            display: flex !important;
+        }
+        
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media (max-width: 480px) {
+            #landing-page .landing-title {
+                font-size: 2rem !important;
+            }
+            #landing-page .landing-subtitle {
+                font-size: 1rem !important;
+            }
+            #landing-page .landing-description {
+                font-size: 0.85rem !important;
+                padding: 0 1rem !important;
+            }
+            #landing-page .landing-logo {
+                width: 100px !important;
+                height: 100px !important;
+            }
+            #btnMulai {
+                padding: 0.7rem 2rem !important;
+                font-size: 1rem !important;
+            }
+            #splash-screen .splash-title {
+                font-size: 1.8rem !important;
+            }
+            #splash-screen .splash-logo {
+                width: 80px !important;
+                height: 80px !important;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- ============================================ -->
     <!-- LANDING PAGE                                 -->
     <!-- ============================================ -->
-    <div id="landing-page" class="landing-page">
+    <div id="landing-page">
         <div class="landing-content">
             <div class="landing-image">
                 <img src="assets/images/landing-logo.jpg" 
@@ -36,7 +303,7 @@
             <p class="landing-description">
                 A 20-Note Microtonal Ecosystem Powered by Multi-Agent AI for Musicians
             </p>
-            <button id="btnMulai" class="landing-btn">🚀 Mulai</button>
+            <button id="btnMulai">🚀 Mulai</button>
             <p class="landing-version">v2.0.0</p>
         </div>
     </div>
@@ -44,9 +311,9 @@
     <!-- ============================================ -->
     <!-- SPLASH SCREEN                               -->
     <!-- ============================================ -->
-    <div id="splash-screen" class="splash-screen">
+    <div id="splash-screen">
         <div class="splash-content">
-            <svg class="splash-logo" viewBox="0 0 200 200" width="120" height="120">
+            <svg class="splash-logo" viewBox="0 0 200 200">
                 <defs>
                     <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" style="stop-color:#0F3460" />
@@ -169,9 +436,11 @@
                                 <div class="control-group">
                                     <label>Oktaf</label>
                                     <select id="octaveSelect">
+                                        <option value="2">Oktaf 2</option>
                                         <option value="3">Oktaf 3</option>
                                         <option value="4" selected>Oktaf 4</option>
                                         <option value="5">Oktaf 5</option>
+                                        <option value="6">Oktaf 6</option>
                                     </select>
                                 </div>
                             </div>
@@ -474,6 +743,113 @@
     <!-- ============================================ -->
     <!-- JAVASCRIPT                                  -->
     <!-- ============================================ -->
+    <script>
+        // ============================================================
+        // APP.JS - VERSI SEDERHANA UNTUK TESTING
+        // ============================================================
+        (function() {
+            'use strict';
+            
+            console.log('📄 TriSonic AI Studio dimulai...');
+            
+            // ---------- DOM ----------
+            const landingPage = document.getElementById('landing-page');
+            const splashScreen = document.getElementById('splash-screen');
+            const appContainer = document.getElementById('app');
+            const btnMulai = document.getElementById('btnMulai');
+            const loaderBar = document.getElementById('loaderBar');
+            
+            // ---------- Fungsi ----------
+            function showSplash() {
+                console.log('🟡 Menampilkan splash screen...');
+                if (landingPage) {
+                    landingPage.classList.add('hidden');
+                }
+                if (splashScreen) {
+                    splashScreen.classList.add('show');
+                }
+                
+                if (loaderBar) {
+                    loaderBar.style.width = '0%';
+                    let progress = 0;
+                    const interval = setInterval(() => {
+                        progress += Math.random() * 8 + 2;
+                        if (progress >= 100) {
+                            progress = 100;
+                            clearInterval(interval);
+                            loaderBar.style.width = '100%';
+                            setTimeout(() => {
+                                hideSplashAndShowApp();
+                            }, 500);
+                        }
+                        loaderBar.style.width = progress + '%';
+                    }, 120);
+                } else {
+                    setTimeout(hideSplashAndShowApp, 2500);
+                }
+            }
+            
+            function hideSplashAndShowApp() {
+                console.log('🟢 Menampilkan aplikasi...');
+                if (splashScreen) {
+                    splashScreen.classList.remove('show');
+                    splashScreen.style.display = 'none';
+                }
+                if (appContainer) {
+                    appContainer.classList.add('show');
+                    appContainer.style.display = 'flex';
+                }
+                console.log('✅ Aplikasi siap!');
+                
+                // Panggil init jika ada
+                if (typeof initApp === 'function') {
+                    initApp();
+                }
+            }
+            
+            // ---------- Event Tombol ----------
+            if (btnMulai) {
+                console.log('🔵 Tombol Mulai ditemukan');
+                
+                // Hapus semua event listener lama
+                const newBtn = btnMulai.cloneNode(true);
+                btnMulai.parentNode.replaceChild(newBtn, btnMulai);
+                
+                // Pasang event listener baru
+                newBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('🟢 Tombol Mulai DIKLIK!');
+                    showSplash();
+                });
+                
+                // Tambahkan juga event touch untuk mobile
+                newBtn.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                    console.log('🟢 Tombol Mulai DIKLIK (touch)!');
+                    showSplash();
+                }, { passive: false });
+                
+                console.log('✅ Event listener tombol Mulai terpasang!');
+            } else {
+                console.error('❌ Tombol Mulai TIDAK DITEMUKAN!');
+            }
+            
+            // ---------- Fallback ----------
+            setTimeout(function() {
+                const btn = document.getElementById('btnMulai');
+                if (btn) {
+                    btn.addEventListener('click', function(e) {
+                        console.log('🟢 Tombol Mulai DIKLIK (fallback)!');
+                        showSplash();
+                    });
+                }
+            }, 1000);
+            
+        })();
+    </script>
+    
+    <!-- Load file JS external -->
     <script src="js/data/notes.js"></script>
     <script src="js/data/frequencies.js"></script>
     <script src="js/audio/engine.js"></script>
