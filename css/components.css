@@ -1,1 +1,496 @@
-cc
+/* ============================================================
+   components.css - Tombol, Dropdown, Modal, Tab
+   TriSonic AI Studio
+   ============================================================ */
+
+/* ---------- Buttons ---------- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 0.5rem 1.2rem;
+    border: none;
+    border-radius: var(--border-radius-sm);
+    font-family: var(--font-family);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    text-decoration: none;
+    line-height: 1.4;
+}
+
+.btn:active {
+    transform: scale(0.97);
+}
+
+.btn-primary {
+    background: var(--gradient-blue);
+    color: white;
+    box-shadow: 0 2px 12px rgba(33,150,243,0.3);
+}
+.btn-primary:hover {
+    box-shadow: 0 4px 20px rgba(33,150,243,0.5);
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background: var(--bg-card-hover);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+.btn-secondary:hover {
+    background: var(--color-primary-light);
+    border-color: var(--color-secondary);
+}
+
+.btn-success {
+    background: var(--gradient-green);
+    color: white;
+}
+.btn-success:hover {
+    box-shadow: 0 4px 20px rgba(76,175,80,0.4);
+}
+
+.btn-danger {
+    background: var(--gradient-magenta);
+    color: white;
+}
+.btn-danger:hover {
+    box-shadow: 0 4px 20px rgba(233,30,99,0.4);
+}
+
+.btn-sm {
+    padding: 0.25rem 0.8rem;
+    font-size: 0.8rem;
+}
+.btn-lg {
+    padding: 0.75rem 2rem;
+    font-size: 1.1rem;
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+/* ---------- Form Elements ---------- */
+input[type="text"],
+input[type="number"],
+input[type="file"],
+select,
+textarea {
+    background: var(--bg-input);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    color: var(--text-primary);
+    padding: 0.5rem 0.75rem;
+    font-family: var(--font-family);
+    font-size: 0.9rem;
+    transition: var(--transition-fast);
+    width: 100%;
+    max-width: 100%;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--color-secondary);
+    box-shadow: 0 0 0 3px rgba(33,150,243,0.15);
+}
+
+select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%238899aa' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 32px;
+}
+
+label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+
+/* ---------- Cards ---------- */
+.card {
+    background: var(--bg-card);
+    border-radius: var(--border-radius);
+    padding: 1.25rem;
+    border: 1px solid var(--border-color);
+    transition: var(--transition-medium);
+}
+
+.card:hover {
+    border-color: var(--border-light);
+    box-shadow: var(--shadow-card);
+}
+
+.card-title {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+/* ---------- Dashboard Cards ---------- */
+.dashboard-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.25rem;
+}
+
+.dashboard-card {
+    background: var(--bg-card);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    transition: var(--transition-medium);
+}
+
+.dashboard-card:hover {
+    border-color: var(--border-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 1rem 1.25rem;
+    background: var(--bg-sidebar);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.card-header .card-icon {
+    font-size: 1.4rem;
+}
+.card-header h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    flex: 1;
+}
+.card-header .card-status {
+    font-size: 0.65rem;
+    padding: 0.1rem 0.6rem;
+    border-radius: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.card-status.online {
+    background: rgba(76,175,80,0.2);
+    color: #4CAF50;
+}
+.card-status.warning {
+    background: rgba(255,193,7,0.2);
+    color: #FFC107;
+}
+.card-status.offline {
+    background: rgba(244,67,54,0.2);
+    color: #F44336;
+}
+
+.card-body {
+    padding: 1.25rem;
+}
+
+/* ---------- Keyboard Controls ---------- */
+.keyboard-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    margin-top: 1rem;
+    padding: 1rem;
+    background: var(--bg-card);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+}
+
+.control-group {
+    flex: 1;
+    min-width: 120px;
+}
+
+.control-group input[type="range"] {
+    width: 100%;
+    accent-color: var(--color-secondary);
+    background: transparent;
+    cursor: pointer;
+}
+
+.control-group select {
+    width: 100%;
+}
+
+/* ---------- Partitur Toolbar ---------- */
+.partitur-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 0.75rem 1rem;
+    background: var(--bg-toolbar);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    margin-bottom: 1rem;
+}
+
+.partitur-toolbar .btn {
+    font-size: 0.8rem;
+    padding: 0.35rem 0.8rem;
+}
+
+/* ---------- Notation Controls ---------- */
+.notation-controls {
+    margin-top: 0.75rem;
+}
+
+.note-input-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.note-btn {
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    background: var(--bg-input);
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.note-btn:hover {
+    background: var(--color-primary);
+    border-color: var(--color-secondary);
+}
+.note-btn:active {
+    transform: scale(0.92);
+}
+
+/* ---------- Composer Controls ---------- */
+.composer-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: flex-end;
+    padding: 1rem;
+    background: var(--bg-card);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    margin-bottom: 1rem;
+}
+
+.composer-controls .control-group {
+    flex: 0 1 auto;
+    min-width: 100px;
+}
+
+.composition-display {
+    padding: 1rem;
+    background: var(--bg-card);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    min-height: 120px;
+}
+
+.composition-notes {
+    font-family: var(--font-mono);
+    font-size: 1.1rem;
+    padding: 0.5rem;
+    background: var(--bg-input);
+    border-radius: var(--border-radius-sm);
+    min-height: 60px;
+    word-wrap: break-word;
+    line-height: 1.8;
+}
+
+.composition-notes .placeholder {
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.composition-stats {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 0.75rem;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+/* ---------- Partitur Editor ---------- */
+.partitur-editor {
+    background: var(--bg-card);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.partitur-header-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.partitur-header-info input {
+    flex: 1;
+    min-width: 120px;
+}
+
+.partitur-notation {
+    padding: 0.5rem;
+    background: var(--bg-input);
+    border-radius: var(--border-radius-sm);
+    border: 1px solid var(--border-color);
+}
+
+.notation-line {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    min-height: 40px;
+}
+
+.notation-clef {
+    font-size: 1.8rem;
+    color: var(--text-secondary);
+}
+
+.notation-notes {
+    font-family: var(--font-mono);
+    font-size: 1.4rem;
+    letter-spacing: 0.1em;
+    word-break: break-all;
+}
+
+.partitur-preview {
+    background: var(--bg-card);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    padding: 1rem;
+}
+
+.preview-content {
+    padding: 0.5rem;
+    background: var(--bg-input);
+    border-radius: var(--border-radius-sm);
+    min-height: 40px;
+    font-family: var(--font-mono);
+    font-size: 1.2rem;
+}
+
+.preview-content .placeholder {
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+/* ---------- Tutorial ---------- */
+.tutorial-container {
+    background: var(--bg-card);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    padding: 1.5rem;
+}
+
+.tutorial-container h3 {
+    color: var(--color-secondary);
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+.tutorial-container h3:first-child {
+    margin-top: 0;
+}
+.tutorial-container p {
+    color: var(--text-secondary);
+    margin-bottom: 0.75rem;
+}
+.tutorial-container ul, .tutorial-container ol {
+    padding-left: 1.5rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.75rem;
+}
+.tutorial-container li {
+    margin-bottom: 0.25rem;
+}
+.tutorial-container .tutorial-note {
+    background: var(--bg-sidebar);
+    padding: 0.75rem 1rem;
+    border-radius: var(--border-radius-sm);
+    border-left: 3px solid var(--color-secondary);
+    margin: 0.75rem 0;
+}
+.tutorial-container code {
+    background: var(--bg-input);
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.85em;
+    color: var(--color-accent-amber);
+}
+
+/* ---------- About ---------- */
+.about-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.about-card {
+    background: var(--bg-card);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+.about-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+.about-card p {
+    color: var(--text-secondary);
+    line-height: 1.7;
+}
+
+.about-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.about-item {
+    background: var(--bg-card);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    padding: 1rem;
+    text-align: center;
+}
+.about-item h4 {
+    font-size: 1rem;
+    color: var(--color-secondary);
+    margin-bottom: 0.25rem;
+}
+.about-item p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.about-credits {
+    text-align: center;
+    padding: 1rem;
+    background: var(--bg-card);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
