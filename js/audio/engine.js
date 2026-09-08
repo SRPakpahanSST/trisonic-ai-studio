@@ -1,5 +1,5 @@
 // ============================================================
-// engine.js - AudioContext, Oscillators, Reverb, Delay
+// engine.js - Audio Engine (Web Audio API)
 // TriSonic AI Studio
 // ============================================================
 
@@ -8,24 +8,19 @@ class AudioEngine {
         this.audioContext = null;
         this.masterGain = null;
         this.reverbNode = null;
+        this.reverbGain = null;
         this.delayNode = null;
-        this.oscillator = null;
-        this.gainNode = null;
-        this.isPlaying = false;
-        this.activeNotes = new Map(); // key: noteName, value: { osc, gain }
-        
-        // Default settings
+        this.delayGain = null;
+        this.activeOscillators = [];
         this.settings = {
             volume: 0.7,
             reverb: 0.3,
-            delay: 0.2,
             waveform: 'sine',
-            masterVolume: 0.8,
+            masterVolume: 0.8
         };
-        
         this.initialized = false;
     }
-    
+
     /**
      * Inisialisasi Audio Context
      */
@@ -37,35 +32,31 @@ class AudioEngine {
             
             // Master Gain
             this.masterGain = this.audioContext.createGain();
-            this.masterGain.gain.value = this.settings.masterVolume;
+            this.masterGain.gain.value = this.settings.masterVolume * this.settings.volume;
             this.masterGain.connect(this.audioContext.destination);
             
-            // Reverb (sederhana menggunakan Convolver atau Gain + Delay)
+            // Reverb (sederhana dengan Gain)
             this.reverbNode = this.audioContext.createGain();
-            this.reverbNode.gain.value = this.settings.reverb;
+            this.reverbGain = this.audioContext.createGain();
+            this.reverbGain.gain.value = this.settings.reverb * 0.3;
+            this.reverbNode.connect(this.reverbGain);
+            this.reverbGain.connect(this.masterGain);
             
-            // Delay
-            this.delayNode = this.audioContext.createDelay(2);
+            // Delay sederhana
+            this.delayNode = this.audioContext.createDelay(1.5);
             this.delayNode.delayTime.value = 0.3;
-            
-            // Feedback delay dengan gain
             const delayFeedback = this.audioContext.createGain();
-            delayFeedback.gain.value = 0.3;
-            
+            delayFeedback.gain.value = 0.2;
             this.delayNode.connect(delayFeedback);
             delayFeedback.connect(this.delayNode);
             
-            // Hubungkan reverb ke master
-            this.reverbNode.connect(this.masterGain);
-            this.delayNode.connect(this.masterGain);
-            
             this.initialized = true;
-            console.log('Audio Engine initialized');
+            console.log('✅ Audio Engine initialized');
         } catch (error) {
-            console.error('Failed to initialize AudioContext:', error);
+            console.error('❌ Failed to initialize AudioContext:', error);
         }
     }
-    
+
     /**
      * Resume AudioContext (dipanggil saat interaksi user)
      */
@@ -74,16 +65,18 @@ class AudioEngine {
             this.audioContext.resume();
         }
     }
-    
+
     /**
      * Memainkan nada
-     * @param {string} noteName - Nama nada (contoh: "C4")
+     * @param {string} noteName - Nama nada (contoh: "A4")
      * @param {number} frequency - Frekuensi dalam Hz
      * @param {number} duration - Durasi dalam detik (opsional)
+     * @param {string} waveform - Tipe waveform (opsional)
+     * @returns {Object} { osc, gain }
      */
-    playNote(noteName, frequency, duration = null) {
+    playNote(noteName, frequency, duration = null, waveform = null) {
         if (!this.initialized) this.init();
-        if (!this.audioContext) return;
+        if (!this.audioContext) return null;
         
         this.resume();
         
@@ -93,74 +86,80 @@ class AudioEngine {
         const osc = this.audioContext.createOscillator();
         const gain = this.audioContext.createGain();
         
-        osc.type = this.settings.waveform;
+        osc.type = waveform || this.settings.waveform;
         osc.frequency.value = frequency;
         
-        // Envelope
         const now = this.audioContext.currentTime;
+        
+        // Envelope ADSR
+        const attack = 0.01;
+        const decay = 0.1;
+        const sustain = 0.3;
+        const release = 0.05;
+        const volume = this.settings.volume * 0.7;
+        
         gain.gain.setValueAtTime(0, now);
-        gain.gain.linearRampToValueAtTime(this.settings.volume * 0.8, now + 0.01);
-        gain.gain.setValueAtTime(this.settings.volume * 0.8, now + 0.1);
+        gain.gain.linearRampToValueAtTime(volume, now + attack);
+        gain.gain.exponentialRampToValueAtTime(volume * sustain, now + attack + decay);
         
         // Hubungkan
         osc.connect(gain);
         gain.connect(this.masterGain);
-        // Juga sambungkan ke reverb dan delay
         gain.connect(this.reverbNode);
         gain.connect(this.delayNode);
         
         osc.start(now);
         
         if (duration) {
-            // Release
-            const releaseTime = now + duration - 0.05;
-            gain.gain.setValueAtTime(this.settings.volume * 0.8, releaseTime);
-            gain.gain.linearRampToValueAtTime(0, releaseTime + 0.05);
-            osc.stop(releaseTime + 0.05);
+            const releaseTime = now + duration - release;
+            gain.gain.setValueAtTime(volume * sustain, releaseTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, releaseTime + release);
+            osc.stop(releaseTime + release);
         }
         
         // Simpan referensi
-        this.activeNotes.set(noteName, { osc, gain });
-        this.isPlaying = true;
+        this.activeOscillators.push({ osc, gain, noteName });
+        
+        // Cleanup setelah selesai
+        osc.onended = () => {
+            this.activeOscillators = this.activeOscillators.filter(
+                item => item.osc !== osc
+            );
+        };
         
         return { osc, gain };
     }
-    
+
     /**
      * Menghentikan nada
      * @param {string} noteName - Nama nada
      */
     stopNote(noteName) {
-        const note = this.activeNotes.get(noteName);
-        if (note) {
-            try {
-                const now = this.audioContext.currentTime;
-                note.gain.gain.setValueAtTime(note.gain.gain.value, now);
-                note.gain.gain.linearRampToValueAtTime(0, now + 0.05);
-                note.osc.stop(now + 0.05);
-            } catch (e) {
-                // Ignore
+        this.activeOscillators = this.activeOscillators.filter(item => {
+            if (item.noteName === noteName) {
+                try {
+                    item.osc.stop();
+                } catch (e) {}
+                return false;
             }
-            this.activeNotes.delete(noteName);
-        }
-        
-        if (this.activeNotes.size === 0) {
-            this.isPlaying = false;
-        }
+            return true;
+        });
     }
-    
+
     /**
      * Menghentikan semua nada
      */
     stopAll() {
-        for (const [noteName] of this.activeNotes) {
-            this.stopNote(noteName);
-        }
-        this.isPlaying = false;
+        this.activeOscillators.forEach(item => {
+            try {
+                item.osc.stop();
+            } catch (e) {}
+        });
+        this.activeOscillators = [];
     }
-    
+
     /**
-     * Memainkan komposisi (sequence)
+     * Memainkan sequence (komposisi)
      * @param {Array} sequence - Array dari { note, frequency, duration }
      * @param {Function} onComplete - Callback setelah selesai
      */
@@ -178,22 +177,20 @@ class AudioEngine {
             }
             
             const item = sequence[currentIndex];
-            const { note, frequency, duration } = item;
-            
-            if (frequency > 0) {
-                this.playNote(note, frequency, duration);
+            if (item.frequency > 0) {
+                this.playNote(item.note, item.frequency, item.duration);
             }
             
             currentIndex++;
-            const nextDelay = duration || 0.3;
-            setTimeout(playNext, nextDelay * 1000 + 50); // +50ms untuk gap
+            const nextDelay = (item.duration || 0.3) * 1000 + 50;
+            setTimeout(playNext, nextDelay);
         };
         
         playNext();
     }
-    
+
     /**
-     * Set volume master
+     * Set volume
      * @param {number} value - 0-1
      */
     setVolume(value) {
@@ -202,18 +199,18 @@ class AudioEngine {
             this.masterGain.gain.value = this.settings.masterVolume * this.settings.volume;
         }
     }
-    
+
     /**
      * Set reverb
      * @param {number} value - 0-1
      */
     setReverb(value) {
         this.settings.reverb = Math.max(0, Math.min(1, value));
-        if (this.reverbNode) {
-            this.reverbNode.gain.value = this.settings.reverb * 0.5;
+        if (this.reverbGain) {
+            this.reverbGain.gain.value = this.settings.reverb * 0.3;
         }
     }
-    
+
     /**
      * Set waveform
      * @param {string} type - 'sine', 'square', 'sawtooth', 'triangle'
@@ -221,25 +218,26 @@ class AudioEngine {
     setWaveform(type) {
         this.settings.waveform = type;
     }
-    
+
     /**
-     * Get state
+     * Mendapatkan state
      */
     getState() {
         return {
-            isPlaying: this.isPlaying,
-            activeNotes: this.activeNotes.size,
+            isPlaying: this.activeOscillators.length > 0,
+            activeNotes: this.activeOscillators.length,
             waveform: this.settings.waveform,
             volume: this.settings.volume,
-            reverb: this.settings.reverb,
+            reverb: this.settings.reverb
         };
     }
 }
 
-// Singleton
+// Singleton instance
 const audioEngine = new AudioEngine();
 
-// Export
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = audioEngine;
+// Export untuk browser
+if (typeof window !== 'undefined') {
+    window.audioEngine = audioEngine;
+    window.AudioEngine = AudioEngine;
 }
