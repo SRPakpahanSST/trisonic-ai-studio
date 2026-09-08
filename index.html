@@ -17,52 +17,224 @@
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+    
+    <!-- TAMBAHKAN: CSS untuk Landing Page jika belum ada di main.css -->
+    <style>
+        /* ============================================================
+           LANDING PAGE - Halaman Awal (Fallback jika belum di main.css)
+           ============================================================ */
+        .landing-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0e17;
+            background-image: 
+                radial-gradient(ellipse at 10% 20%, rgba(33, 150, 243, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 90% 80%, rgba(233, 30, 99, 0.06) 0%, transparent 50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            padding: 2rem;
+        }
+        
+        .landing-page.hidden {
+            opacity: 0;
+            transform: scale(1.05);
+            pointer-events: none;
+        }
+        
+        .landing-content {
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            animation: landingFadeIn 1s ease-out;
+        }
+        
+        @keyframes landingFadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .landing-image {
+            margin-bottom: 2rem;
+        }
+        
+        .landing-logo {
+            width: 140px;
+            height: 140px;
+            object-fit: contain;
+            border-radius: 50%;
+            box-shadow: 0 0 60px rgba(33, 150, 243, 0.15);
+            animation: logoPulse 3s ease-in-out infinite;
+        }
+        
+        /* Jika gambar tidak ditemukan, gunakan SVG sebagai fallback */
+        .landing-logo-fallback {
+            width: 140px;
+            height: 140px;
+            animation: logoPulse 3s ease-in-out infinite;
+        }
+        
+        @keyframes logoPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .landing-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #0F3460, #2196F3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
+        }
+        
+        .landing-subtitle {
+            font-size: 1.2rem;
+            color: #8899aa;
+            font-weight: 400;
+            margin-bottom: 0.25rem;
+        }
+        
+        .landing-description {
+            font-size: 0.95rem;
+            color: #556677;
+            margin-bottom: 2.5rem;
+            line-height: 1.5;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .landing-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0.9rem 3rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0F3460, #2196F3);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 30px rgba(33, 150, 243, 0.35);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .landing-btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        
+        .landing-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 40px rgba(33, 150, 243, 0.5);
+        }
+        
+        .landing-btn:hover::after {
+            opacity: 1;
+        }
+        
+        .landing-btn:active {
+            transform: scale(0.96);
+        }
+        
+        .landing-version {
+            margin-top: 2rem;
+            font-size: 0.75rem;
+            color: #556677;
+            letter-spacing: 1px;
+        }
+        
+        @media (max-width: 480px) {
+            .landing-title { font-size: 2rem; }
+            .landing-subtitle { font-size: 1rem; }
+            .landing-description { font-size: 0.85rem; padding: 0 1rem; }
+            .landing-logo { width: 100px; height: 100px; }
+            .landing-btn { padding: 0.7rem 2rem; font-size: 1rem; }
+        }
+    </style>
 </head>
 <body>
     <!-- ============================================ -->
-<!-- LANDING PAGE (HALAMAN AWAL)                  -->
-<!-- ============================================ -->
-<div id="landing-page" class="landing-page">
-    <div class="landing-content">
-        <!-- Logo / Gambar -->
-        <div class="landing-image">
-            <!-- Ganti src dengan file gambar Anda -->
-            <img src="assets/images/landing-logo.jpg" 
-                 alt="TriSonic AI Studio" 
-                 class="landing-logo" />
-            <!-- Atau gunakan SVG jika gambar belum tersedia -->
-            <!--
-            <svg class="landing-logo-svg" viewBox="0 0 200 200">
-                ... (salin kode logo SVG dari splash) ...
-            </svg>
-            -->
+    <!-- LANDING PAGE (HALAMAN AWAL)                  -->
+    <!-- ============================================ -->
+    <div id="landing-page" class="landing-page">
+        <div class="landing-content">
+            <!-- Logo / Gambar - Gunakan SVG jika gambar tidak tersedia -->
+            <div class="landing-image">
+                <!-- Coba load gambar, jika gagal gunakan SVG -->
+                <img src="assets/images/landing-logo.png" 
+                     alt="TriSonic AI Studio" 
+                     class="landing-logo"
+                     onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';" />
+                
+                <!-- Fallback SVG jika gambar tidak ditemukan -->
+                <svg id="logoFallback" class="landing-logo-fallback" viewBox="0 0 200 200" style="display:none;">
+                    <defs>
+                        <linearGradient id="blueGradLand" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#0F3460" />
+                            <stop offset="100%" style="stop-color:#2196F3" />
+                        </linearGradient>
+                        <linearGradient id="greenGradLand" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#2E7D32" />
+                            <stop offset="100%" style="stop-color:#4CAF50" />
+                        </linearGradient>
+                        <linearGradient id="magentaGradLand" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#C2185B" />
+                            <stop offset="100%" style="stop-color:#E91E63" />
+                        </linearGradient>
+                    </defs>
+                    <path d="M 120 60 C 160 60, 180 90, 150 130 C 120 170, 60 160, 30 120 C 10 90, 30 50, 60 40" 
+                          fill="none" stroke="#0F3460" stroke-width="12" stroke-linecap="round" />
+                    <polygon points="50,60 90,140 10,140" fill="url(#blueGradLand)" />
+                    <rect x="80" y="70" width="70" height="70" rx="15" fill="url(#greenGradLand)" />
+                    <circle cx="145" cy="135" r="40" fill="url(#magentaGradLand)" />
+                </svg>
+            </div>
+            
+            <!-- Judul -->
+            <h1 class="landing-title">TriSonic AI Studio</h1>
+            
+            <!-- Sub-judul -->
+            <p class="landing-subtitle">
+                Eksplorasi Harmoni Tanpa Batas
+            </p>
+            <p class="landing-description">
+                A 20-Note Microtonal Ecosystem Powered by Multi-Agent AI for Musicians
+            </p>
+            
+            <!-- Tombol Mulai -->
+            <button id="btnMulai" class="landing-btn">
+                🚀 Mulai
+            </button>
+            
+            <!-- Informasi tambahan -->
+            <p class="landing-version">v2.0.0</p>
         </div>
-        
-        <!-- Judul -->
-        <h1 class="landing-title">TriSonic AI Studio</h1>
-        
-        <!-- Sub-judul -->
-        <p class="landing-subtitle">
-            Eksplorasi Harmoni Tanpa Batas
-        </p>
-        <p class="landing-description">
-            A 20-Note Microtonal Ecosystem Powered by Multi-Agent AI for Musicians
-        </p>
-        
-        <!-- Tombol Mulai -->
-        <button id="btnMulai" class="landing-btn">
-            🚀 Mulai
-        </button>
-        
-        <!-- Informasi tambahan (opsional) -->
-        <p class="landing-version">v1.0.0</p>
     </div>
-</div>
 
     <!-- ============================================ -->
     <!-- SPLASH SCREEN / WELCOME                       -->
     <!-- ============================================ -->
-    <div id="splash-screen" class="splash-screen">
+    <div id="splash-screen" class="splash-screen" style="display:none;">
         <div class="splash-content">
             <!-- Logo SVG -->
             <svg class="splash-logo" viewBox="0 0 200 200" width="120" height="120">
