@@ -1,1 +1,302 @@
-vv
+/* ============================================================
+   layout.css - Container, Header, Footer, Grid
+   TriSonic AI Studio
+   ============================================================ */
+
+/* ---------- App Layout ---------- */
+.app-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--header-height);
+    padding: 0 1.5rem;
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.content-wrapper {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* ---------- Sidebar ---------- */
+.sidebar {
+    width: var(--sidebar-width);
+    background: var(--bg-sidebar);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    overflow-y: auto;
+    padding: 0.75rem 0;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 0 0.5rem;
+    flex: 1;
+}
+
+.sidebar-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0.6rem 1rem;
+    background: transparent;
+    border: none;
+    border-radius: var(--border-radius-sm);
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-family: var(--font-family);
+    cursor: pointer;
+    transition: var(--transition-fast);
+    width: 100%;
+    text-align: left;
+}
+
+.sidebar-btn:hover {
+    background: var(--bg-card-hover);
+    color: var(--text-primary);
+}
+
+.sidebar-btn.active {
+    background: var(--color-primary);
+    color: white;
+    box-shadow: var(--shadow-glow);
+}
+
+.sidebar-btn .badge {
+    margin-left: auto;
+    background: var(--color-accent-magenta);
+    color: white;
+    font-size: 0.65rem;
+    padding: 0.1rem 0.6rem;
+    border-radius: 10px;
+}
+
+.sidebar-footer {
+    padding: 1rem 1rem 0.5rem;
+    border-top: 1px solid var(--border-color);
+    margin-top: auto;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-align: center;
+}
+
+.sidebar-version {
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+/* ---------- Content Area ---------- */
+.content-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.5rem 2rem 2rem;
+    background: var(--bg-app);
+}
+
+/* ---------- Tab Content ---------- */
+.tab-content {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.tab-header {
+    margin-bottom: 1.5rem;
+}
+.tab-header h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+.tab-header p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+/* ---------- Header Left ---------- */
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-logo {
+    width: 36px;
+    height: 36px;
+}
+
+.app-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    background: var(--gradient-blue);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ---------- Tab Navigation (Top) ---------- */
+.tab-nav {
+    display: flex;
+    gap: 2px;
+    background: var(--bg-sidebar);
+    padding: 4px;
+    border-radius: var(--border-radius-sm);
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.tab-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.tab-btn {
+    padding: 0.4rem 1rem;
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    color: var(--text-secondary);
+    font-family: var(--font-family);
+    font-size: 0.85rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: var(--transition-fast);
+}
+
+.tab-btn:hover {
+    color: var(--text-primary);
+    background: var(--bg-card-hover);
+}
+
+.tab-btn.active {
+    background: var(--color-primary);
+    color: white;
+}
+
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+}
+
+/* ---------- Footer ---------- */
+.app-footer {
+    height: var(--footer-height);
+    padding: 0 1.5rem;
+    background: var(--bg-card);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    flex-shrink: 0;
+}
+
+/* ---------- Responsive Layout ---------- */
+@media (max-width: 1024px) {
+    .content-area {
+        padding: 1rem 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .app-header {
+        padding: 0 0.75rem;
+        flex-wrap: wrap;
+        height: auto;
+        min-height: var(--header-height);
+        gap: 4px;
+    }
+    
+    .header-left {
+        flex: 1;
+    }
+    .app-title {
+        font-size: 0.95rem;
+    }
+    
+    .tab-nav {
+        order: 3;
+        width: 100%;
+        padding: 4px;
+        gap: 2px;
+        background: transparent;
+    }
+    .tab-btn {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.6rem;
+    }
+    
+    .menu-toggle {
+        display: block;
+    }
+    
+    .sidebar {
+        position: fixed;
+        top: var(--header-height);
+        left: -100%;
+        width: 280px;
+        height: calc(100vh - var(--header-height));
+        z-index: 50;
+        transition: left var(--transition-medium);
+        box-shadow: var(--shadow-card);
+    }
+    .sidebar.open {
+        left: 0;
+    }
+    
+    .content-area {
+        padding: 0.75rem 1rem;
+    }
+    .tab-header h2 {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .content-area {
+        padding: 0.5rem 0.75rem;
+    }
+    .tab-header h2 {
+        font-size: 1.1rem;
+    }
+    .tab-btn {
+        font-size: 0.65rem;
+        padding: 0.2rem 0.4rem;
+    }
+    .app-title {
+        font-size: 0.85rem;
+    }
+    .header-logo {
+        width: 28px;
+        height: 28px;
+    }
+}
