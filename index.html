@@ -17,160 +17,6 @@
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
-    
-    <!-- TAMBAHKAN: CSS untuk Landing Page jika belum ada di main.css -->
-    <style>
-        /* ============================================================
-           LANDING PAGE - Halaman Awal (Fallback jika belum di main.css)
-           ============================================================ */
-        .landing-page {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #0a0e17;
-            background-image: 
-                radial-gradient(ellipse at 10% 20%, rgba(33, 150, 243, 0.08) 0%, transparent 50%),
-                radial-gradient(ellipse at 90% 80%, rgba(233, 30, 99, 0.06) 0%, transparent 50%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10000;
-            transition: opacity 0.8s ease, transform 0.8s ease;
-            padding: 2rem;
-        }
-        
-        .landing-page.hidden {
-            opacity: 0;
-            transform: scale(1.05);
-            pointer-events: none;
-        }
-        
-        .landing-content {
-            text-align: center;
-            max-width: 500px;
-            width: 100%;
-            animation: landingFadeIn 1s ease-out;
-        }
-        
-        @keyframes landingFadeIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .landing-image {
-            margin-bottom: 2rem;
-        }
-        
-        .landing-logo {
-            width: 140px;
-            height: 140px;
-            object-fit: contain;
-            border-radius: 50%;
-            box-shadow: 0 0 60px rgba(33, 150, 243, 0.15);
-            animation: logoPulse 3s ease-in-out infinite;
-        }
-        
-        /* Jika gambar tidak ditemukan, gunakan SVG sebagai fallback */
-        .landing-logo-fallback {
-            width: 140px;
-            height: 140px;
-            animation: logoPulse 3s ease-in-out infinite;
-        }
-        
-        @keyframes logoPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-        
-        .landing-title {
-            font-size: 2.8rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #0F3460, #2196F3);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 0.5rem;
-            letter-spacing: -0.5px;
-        }
-        
-        .landing-subtitle {
-            font-size: 1.2rem;
-            color: #8899aa;
-            font-weight: 400;
-            margin-bottom: 0.25rem;
-        }
-        
-        .landing-description {
-            font-size: 0.95rem;
-            color: #556677;
-            margin-bottom: 2.5rem;
-            line-height: 1.5;
-            max-width: 400px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        .landing-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 0.9rem 3rem;
-            font-size: 1.2rem;
-            font-weight: 700;
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #0F3460, #2196F3);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 30px rgba(33, 150, 243, 0.35);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .landing-btn::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 60%);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-        
-        .landing-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 40px rgba(33, 150, 243, 0.5);
-        }
-        
-        .landing-btn:hover::after {
-            opacity: 1;
-        }
-        
-        .landing-btn:active {
-            transform: scale(0.96);
-        }
-        
-        .landing-version {
-            margin-top: 2rem;
-            font-size: 0.75rem;
-            color: #556677;
-            letter-spacing: 1px;
-        }
-        
-        @media (max-width: 480px) {
-            .landing-title { font-size: 2rem; }
-            .landing-subtitle { font-size: 1rem; }
-            .landing-description { font-size: 0.85rem; padding: 0 1rem; }
-            .landing-logo { width: 100px; height: 100px; }
-            .landing-btn { padding: 0.7rem 2rem; font-size: 1rem; }
-        }
-    </style>
 </head>
 <body>
     <!-- ============================================ -->
@@ -178,36 +24,12 @@
     <!-- ============================================ -->
     <div id="landing-page" class="landing-page">
         <div class="landing-content">
-            <!-- Logo / Gambar - Gunakan SVG jika gambar tidak tersedia -->
+            <!-- Logo / Gambar -->
             <div class="landing-image">
-                <!-- Coba load gambar, jika gagal gunakan SVG -->
-                <img src="assets/images/landing-logo.png" 
+                <img src="assets/images/landing-logo.jpg" 
                      alt="TriSonic AI Studio" 
                      class="landing-logo"
-                     onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';" />
-                
-                <!-- Fallback SVG jika gambar tidak ditemukan -->
-                <svg id="logoFallback" class="landing-logo-fallback" viewBox="0 0 200 200" style="display:none;">
-                    <defs>
-                        <linearGradient id="blueGradLand" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:#0F3460" />
-                            <stop offset="100%" style="stop-color:#2196F3" />
-                        </linearGradient>
-                        <linearGradient id="greenGradLand" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:#2E7D32" />
-                            <stop offset="100%" style="stop-color:#4CAF50" />
-                        </linearGradient>
-                        <linearGradient id="magentaGradLand" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:#C2185B" />
-                            <stop offset="100%" style="stop-color:#E91E63" />
-                        </linearGradient>
-                    </defs>
-                    <path d="M 120 60 C 160 60, 180 90, 150 130 C 120 170, 60 160, 30 120 C 10 90, 30 50, 60 40" 
-                          fill="none" stroke="#0F3460" stroke-width="12" stroke-linecap="round" />
-                    <polygon points="50,60 90,140 10,140" fill="url(#blueGradLand)" />
-                    <rect x="80" y="70" width="70" height="70" rx="15" fill="url(#greenGradLand)" />
-                    <circle cx="145" cy="135" r="40" fill="url(#magentaGradLand)" />
-                </svg>
+                     onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22%3E%3Crect fill=%22%230a0e17%22 width=%22200%22 height=%22200%22/%3E%3Ctext x=%2250%22 y=%22110%22 font-size=%2240%22 fill=%22%232196F3%22 font-family=%22sans-serif%22%3ETriSonic%3C/text%3E%3C/svg%3E'" />
             </div>
             
             <!-- Judul -->
@@ -236,7 +58,6 @@
     <!-- ============================================ -->
     <div id="splash-screen" class="splash-screen" style="display:none;">
         <div class="splash-content">
-            <!-- Logo SVG -->
             <svg class="splash-logo" viewBox="0 0 200 200" width="120" height="120">
                 <defs>
                     <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -252,14 +73,10 @@
                         <stop offset="100%" style="stop-color:#E91E63" />
                     </linearGradient>
                 </defs>
-                <!-- Gelombang Suara -->
                 <path d="M 120 60 C 160 60, 180 90, 150 130 C 120 170, 60 160, 30 120 C 10 90, 30 50, 60 40" 
                       fill="none" stroke="#0F3460" stroke-width="12" stroke-linecap="round" />
-                <!-- Segitiga Biru (Inovasi) -->
                 <polygon points="50,60 90,140 10,140" fill="url(#blueGrad)" />
-                <!-- Kotak Hijau (Struktur/Teknologi) -->
                 <rect x="80" y="70" width="70" height="70" rx="15" fill="url(#greenGrad)" />
-                <!-- Lingkaran Magenta (Kreativitas) -->
                 <circle cx="145" cy="135" r="40" fill="url(#magentaGrad)" />
             </svg>
             
@@ -281,7 +98,6 @@
         <!-- TOP HEADER / NAVIGATION -->
         <header class="app-header">
             <div class="header-left">
-                <!-- Logo Mini -->
                 <svg class="header-logo" viewBox="0 0 200 200" width="36" height="36">
                     <defs>
                         <linearGradient id="blueGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -341,16 +157,13 @@
                 <!-- CONTENT AREA -->
                 <section class="content-area" id="contentArea">
                     
-                    <!-- ========================================== -->
-                    <!-- TAB 1: KEYBOARD                          -->
-                    <!-- ========================================== -->
+                    <!-- TAB 1: KEYBOARD -->
                     <div class="tab-content active" id="tab-keyboard">
                         <div class="tab-header">
                             <h2>🎹 Keyboard 20 Nada</h2>
                             <p>Eksplorasi harmoni mikrotonal dengan 20 nada per oktaf</p>
                         </div>
                         <div class="keyboard-container" id="keyboardContainer">
-                            <!-- Keyboard akan dirender oleh JS -->
                             <div class="keyboard-wrapper">
                                 <div class="keyboard" id="keyboard"></div>
                             </div>
@@ -380,9 +193,7 @@
                         </div>
                     </div>
                     
-                    <!-- ========================================== -->
-                    <!-- TAB 2: AI COMPOSER                       -->
-                    <!-- ========================================== -->
+                    <!-- TAB 2: AI COMPOSER -->
                     <div class="tab-content" id="tab-composer">
                         <div class="tab-header">
                             <h2>🤖 AI Composer</h2>
@@ -425,9 +236,7 @@
                         </div>
                     </div>
                     
-                    <!-- ========================================== -->
-                    <!-- TAB 3: PARTITUR                          -->
-                    <!-- ========================================== -->
+                    <!-- TAB 3: PARTITUR -->
                     <div class="tab-content" id="tab-partitur">
                         <div class="tab-header">
                             <h2>📝 Editor Partitur Notasi Angka</h2>
@@ -482,16 +291,13 @@
                         </div>
                     </div>
                     
-                    <!-- ========================================== -->
-                    <!-- TAB 4: DASHBOARD AI                      -->
-                    <!-- ========================================== -->
+                    <!-- TAB 4: DASHBOARD AI -->
                     <div class="tab-content" id="tab-dashboard">
                         <div class="tab-header">
                             <h2>📊 Dashboard AI</h2>
                             <p>Simulasi Agen AI: Desain · Proses · Pasar</p>
                         </div>
                         <div class="dashboard-container">
-                            <!-- Agen Desain -->
                             <div class="dashboard-card">
                                 <div class="card-header">
                                     <span class="card-icon">🎨</span>
@@ -520,7 +326,6 @@
                                 </div>
                             </div>
                             
-                            <!-- Agen Proses -->
                             <div class="dashboard-card">
                                 <div class="card-header">
                                     <span class="card-icon">⚙️</span>
@@ -545,7 +350,6 @@
                                 </div>
                             </div>
                             
-                            <!-- Agen Pasar -->
                             <div class="dashboard-card">
                                 <div class="card-header">
                                     <span class="card-icon">📈</span>
@@ -578,7 +382,6 @@
                                 </div>
                             </div>
                             
-                            <!-- Agen Pelatih -->
                             <div class="dashboard-card">
                                 <div class="card-header">
                                     <span class="card-icon">🧠</span>
@@ -606,23 +409,18 @@
                         </div>
                     </div>
                     
-                    <!-- ========================================== -->
-                    <!-- TAB 5: TUTORIAL                          -->
-                    <!-- ========================================== -->
+                    <!-- TAB 5: TUTORIAL -->
                     <div class="tab-content" id="tab-tutorial">
                         <div class="tab-header">
                             <h2>📚 Tutorial Notasi Angka</h2>
                             <p>Panduan lengkap notasi angka dan simbol mikrotonal</p>
                         </div>
                         <div class="tutorial-container" id="tutorialContainer">
-                            <!-- Konten tutorial akan dimuat dari pages/tutorial_notasi_angka.html -->
                             <div class="tutorial-loading">Memuat tutorial...</div>
                         </div>
                     </div>
                     
-                    <!-- ========================================== -->
-                    <!-- TAB 6: ABOUT                            -->
-                    <!-- ========================================== -->
+                    <!-- TAB 6: ABOUT -->
                     <div class="tab-content" id="tab-about">
                         <div class="tab-header">
                             <h2>ℹ️ Tentang TriSonic AI Studio</h2>
@@ -670,29 +468,21 @@
             </div>
         </main>
         
-        <!-- ============================================ -->
-        <!-- FOOTER                                      -->
-        <!-- ============================================ -->
+        <!-- FOOTER -->
         <footer class="app-footer">
             <p>&copy; 2026 TriSonic AI Studio · A 20-Note Microtonal Ecosystem</p>
         </footer>
     </div>
     
-    <!-- ============================================ -->
-    <!-- MODAL / OVERLAY                             -->
-    <!-- ============================================ -->
+    <!-- MODAL -->
     <div class="modal-overlay" id="modalOverlay" style="display:none;">
         <div class="modal-content">
             <button class="modal-close" id="modalClose">&times;</button>
-            <div class="modal-body" id="modalBody">
-                <!-- Konten modal dimuat dinamis -->
-            </div>
+            <div class="modal-body" id="modalBody"></div>
         </div>
     </div>
     
-    <!-- ============================================ -->
-    <!-- JAVASCRIPT                                  -->
-    <!-- ============================================ -->
+    <!-- JAVASCRIPT -->
     <script src="js/data/frequencies.js"></script>
     <script src="js/data/notes.js"></script>
     <script src="js/audio/engine.js"></script>
