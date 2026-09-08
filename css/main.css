@@ -1,323 +1,4 @@
 /* ============================================================
-   main.css - Variabel Warna, Reset, Global Styles
-   TriSonic AI Studio
-   ============================================================ */
-
-/* ---------- CSS Variables ---------- */
-:root {
-    /* Dark Blue Theme */
-    --color-primary: #0F3460;
-    --color-primary-light: #1a4a7a;
-    --color-primary-dark: #0a1f3a;
-    --color-secondary: #2196F3;
-    --color-accent-green: #4CAF50;
-    --color-accent-magenta: #E91E63;
-    --color-accent-amber: #FFC107;
-    
-    /* Gradients */
-    --gradient-blue: linear-gradient(135deg, #0F3460, #2196F3);
-    --gradient-green: linear-gradient(135deg, #2E7D32, #4CAF50);
-    --gradient-magenta: linear-gradient(135deg, #C2185B, #E91E63);
-    
-    /* Backgrounds */
-    --bg-app: #0a0e17;
-    --bg-card: #111927;
-    --bg-card-hover: #1a2332;
-    --bg-sidebar: #0d1520;
-    --bg-input: #1a2332;
-    --bg-toolbar: #0f1825;
-    
-    /* Text */
-    --text-primary: #e8edf5;
-    --text-secondary: #8899aa;
-    --text-muted: #556677;
-    --text-inverse: #0a0e17;
-    
-    /* Borders */
-    --border-color: #1a2a3a;
-    --border-light: #2a3a4a;
-    
-    /* Shadows */
-    --shadow-card: 0 4px 20px rgba(0,0,0,0.4);
-    --shadow-glow: 0 0 30px rgba(33,150,243,0.15);
-    --shadow-modal: 0 20px 60px rgba(0,0,0,0.8);
-    
-    /* Sizes */
-    --header-height: 60px;
-    --sidebar-width: 220px;
-    --footer-height: 40px;
-    --border-radius: 12px;
-    --border-radius-sm: 8px;
-    --border-radius-lg: 20px;
-    
-    /* Transitions */
-    --transition-fast: 0.15s ease;
-    --transition-medium: 0.3s ease;
-    --transition-slow: 0.5s ease;
-    
-    /* Typography */
-    --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --font-mono: 'SF Mono', 'Fira Code', 'Consolas', monospace;
-}
-
-/* ---------- Reset ---------- */
-*,
-*::before,
-*::after {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-html {
-    font-size: 16px;
-    -webkit-text-size-adjust: 100%;
-    -webkit-tap-highlight-color: transparent;
-}
-
-body {
-    font-family: var(--font-family);
-    background: var(--bg-app);
-    color: var(--text-primary);
-    line-height: 1.6;
-    min-height: 100vh;
-    overflow-x: hidden;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-/* ---------- Scrollbar ---------- */
-::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-}
-::-webkit-scrollbar-track {
-    background: var(--bg-app);
-}
-::-webkit-scrollbar-thumb {
-    background: var(--color-primary-light);
-    border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-    background: var(--color-secondary);
-}
-
-/* ---------- Typography ---------- */
-h1, h2, h3, h4, h5, h6 {
-    font-weight: 700;
-    line-height: 1.2;
-    color: var(--text-primary);
-}
-
-h1 { font-size: 2.2rem; }
-h2 { font-size: 1.8rem; }
-h3 { font-size: 1.4rem; }
-h4 { font-size: 1.1rem; }
-
-a {
-    color: var(--color-secondary);
-    text-decoration: none;
-}
-a:hover {
-    color: var(--color-accent-amber);
-}
-
-/* ---------- Utility Classes ---------- */
-.sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0,0,0,0);
-    border: 0;
-}
-
-.hidden {
-    display: none !important;
-}
-
-.text-center { text-align: center; }
-.text-muted { color: var(--text-muted); }
-.text-secondary { color: var(--text-secondary); }
-
-.flex-center {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.gap-1 { gap: 8px; }
-.gap-2 { gap: 16px; }
-.gap-3 { gap: 24px; }
-
-.mt-1 { margin-top: 8px; }
-.mt-2 { margin-top: 16px; }
-.mt-3 { margin-top: 24px; }
-.mb-1 { margin-bottom: 8px; }
-.mb-2 { margin-bottom: 16px; }
-.mb-3 { margin-bottom: 24px; }
-
-/* ---------- Splash Screen ---------- */
-.splash-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: var(--bg-app);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-    transition: opacity 0.8s ease, visibility 0.8s ease;
-}
-
-.splash-screen.hidden {
-    opacity: 0;
-    visibility: hidden;
-}
-
-.splash-content {
-    text-align: center;
-    padding: 2rem;
-    animation: splashPulse 2s ease-in-out infinite;
-}
-
-.splash-logo {
-    width: 120px;
-    height: 120px;
-    margin: 0 auto 1.5rem;
-    display: block;
-    animation: logoFloat 3s ease-in-out infinite;
-}
-
-.splash-title {
-    font-size: 2.5rem;
-    font-weight: 800;
-    background: var(--gradient-blue);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.splash-tagline {
-    font-size: 1.1rem;
-    color: var(--text-secondary);
-    margin-top: 0.25rem;
-}
-
-.splash-sub {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    margin-top: 0.25rem;
-}
-
-.splash-loader {
-    width: 200px;
-    height: 4px;
-    background: var(--bg-card);
-    border-radius: 4px;
-    margin: 1.5rem auto 0.5rem;
-    overflow: hidden;
-}
-
-.loader-bar {
-    height: 100%;
-    width: 0%;
-    background: var(--gradient-blue);
-    border-radius: 4px;
-    animation: loadBar 2s ease-in-out forwards;
-}
-
-.splash-version {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    margin-top: 0.5rem;
-}
-
-@keyframes splashPulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.85; }
-}
-
-@keyframes logoFloat {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
-}
-
-@keyframes loadBar {
-    0% { width: 0%; }
-    30% { width: 30%; }
-    70% { width: 70%; }
-    100% { width: 100%; }
-}
-
-/* ---------- App Container ---------- */
-#app {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
-/* ---------- Modal ---------- */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.8);
-    backdrop-filter: blur(8px);
-    z-index: 10000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
-}
-
-.modal-content {
-    background: var(--bg-card);
-    border-radius: var(--border-radius-lg);
-    max-width: 600px;
-    width: 100%;
-    max-height: 90vh;
-    overflow-y: auto;
-    padding: 2rem;
-    position: relative;
-    box-shadow: var(--shadow-modal);
-    border: 1px solid var(--border-color);
-}
-
-.modal-close {
-    position: absolute;
-    top: 12px;
-    right: 16px;
-    background: none;
-    border: none;
-    color: var(--text-secondary);
-    font-size: 1.8rem;
-    cursor: pointer;
-    transition: var(--transition-fast);
-}
-.modal-close:hover {
-    color: var(--text-primary);
-    transform: rotate(90deg);
-}
-
-/* ---------- Responsive Base ---------- */
-@media (max-width: 768px) {
-    .splash-title {
-        font-size: 1.8rem;
-    }
-    .splash-logo {
-        width: 80px;
-        height: 80px;
-    }
-}
-
-/* ============================================================
    LANDING PAGE - Halaman Awal
    ============================================================ */
 
@@ -327,7 +8,7 @@ a:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    background: var(--bg-app);
+    background: #0a0e17;
     background-image: 
         radial-gradient(ellipse at 10% 20%, rgba(33, 150, 243, 0.08) 0%, transparent 50%),
         radial-gradient(ellipse at 90% 80%, rgba(233, 30, 99, 0.06) 0%, transparent 50%);
@@ -335,8 +16,8 @@ a:hover {
     align-items: center;
     justify-content: center;
     z-index: 10000;
-    transition: opacity 0.8s ease, transform 0.8s ease;
     padding: 2rem;
+    transition: opacity 0.8s ease, transform 0.8s ease;
 }
 
 .landing-page.hidden {
@@ -363,7 +44,6 @@ a:hover {
     }
 }
 
-/* ---------- Gambar ---------- */
 .landing-image {
     margin-bottom: 2rem;
 }
@@ -371,16 +51,9 @@ a:hover {
 .landing-logo {
     width: 140px;
     height: 140px;
-    object-fit: contain;
+    object-fit: cover;
     border-radius: 50%;
     box-shadow: 0 0 60px rgba(33, 150, 243, 0.15);
-    animation: logoPulse 3s ease-in-out infinite;
-}
-
-/* Alternatif jika menggunakan SVG */
-.landing-logo-svg {
-    width: 140px;
-    height: 140px;
     animation: logoPulse 3s ease-in-out infinite;
 }
 
@@ -389,11 +62,10 @@ a:hover {
     50% { transform: scale(1.05); }
 }
 
-/* ---------- Judul ---------- */
 .landing-title {
     font-size: 2.8rem;
     font-weight: 800;
-    background: var(--gradient-blue);
+    background: linear-gradient(135deg, #0F3460, #2196F3);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -403,14 +75,14 @@ a:hover {
 
 .landing-subtitle {
     font-size: 1.2rem;
-    color: var(--text-secondary);
+    color: #8899aa;
     font-weight: 400;
     margin-bottom: 0.25rem;
 }
 
 .landing-description {
     font-size: 0.95rem;
-    color: var(--text-muted);
+    color: #556677;
     margin-bottom: 2.5rem;
     line-height: 1.5;
     max-width: 400px;
@@ -418,7 +90,6 @@ a:hover {
     margin-right: auto;
 }
 
-/* ---------- Tombol Mulai ---------- */
 .landing-btn {
     display: inline-flex;
     align-items: center;
@@ -426,13 +97,13 @@ a:hover {
     padding: 0.9rem 3rem;
     font-size: 1.2rem;
     font-weight: 700;
-    font-family: var(--font-family);
-    background: var(--gradient-blue);
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #0F3460, #2196F3);
     color: white;
     border: none;
     border-radius: 50px;
     cursor: pointer;
-    transition: var(--transition-medium);
+    transition: all 0.3s ease;
     box-shadow: 0 4px 30px rgba(33, 150, 243, 0.35);
     position: relative;
     overflow: hidden;
@@ -463,15 +134,14 @@ a:hover {
     transform: scale(0.96);
 }
 
-/* ---------- Versi ---------- */
 .landing-version {
     margin-top: 2rem;
     font-size: 0.75rem;
-    color: var(--text-muted);
+    color: #556677;
     letter-spacing: 1px;
 }
 
-/* ---------- Responsive ---------- */
+/* Responsive Landing */
 @media (max-width: 480px) {
     .landing-title {
         font-size: 2rem;
@@ -483,8 +153,7 @@ a:hover {
         font-size: 0.85rem;
         padding: 0 1rem;
     }
-    .landing-logo,
-    .landing-logo-svg {
+    .landing-logo {
         width: 100px;
         height: 100px;
     }
