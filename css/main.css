@@ -316,3 +316,180 @@ a:hover {
         height: 80px;
     }
 }
+
+/* ============================================================
+   LANDING PAGE - Halaman Awal
+   ============================================================ */
+
+.landing-page {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-app);
+    background-image: 
+        radial-gradient(ellipse at 10% 20%, rgba(33, 150, 243, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 90% 80%, rgba(233, 30, 99, 0.06) 0%, transparent 50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+    padding: 2rem;
+}
+
+.landing-page.hidden {
+    opacity: 0;
+    transform: scale(1.05);
+    pointer-events: none;
+}
+
+.landing-content {
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+    animation: landingFadeIn 1s ease-out;
+}
+
+@keyframes landingFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ---------- Gambar ---------- */
+.landing-image {
+    margin-bottom: 2rem;
+}
+
+.landing-logo {
+    width: 140px;
+    height: 140px;
+    object-fit: contain;
+    border-radius: 50%;
+    box-shadow: 0 0 60px rgba(33, 150, 243, 0.15);
+    animation: logoPulse 3s ease-in-out infinite;
+}
+
+/* Alternatif jika menggunakan SVG */
+.landing-logo-svg {
+    width: 140px;
+    height: 140px;
+    animation: logoPulse 3s ease-in-out infinite;
+}
+
+@keyframes logoPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* ---------- Judul ---------- */
+.landing-title {
+    font-size: 2.8rem;
+    font-weight: 800;
+    background: var(--gradient-blue);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.5px;
+}
+
+.landing-subtitle {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    font-weight: 400;
+    margin-bottom: 0.25rem;
+}
+
+.landing-description {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin-bottom: 2.5rem;
+    line-height: 1.5;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ---------- Tombol Mulai ---------- */
+.landing-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0.9rem 3rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    font-family: var(--font-family);
+    background: var(--gradient-blue);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: var(--transition-medium);
+    box-shadow: 0 4px 30px rgba(33, 150, 243, 0.35);
+    position: relative;
+    overflow: hidden;
+}
+
+.landing-btn::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.landing-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 40px rgba(33, 150, 243, 0.5);
+}
+
+.landing-btn:hover::after {
+    opacity: 1;
+}
+
+.landing-btn:active {
+    transform: scale(0.96);
+}
+
+/* ---------- Versi ---------- */
+.landing-version {
+    margin-top: 2rem;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 480px) {
+    .landing-title {
+        font-size: 2rem;
+    }
+    .landing-subtitle {
+        font-size: 1rem;
+    }
+    .landing-description {
+        font-size: 0.85rem;
+        padding: 0 1rem;
+    }
+    .landing-logo,
+    .landing-logo-svg {
+        width: 100px;
+        height: 100px;
+    }
+    .landing-btn {
+        padding: 0.7rem 2rem;
+        font-size: 1rem;
+    }
+}
