@@ -2,33 +2,35 @@
 // DATA FREKUENSI 12-TET (20 NADA PER OKTAF) – C2 s/d D6
 // A4 = 440 Hz (acuan)
 // Rumus: f_n = 440 × 3^(n/20) dengan n=0 untuk A4
-// RASIO = 3^(1/20) ≈ 1.056467... (BUKAN 2^(1/20))
+// RASIO = 3^(1/20) ≈ 1.056467
 // ================================================================
 
-// SKALA MAYOR: E, E#, F, F#, G, G#, H, H#, I, J, J#, K, K#, A, A#, B, B#, C, C#, D
-// SKALA MINOR: A, A#, B, B#, C, C#, D, E, E#, F, F#, G, G#, H, H#, I, J, J#, K, K#
+// ================================================================
+// SKALA MAYOR E - URUTAN YANG BENAR
+// ================================================================
+// Index:  0    1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16   17   18   19
+// Nada:   E   E#    F   F#    G   G#    H   H#    I    J   J#    K   K#    A   A#    B   B#    C   C#    D
+// Warna:  P    H    P    H    P    H    P    H    P    P    H    P    H    P    H    P    H    P    H    P
 //
 // Tuts PUTIH (Index Genap): E, F, G, H, I, J, K, A, B, C, D
 // Tuts HITAM (Index Ganjil): E#, F#, G#, H#, J#, K#, A#, B#, C#
+// ================================================================
 
 const NOTES_20 = ['E','E#','F','F#','G','G#','H','H#','I','J','J#','K','K#','A','A#','B','B#','C','C#','D'];
-
-// RASIO YANG BENAR: 3^(1/20)
-const RATIO = Math.pow(3, 1/20);
 
 // ================================================================
 // FREKUENSI LENGKAP - C2 SAMPAI D6 (PRESISI 5 ANGKA)
 // ================================================================
 const FREQ_MAP = {
     // ==========================================================
-    // OKTAF 2 - 3 NADA PERTAMA
+    // OKTAF 2 - 3 NADA PERTAMA (C2, C#2, D2)
     // ==========================================================
     'C2': 60.90000,
     'C#2': 64.34000,
     'D2': 67.97400,
     
     // ==========================================================
-    // OKTAF 3 - 20 NADA
+    // OKTAF 3 - 20 NADA (E3 sampai D3)
     // ==========================================================
     'E3': 71.81300,
     'E#3': 75.86800,
@@ -52,7 +54,7 @@ const FREQ_MAP = {
     'D3': 203.92400,
     
     // ==========================================================
-    // OKTAF 4 - 20 NADA
+    // OKTAF 4 - 20 NADA (E4 sampai D4)
     // ==========================================================
     'E4': 215.43900,
     'E#4': 227.60400,
@@ -76,7 +78,7 @@ const FREQ_MAP = {
     'D4': 611.77100,
     
     // ==========================================================
-    // OKTAF 5 - 20 NADA
+    // OKTAF 5 - 20 NADA (E5 sampai D5)
     // ==========================================================
     'E5': 646.31600,
     'E#5': 682.81200,
@@ -100,7 +102,7 @@ const FREQ_MAP = {
     'D5': 1835.31400,
     
     // ==========================================================
-    // OKTAF 6 - 20 NADA
+    // OKTAF 6 - 20 NADA (E6 sampai D6)
     // ==========================================================
     'E6': 1938.94900,
     'E#6': 2048.43600,
@@ -133,8 +135,7 @@ NOTES_20.forEach(function(note, index) {
     NOTE_TO_INDEX[note] = index;
 });
 
-// Index A4 = 13 (A pada index 13 di NOTES_20)
-const A4_INDEX = 13;
+const A4_INDEX = 13; // A berada di index 13
 
 function getNoteIndex(noteName) {
     return NOTE_TO_INDEX[noteName] !== undefined ? NOTE_TO_INDEX[noteName] : 0;
@@ -165,32 +166,6 @@ function formatFrequency(freq) {
     return freq.toFixed(5);
 }
 
-// ================================================================
-// HITUNG FREKUENSI DENGAN RUMUS 440 × 3^(n/20)
-// ================================================================
-
-function calculateFrequency(index, octave) {
-    var midiNumber = (octave * 20) + index;
-    var midiA4 = (4 * 20) + A4_INDEX;
-    var n = midiNumber - midiA4;
-    return 440 * Math.pow(3, n / 20);
-}
-
-// ================================================================
-// CETAK INFORMASI
-// ================================================================
-
-function getOctaveNotes(octave) {
-    var notes = [];
-    for (var i = 0; i < NOTES_20.length; i++) {
-        var fullName = NOTES_20[i] + octave;
-        if (FREQ_MAP[fullName] !== undefined) {
-            notes.push(fullName);
-        }
-    }
-    return notes;
-}
-
 function isWhiteKey(index) {
     return index % 2 === 0;
 }
@@ -207,21 +182,17 @@ window.FREQ_MAP = FREQ_MAP;
 window.NOTES_20 = NOTES_20;
 window.NOTE_TO_INDEX = NOTE_TO_INDEX;
 window.A4_INDEX = A4_INDEX;
-window.RATIO = RATIO;
 window.getNoteIndex = getNoteIndex;
 window.getNoteName = getNoteName;
 window.getFrequencyFromNote = getFrequencyFromNote;
 window.getAllNotes = getAllNotes;
 window.formatFrequency = formatFrequency;
-window.getOctaveNotes = getOctaveNotes;
 window.isWhiteKey = isWhiteKey;
 window.isBlackKey = isBlackKey;
-window.calculateFrequency = calculateFrequency;
 
 console.log('✅ frequencies.js loaded');
-console.log('✅ RASIO = 3^(1/20) = ' + RATIO);
+console.log('✅ RASIO = 3^(1/20) = ' + Math.pow(3, 1/20));
 console.log('✅ Total nada: ' + getAllNotes().length + ' notes');
 console.log('✅ Skala Mayor: ' + NOTES_20.join(' - '));
 console.log('✅ PUTIH (genap): ' + NOTES_20.filter(function(n, i) { return i % 2 === 0; }).join(', '));
 console.log('✅ HITAM (ganjil): ' + NOTES_20.filter(function(n, i) { return i % 2 === 1; }).join(', '));
-console.log('✅ A4 = ' + getFrequencyFromNote('A4') + ' Hz');
