@@ -5,8 +5,10 @@
 
 console.log('🚀 app.js loaded');
 
-let audioEngine = null;
-let keyboardRenderer = null;
+var audioEngine = null;
+var keyboardRenderer = null;
+var aiComposer = null;
+var partiturEditor = null;
 
 function initApp() {
     console.log('🔧 Inisialisasi aplikasi...');
@@ -22,9 +24,21 @@ function initApp() {
         keyboardRenderer.init(audioEngine);
         console.log('✅ Keyboard siap');
         
+        // AI Composer
+        aiComposer = new AIComposer();
+        aiComposer.init(audioEngine);
+        console.log('✅ AI Composer siap');
+        
+        // Partitur Editor
+        partiturEditor = new PartiturEditor();
+        partiturEditor.init();
+        console.log('✅ Partitur Editor siap');
+        
+        setupControls();
         setupTabs();
         setupSidebar();
-        setupControls();
+        setupModal();
+        setupComposerEvents();
         
         console.log('🎉 TriSonic AI Studio initialized!');
     } catch (error) {
@@ -33,44 +47,44 @@ function initApp() {
 }
 
 function setupControls() {
-    const volume = document.getElementById('volumeControl');
+    var volume = document.getElementById('volumeControl');
     if (volume && audioEngine) {
-        volume.addEventListener('input', (e) => {
+        volume.addEventListener('input', function(e) {
             audioEngine.setVolume(parseFloat(e.target.value));
         });
         audioEngine.setVolume(parseFloat(volume.value));
     }
     
-    const reverb = document.getElementById('reverbControl');
+    var reverb = document.getElementById('reverbControl');
     if (reverb && audioEngine) {
-        reverb.addEventListener('input', (e) => {
+        reverb.addEventListener('input', function(e) {
             audioEngine.setReverb(parseFloat(e.target.value));
         });
         audioEngine.setReverb(parseFloat(reverb.value));
     }
     
-    const waveform = document.getElementById('waveformSelect');
+    var waveform = document.getElementById('waveformSelect');
     if (waveform && audioEngine) {
-        waveform.addEventListener('change', (e) => {
+        waveform.addEventListener('change', function(e) {
             audioEngine.setWaveform(e.target.value);
         });
     }
 }
 
 function setupTabs() {
-    document.querySelectorAll('.tab-btn, .sidebar-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const tabId = btn.dataset.tab;
-            document.querySelectorAll('.tab-btn, .sidebar-btn').forEach(b => {
+    document.querySelectorAll('.tab-btn, .sidebar-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var tabId = this.dataset.tab;
+            document.querySelectorAll('.tab-btn, .sidebar-btn').forEach(function(b) {
                 b.classList.toggle('active', b.dataset.tab === tabId);
             });
-            document.querySelectorAll('.tab-content').forEach(c => {
-                c.classList.toggle('active', c.id === `tab-${tabId}`);
+            document.querySelectorAll('.tab-content').forEach(function(c) {
+                c.classList.toggle('active', c.id === 'tab-' + tabId);
             });
             
             // Jika tab keyboard, re-render jika kosong
             if (tabId === 'keyboard' && keyboardRenderer) {
-                const container = document.getElementById('keyboard');
+                var container = document.getElementById('keyboard');
                 if (container && container.children.length === 0) {
                     console.log('🔄 Re-render keyboard...');
                     keyboardRenderer.render();
@@ -83,27 +97,96 @@ function setupTabs() {
 }
 
 function setupSidebar() {
-    const toggle = document.getElementById('menuToggle');
-    const sidebar = document.getElementById('sidebar');
+    var toggle = document.getElementById('menuToggle');
+    var sidebar = document.getElementById('sidebar');
     if (toggle && sidebar) {
-        toggle.addEventListener('click', () => {
+        toggle.addEventListener('click', function() {
             sidebar.classList.toggle('open');
         });
     }
 }
 
 function closeSidebar() {
-    const sidebar = document.getElementById('sidebar');
+    var sidebar = document.getElementById('sidebar');
     if (sidebar) sidebar.classList.remove('open');
 }
 
-// STARTUP - Tunggu DOM dan file JS selesai
-document.addEventListener('DOMContentLoaded', () => {
+function setupModal() {
+    var close = document.getElementById('modalClose');
+    var overlay = document.getElementById('modalOverlay');
+    if (close && overlay) {
+        close.addEventListener('click', function() {
+            overlay.classList.remove('show');
+        });
+        overlay.addEventListener('click', function(e) {
+            if (e.target === overlay) overlay.classList.remove('show');
+        });
+    }
+}
+
+function setupComposerEvents() {
+    var composeBtn = document.getElementById('composeBtn');
+    var playBtn = document.getElementById('playCompositionBtn');
+    var stopBtn = document.getElementById('stopCompositionBtn');
+    
+    if (composeBtn) {
+        composeBtn.addEventListener('click', function() {
+            if (!aiComposer) return;
+            var genre = document.getElementById('composerGenre')?.value || 'classical';
+            var length = parseInt(document.getElementById('composerLength')?.value) || 8;
+            var tempo = parseInt(document.getElementById('composerTempo')?.value) || 120;
+            var composition = aiComposer.generateComposition(genre, length, tempo);
+            displayComposition(composition);
+        });
+    }
+    
+    if (playBtn) {
+        playBtn.addEventListener('click', function() {
+            if (!aiComposer) return;
+            var composition = aiComposer.currentComposition;
+            if (!composition || composition.length === 0) {
+                alert('Silakan buat komposisi terlebih dahulu!');
+                return;
+            }
+            aiComposer.playComposition(composition);
+        });
+    }
+    
+    if (stopBtn) {
+        stopBtn.addEventListener('click', function() {
+            if (aiComposer) aiComposer.stopComposition();
+        });
+    }
+}
+
+function displayComposition(composition) {
+    var display = document.getElementById('compositionNotes');
+    var noteCount = document.getElementById('compNoteCount');
+    var duration = document.getElementById('compDuration');
+    
+    if (display) {
+        if (composition && composition.length > 0) {
+            var notes = composition.map(function(item) { return item.note; }).join(' ');
+            display.innerHTML = '<span style="color:#2196F3;">' + notes + '</span>';
+        } else {
+            display.innerHTML = '<p class="placeholder">Tidak ada nada yang dihasilkan.</p>';
+        }
+    }
+    
+    if (noteCount) noteCount.textContent = composition ? composition.length : 0;
+    if (duration && composition) {
+        var totalDuration = composition.reduce(function(sum, item) { return sum + item.duration; }, 0);
+        duration.textContent = totalDuration.toFixed(2);
+    }
+}
+
+// STARTUP
+document.addEventListener('DOMContentLoaded', function() {
     console.log('📄 DOMContentLoaded - init dalam 300ms...');
     setTimeout(initApp, 300);
 });
 
-// FALLBACK - Jika masih belum, coba lagi
+// FALLBACK
 window.addEventListener('load', function() {
     if (!keyboardRenderer || !keyboardRenderer.isRendered) {
         console.log('🔄 Window load - init ulang...');
@@ -113,5 +196,5 @@ window.addEventListener('load', function() {
     }
 });
 
-window.__TRI_SONIC = { audioEngine, keyboardRenderer, initApp };
-console.log('✅ app.js loaded, menunggu DOM...');
+window.__TRI_SONIC = { audioEngine: audioEngine, keyboardRenderer: keyboardRenderer, initApp: initApp };
+console.log('✅ app.js loaded');
