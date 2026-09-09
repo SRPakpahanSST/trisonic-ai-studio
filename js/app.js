@@ -14,22 +14,18 @@ function initApp() {
     console.log('🔧 Inisialisasi aplikasi...');
     
     try {
-        // Audio Engine
         audioEngine = window.audioEngine || new AudioEngine();
         audioEngine.init();
         console.log('✅ Audio Engine siap');
         
-        // Keyboard
         keyboardRenderer = new KeyboardRenderer();
         keyboardRenderer.init(audioEngine);
         console.log('✅ Keyboard siap');
         
-        // AI Composer
         aiComposer = new AIComposer();
         aiComposer.init(audioEngine);
         console.log('✅ AI Composer siap');
         
-        // Partitur Editor
         partiturEditor = new PartiturEditor();
         partiturEditor.init();
         console.log('✅ Partitur Editor siap');
@@ -179,7 +175,6 @@ function displayComposition(composition) {
     }
 }
 
-// STARTUP
 document.addEventListener('DOMContentLoaded', function() {
     console.log('📄 DOMContentLoaded - init dalam 300ms...');
     setTimeout(initApp, 300);
