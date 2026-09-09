@@ -2,7 +2,7 @@
 // DATA FREKUENSI 12-TET (20 NADA PER OKTAF) – C2 s/d D6
 // A4 = 440 Hz (acuan)
 // Rumus: f_n = 440 × 3^(n/20) dengan n=0 untuk A4
-// RASIO = 3^(1/20) ≈ 1.056467... (bukan 2^(1/20))
+// RASIO = 3^(1/20) ≈ 1.056467... (BUKAN 2^(1/20))
 // ================================================================
 
 // SKALA MAYOR: E, E#, F, F#, G, G#, H, H#, I, J, J#, K, K#, A, A#, B, B#, C, C#, D
@@ -12,6 +12,9 @@
 // Tuts HITAM (Index Ganjil): E#, F#, G#, H#, J#, K#, A#, B#, C#
 
 const NOTES_20 = ['E','E#','F','F#','G','G#','H','H#','I','J','J#','K','K#','A','A#','B','B#','C','C#','D'];
+
+// RASIO YANG BENAR: 3^(1/20)
+const RATIO = Math.pow(3, 1/20);
 
 // ================================================================
 // FREKUENSI LENGKAP - C2 SAMPAI D6 (PRESISI 5 ANGKA)
@@ -167,8 +170,6 @@ function formatFrequency(freq) {
 // ================================================================
 
 function calculateFrequency(index, octave) {
-    // Hitung n dari index dan oktaf
-    // A4 = index 13, oktaf 4
     var midiNumber = (octave * 20) + index;
     var midiA4 = (4 * 20) + A4_INDEX;
     var n = midiNumber - midiA4;
@@ -206,6 +207,7 @@ window.FREQ_MAP = FREQ_MAP;
 window.NOTES_20 = NOTES_20;
 window.NOTE_TO_INDEX = NOTE_TO_INDEX;
 window.A4_INDEX = A4_INDEX;
+window.RATIO = RATIO;
 window.getNoteIndex = getNoteIndex;
 window.getNoteName = getNoteName;
 window.getFrequencyFromNote = getFrequencyFromNote;
@@ -217,7 +219,7 @@ window.isBlackKey = isBlackKey;
 window.calculateFrequency = calculateFrequency;
 
 console.log('✅ frequencies.js loaded');
-console.log('✅ RASIO = 3^(1/20) ≈ ' + Math.pow(3, 1/20));
+console.log('✅ RASIO = 3^(1/20) = ' + RATIO);
 console.log('✅ Total nada: ' + getAllNotes().length + ' notes');
 console.log('✅ Skala Mayor: ' + NOTES_20.join(' - '));
 console.log('✅ PUTIH (genap): ' + NOTES_20.filter(function(n, i) { return i % 2 === 0; }).join(', '));
