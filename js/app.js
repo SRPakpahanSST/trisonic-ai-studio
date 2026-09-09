@@ -19,7 +19,7 @@ function initApp() {
         audioEngine.init();
         console.log('✅ Audio Engine siap');
         
-        // Keyboard
+        // Keyboard - RENDER SETELAH APP TERBUKA
         keyboardRenderer = new KeyboardRenderer();
         keyboardRenderer.init(audioEngine);
         console.log('✅ Keyboard siap (5 oktaf: C2-D6)');
@@ -82,6 +82,16 @@ function setupTabs() {
             document.querySelectorAll('.tab-content').forEach(c => {
                 c.classList.toggle('active', c.id === `tab-${tabId}`);
             });
+            
+            // Jika tab keyboard, pastikan keyboard ter-render
+            if (tabId === 'keyboard' && keyboardRenderer) {
+                // Re-render jika container kosong
+                const container = document.getElementById('keyboard');
+                if (container && container.children.length === 0) {
+                    keyboardRenderer.render();
+                }
+            }
+            
             if (window.innerWidth <= 768) closeSidebar();
         });
     });
