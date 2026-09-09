@@ -7,15 +7,21 @@
    KEYBOARD STYLES
    ============================================================ */
 
+#keyboard {
+    min-height: 200px;
+    width: 100%;
+}
+
 .keyboard-flex {
     display: flex;
     gap: 2px;
     padding: 8px;
     min-width: max-content;
-    position: relative;
     background: #1a1a2e;
     border-radius: 10px;
     border: 2px solid #2a3a5e;
+    overflow-x: auto;
+    margin: 0 auto;
 }
 
 .key {
