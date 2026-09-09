@@ -11,9 +11,6 @@
 // Index:  0    1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16   17   18   19
 // Nada:   E   E#    F   F#    G   G#    H   H#    I    J   J#    K   K#    A   A#    B   B#    C   C#    D
 // Warna:  P    H    P    H    P    H    P    H    P    P    H    P    H    P    H    P    H    P    H    P
-//
-// Tuts PUTIH (Index Genap): E, F, G, H, I, J, K, A, B, C, D
-// Tuts HITAM (Index Ganjil): E#, F#, G#, H#, J#, K#, A#, B#, C#
 // ================================================================
 
 // URUTAN NADA 20 PER OKTAF - SKALA MAYOR E
@@ -24,38 +21,38 @@ const NOTES_20 = ['E','E#','F','F#','G','G#','H','H#','I','J','J#','K','K#','A',
 // ================================================================
 const FREQ_MAP = {
     // ==========================================================
-    // OKTAF 2 - 3 NADA PERTAMA (C2, C#2, D2)
+    // OKTAF 2 - 3 NADA PERTAMA (C2 PUTIH, C#2 HITAM, D2 PUTIH)
     // ==========================================================
     'C2': 60.90000,
     'C#2': 64.34000,
     'D2': 67.97400,
     
     // ==========================================================
-    // OKTAF 3 - 20 NADA (E3 sampai D3)
+    // OKTAF 3 - 20 NADA (E3 PUTIH, E#3 HITAM, ..., D3 PUTIH)
     // ==========================================================
-    'E3': 71.81300,
-    'E#3': 75.86800,
-    'F3': 80.15200,
-    'F#3': 84.67800,
-    'G3': 89.46000,
-    'G#3': 94.51100,
-    'H3': 99.84800,
-    'H#3': 105.48600,
-    'I3': 111.44300,
-    'J3': 117.73500,
-    'J#3': 124.38400,
-    'K3': 131.40700,
-    'K#3': 138.82700,
-    'A3': 146.66700,
-    'A#3': 154.94900,
-    'B3': 163.69800,
-    'B#3': 172.94200,
-    'C3': 182.70700,
-    'C#3': 193.02400,
-    'D3': 203.92400,
+    'E3': 71.81300,   // PUTIH
+    'E#3': 75.86800,  // HITAM
+    'F3': 80.15200,   // PUTIH
+    'F#3': 84.67800,  // HITAM
+    'G3': 89.46000,   // PUTIH
+    'G#3': 94.51100,  // HITAM
+    'H3': 99.84800,   // PUTIH
+    'H#3': 105.48600, // HITAM
+    'I3': 111.44300,  // PUTIH
+    'J3': 117.73500,  // PUTIH (tidak ada hitam antara I3 dan J3)
+    'J#3': 124.38400, // HITAM
+    'K3': 131.40700,  // PUTIH
+    'K#3': 138.82700, // HITAM
+    'A3': 146.66700,  // PUTIH
+    'A#3': 154.94900, // HITAM
+    'B3': 163.69800,  // PUTIH
+    'B#3': 172.94200, // HITAM
+    'C3': 182.70700,  // PUTIH
+    'C#3': 193.02400, // HITAM
+    'D3': 203.92400,  // PUTIH
     
     // ==========================================================
-    // OKTAF 4 - 20 NADA (E4 sampai D4)
+    // OKTAF 4 - 20 NADA (E4 PUTIH, E#4 HITAM, ..., D4 PUTIH)
     // ==========================================================
     'E4': 215.43900,
     'E#4': 227.60400,
@@ -79,7 +76,7 @@ const FREQ_MAP = {
     'D4': 611.77100,
     
     // ==========================================================
-    // OKTAF 5 - 20 NADA (E5 sampai D5)
+    // OKTAF 5 - 20 NADA (E5 PUTIH, E#5 HITAM, ..., D5 PUTIH)
     // ==========================================================
     'E5': 646.31600,
     'E#5': 682.81200,
@@ -103,7 +100,7 @@ const FREQ_MAP = {
     'D5': 1835.31400,
     
     // ==========================================================
-    // OKTAF 6 - 20 NADA (E6 sampai D6)
+    // OKTAF 6 - 20 NADA (E6 PUTIH, E#6 HITAM, ..., D6 PUTIH)
     // ==========================================================
     'E6': 1938.94900,
     'E#6': 2048.43600,
@@ -206,6 +203,8 @@ window.getOctaveNotes = getOctaveNotes;
 
 console.log('✅ frequencies.js loaded');
 console.log('✅ Total nada: ' + getAllNotes().length + ' notes');
-console.log('✅ Nada pertama: ' + getAllNotes()[0] + ' (C2)');
-console.log('✅ Nada terakhir: ' + getAllNotes()[getAllNotes().length - 1] + ' (D6)');
+console.log('✅ Nada pertama: ' + getAllNotes()[0] + ' (C2 - PUTIH)');
+console.log('✅ Nada kedua: ' + getAllNotes()[1] + ' (C#2 - HITAM)');
+console.log('✅ Nada ketiga: ' + getAllNotes()[2] + ' (D2 - PUTIH)');
+console.log('✅ Nada terakhir: ' + getAllNotes()[getAllNotes().length - 1] + ' (D6 - PUTIH)');
 console.log('✅ Skala Mayor: ' + NOTES_20.join(' - '));
