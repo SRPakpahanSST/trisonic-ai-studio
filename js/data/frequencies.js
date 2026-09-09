@@ -106,10 +106,6 @@ const FREQ_MAP = {
     'D6': 5505.94200
 };
 
-// ================================================================
-// FUNGSI-FUNGSI
-// ================================================================
-
 const NOTE_TO_INDEX = {};
 NOTES_20.forEach(function(note, index) {
     NOTE_TO_INDEX[note] = index;
@@ -144,10 +140,7 @@ function formatFrequency(freq) {
     return freq.toFixed(5);
 }
 
-// ================================================================
-// EXPORT KE WINDOW
-// ================================================================
-
+// Export ke window
 window.FREQ_MAP = FREQ_MAP;
 window.NOTES_20 = NOTES_20;
 window.NOTE_TO_INDEX = NOTE_TO_INDEX;
@@ -159,5 +152,3 @@ window.formatFrequency = formatFrequency;
 
 console.log('✅ frequencies.js loaded');
 console.log('✅ Total nada: ' + getAllNotes().length + ' notes');
-console.log('✅ Nada pertama: ' + getAllNotes()[0] + ' (C2 - PUTIH)');
-console.log('✅ Nada terakhir: ' + getAllNotes()[getAllNotes().length - 1] + ' (D6 - PUTIH)');
