@@ -8,29 +8,20 @@ class AudioEngine {
         this.masterGain = null;
         this.reverbGain = null;
         this.activeOscillators = [];
-        this.settings = {
-            volume: 0.7,
-            reverb: 0.3,
-            waveform: 'sine',
-            masterVolume: 0.8
-        };
+        this.settings = { volume: 0.7, reverb: 0.3, waveform: 'sine', masterVolume: 0.8 };
         this.initialized = false;
     }
 
     init() {
         if (this.initialized) return;
-        
         try {
             this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            
             this.masterGain = this.audioContext.createGain();
             this.masterGain.gain.value = this.settings.masterVolume * this.settings.volume;
             this.masterGain.connect(this.audioContext.destination);
-            
             this.reverbGain = this.audioContext.createGain();
             this.reverbGain.gain.value = this.settings.reverb * 0.3;
             this.reverbGain.connect(this.masterGain);
-            
             this.initialized = true;
             console.log('✅ Audio Engine initialized');
         } catch (error) {
@@ -47,23 +38,17 @@ class AudioEngine {
     playNote(noteName, frequency, duration = 0.8, waveform = null) {
         if (!this.initialized) this.init();
         if (!this.audioContext) return null;
-        
         this.resume();
         this.stopNote(noteName);
         
         const osc = this.audioContext.createOscillator();
         const gain = this.audioContext.createGain();
-        
         osc.type = waveform || this.settings.waveform;
         osc.frequency.value = frequency;
         
         const now = this.audioContext.currentTime;
         const volume = this.settings.volume * 0.7;
-        
-        const attack = 0.01;
-        const decay = 0.1;
-        const sustain = 0.3;
-        const release = 0.05;
+        const attack = 0.01, decay = 0.1, sustain = 0.3, release = 0.05;
         
         gain.gain.setValueAtTime(0, now);
         gain.gain.linearRampToValueAtTime(volume, now + attack);
@@ -72,7 +57,6 @@ class AudioEngine {
         osc.connect(gain);
         gain.connect(this.masterGain);
         gain.connect(this.reverbGain);
-        
         osc.start(now);
         
         if (duration) {
@@ -83,13 +67,9 @@ class AudioEngine {
         }
         
         this.activeOscillators.push({ osc, gain, noteName });
-        
         osc.onended = () => {
-            this.activeOscillators = this.activeOscillators.filter(
-                item => item.osc !== osc
-            );
+            this.activeOscillators = this.activeOscillators.filter(item => item.osc !== osc);
         };
-        
         return { osc, gain };
     }
 
@@ -104,9 +84,7 @@ class AudioEngine {
     }
 
     stopAll() {
-        this.activeOscillators.forEach(item => {
-            try { item.osc.stop(); } catch (e) {}
-        });
+        this.activeOscillators.forEach(item => { try { item.osc.stop(); } catch (e) {} });
         this.activeOscillators = [];
     }
 
@@ -127,22 +105,9 @@ class AudioEngine {
     setWaveform(type) {
         this.settings.waveform = type;
     }
-
-    getState() {
-        return {
-            isPlaying: this.activeOscillators.length > 0,
-            activeNotes: this.activeOscillators.length,
-            waveform: this.settings.waveform,
-            volume: this.settings.volume,
-            reverb: this.settings.reverb
-        };
-    }
 }
 
-// Singleton
 const audioEngine = new AudioEngine();
-
-if (typeof window !== 'undefined') {
-    window.audioEngine = audioEngine;
-    window.AudioEngine = AudioEngine;
-}
+window.audioEngine = audioEngine;
+window.AudioEngine = AudioEngine;
+console.log('✅ engine.js loaded');
