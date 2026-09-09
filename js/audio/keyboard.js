@@ -86,9 +86,16 @@ KeyboardRenderer.prototype.render = function() {
         var octave = parseInt(match[2]);
         var index = window.getNoteIndex ? window.getNoteIndex(note) : 0;
         
-        // Tuts PUTIH = index genap (0,2,4,6,8,10,12,14,16,18)
-        // Tuts HITAM = index ganjil (1,3,5,7,9,11,13,15,17,19)
-        var isWhite = (index % 2 === 0);
+        // ================================================================
+        // MENENTUKAN WARNA TUTS MENGGUNAKAN LIST NADA, BUKAN INDEX
+        // ================================================================
+        var isWhite = false;
+        if (typeof window.isWhiteKey === 'function') {
+            isWhite = window.isWhiteKey(note);
+        } else {
+            // Fallback: jika fungsi tidak tersedia, gunakan index
+            isWhite = (index % 2 === 0);
+        }
         
         var key = document.createElement('div');
         key.className = 'key ' + (isWhite ? 'key-white' : 'key-black');
