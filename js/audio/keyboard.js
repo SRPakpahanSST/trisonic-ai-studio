@@ -9,11 +9,7 @@ class KeyboardRenderer {
         this.keyElements = {};
         this.activeKeys = new Set();
         this.currentOctave = 4;
-        this.startOctave = 2;
-        this.endOctave = 6;
-        this.isMouseDown = false;
         this.isRendered = false;
-        
         this.noteDisplay = null;
         this.freqDisplay = null;
         this.octaveDisplay = null;
@@ -21,69 +17,56 @@ class KeyboardRenderer {
 
     init(audioEngine) {
         console.log('🎹 KeyboardRenderer.init() dipanggil');
-        
         this.audioEngine = audioEngine;
         this.container = document.getElementById('keyboard');
         this.noteDisplay = document.getElementById('currentNote');
         this.freqDisplay = document.getElementById('currentFreq');
         this.octaveDisplay = document.getElementById('currentOctave');
         
-        // Cek apakah container ditemukan
         if (!this.container) {
             console.error('❌ Container keyboard tidak ditemukan!');
             return;
         }
         
-        console.log('✅ Container keyboard ditemukan:', this.container);
-        
-        // Render keyboard
+        console.log('✅ Container ditemukan, mulai render...');
         this.render();
         this.bindEvents();
         this.updateDisplay(null, null, null);
-        
-        console.log('✅ Keyboard siap (C2 - D6, 20 nada/oktaf)');
+        console.log('✅ Keyboard siap!');
     }
 
     render() {
         if (!this.container) {
-            console.warn('⚠️ Container keyboard tidak ditemukan!');
+            console.error('❌ render() - container tidak ditemukan');
             return;
         }
         
-        console.log('🎹 render() dipanggil, merender ' + (window.getAllNotes ? window.getAllNotes().length : '?') + ' tuts');
+        console.log('🎹 render() dipanggil');
         
         // Kosongkan container
         this.container.innerHTML = '';
         this.keyElements = {};
         this.activeKeys.clear();
         
-        // Dapatkan semua nada dari C2 sampai D6
+        // Dapatkan semua nada
         let allNotes = [];
         if (typeof window.getAllNotes === 'function') {
             allNotes = window.getAllNotes();
         } else {
-            // Fallback jika fungsi tidak tersedia
-            console.warn('⚠️ getAllNotes tidak tersedia, menggunakan data manual');
-            const NOTES_20 = ['E','E#','F','F#','G','G#','H','H#','I','J','J#','K','K#','A','A#','B','B#','C','C#','D'];
-            for (let oct = 2; oct <= 6; oct++) {
-                for (const note of NOTES_20) {
-                    const fullName = note + oct;
-                    if (window.FREQ_MAP && window.FREQ_MAP[fullName] !== undefined) {
-                        allNotes.push(fullName);
-                    }
-                }
-            }
-        }
-        
-        if (allNotes.length === 0) {
-            console.error('❌ Tidak ada nada yang ditemukan!');
-            this.container.innerHTML = '<p style="color:#8899aa;padding:20px;text-align:center;">⚠️ Gagal memuat keyboard. Silakan refresh halaman.</p>';
+            console.error('❌ getAllNotes tidak tersedia!');
+            this.container.innerHTML = '<p style="color:#e94560;padding:20px;">Error: getAllNotes tidak tersedia</p>';
             return;
         }
         
-        console.log('✅ Jumlah tuts: ' + allNotes.length);
+        if (!allNotes || allNotes.length === 0) {
+            console.error('❌ Tidak ada nada ditemukan!');
+            this.container.innerHTML = '<p style="color:#e94560;padding:20px;">Error: Tidak ada data nada</p>';
+            return;
+        }
         
-        // Buat wrapper keyboard
+        console.log('✅ ' + allNotes.length + ' tuts akan dirender');
+        
+        // Buat wrapper
         const wrapper = document.createElement('div');
         wrapper.className = 'keyboard-flex';
         wrapper.style.cssText = `
@@ -91,11 +74,11 @@ class KeyboardRenderer {
             gap: 2px;
             padding: 8px;
             min-width: max-content;
-            position: relative;
             background: #1a1a2e;
             border-radius: 10px;
             border: 2px solid #2a3a5e;
             overflow-x: auto;
+            margin: 0 auto;
         `;
         
         // Buat setiap tuts
@@ -125,16 +108,15 @@ class KeyboardRenderer {
                     border: 1px solid #ccc;
                     border-radius: 0 0 6px 6px;
                     cursor: pointer;
-                    position: relative;
                     display: flex;
                     flex-direction: column;
                     align-items: center;
                     justify-content: flex-end;
                     padding-bottom: 10px;
-                    transition: all 0.08s ease;
-                    user-select: none;
                     z-index: 1;
                     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                    transition: all 0.08s ease;
+                    user-select: none;
                 `;
             } else {
                 key.style.cssText = `
@@ -144,7 +126,6 @@ class KeyboardRenderer {
                     border: 1px solid #111;
                     border-radius: 0 0 6px 6px;
                     cursor: pointer;
-                    position: relative;
                     display: flex;
                     flex-direction: column;
                     align-items: center;
@@ -153,9 +134,9 @@ class KeyboardRenderer {
                     margin-left: -11px;
                     margin-right: -11px;
                     z-index: 2;
+                    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
                     transition: all 0.08s ease;
                     user-select: none;
-                    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
                 `;
             }
             
@@ -172,27 +153,22 @@ class KeyboardRenderer {
             `;
             key.appendChild(label);
             
-            // Tooltip dengan frekuensi
+            // Title
             const freqFormatted = window.formatFrequency ? window.formatFrequency(freq) : freq.toFixed(5);
             key.title = `${noteName} - ${freqFormatted} Hz`;
             
-            // Event listeners
+            // Events
             key.addEventListener('mousedown', (e) => {
                 e.preventDefault();
                 this.activateKey(key);
-                this.isMouseDown = true;
             });
             
             key.addEventListener('mouseup', () => {
                 this.deactivateKey(key);
-                this.isMouseDown = false;
             });
             
             key.addEventListener('mouseleave', () => {
-                if (this.isMouseDown) {
-                    this.deactivateKey(key);
-                    this.isMouseDown = false;
-                }
+                this.deactivateKey(key);
             });
             
             key.addEventListener('touchstart', (e) => {
@@ -212,7 +188,6 @@ class KeyboardRenderer {
         this.container.appendChild(wrapper);
         this.addOctaveLabels();
         this.isRendered = true;
-        
         console.log('✅ Keyboard selesai dirender!');
     }
 
@@ -232,14 +207,10 @@ class KeyboardRenderer {
             margin-top: 4px;
         `;
         
-        for (let octave = this.startOctave; octave <= this.endOctave; octave++) {
+        for (let octave = 2; octave <= 6; octave++) {
             const label = document.createElement('span');
             label.textContent = `Oktaf ${octave}`;
-            label.style.cssText = `
-                color: #556677;
-                font-weight: 600;
-                letter-spacing: 0.5px;
-            `;
+            label.style.cssText = `color: #556677; font-weight: 600; letter-spacing: 0.5px;`;
             labelsWrapper.appendChild(label);
         }
         
@@ -290,7 +261,6 @@ class KeyboardRenderer {
             }
         });
         
-        // Octave selector
         const octaveSelect = document.getElementById('octaveSelect');
         if (octaveSelect) {
             octaveSelect.addEventListener('change', () => {
@@ -305,14 +275,14 @@ class KeyboardRenderer {
         const noteName = key.dataset.note;
         const freq = parseFloat(key.dataset.freq);
         const octave = key.dataset.octave;
+        const isWhite = key.dataset.isWhite === 'true';
         
-        // Visual - warna emas saat aktif
+        // Visual
         key.style.background = '#ffd700';
         key.style.borderColor = '#f5a623';
         key.style.boxShadow = '0 0 30px rgba(255,215,0,0.5)';
         key.style.transform = 'scale(0.95)';
         
-        // Mainkan suara
         if (this.audioEngine && freq > 0) {
             this.audioEngine.playNote(noteName, freq, 0.8);
         }
@@ -329,7 +299,6 @@ class KeyboardRenderer {
         const noteName = key.dataset.note;
         const isWhite = key.dataset.isWhite === 'true';
         
-        // Kembalikan warna asli
         if (isWhite) {
             key.style.background = '#f0f0f0';
             key.style.borderColor = '#ccc';
@@ -350,45 +319,12 @@ class KeyboardRenderer {
         }
     }
 
-    deactivateAll() {
-        Object.keys(this.keyElements).forEach(noteName => {
-            const key = this.keyElements[noteName];
-            if (key) {
-                const isWhite = key.dataset.isWhite === 'true';
-                key.style.background = isWhite ? '#f0f0f0' : '#222';
-                key.style.borderColor = isWhite ? '#ccc' : '#111';
-                key.style.transform = '';
-                key.style.boxShadow = '';
-            }
-        });
-        
-        if (this.audioEngine) {
-            this.audioEngine.stopAll();
-        }
-        
-        this.activeKeys.clear();
-        this.updateDisplay(null, null, null);
-    }
-
     updateDisplay(noteName, freq, octave) {
         if (this.noteDisplay) this.noteDisplay.textContent = noteName || '-';
         if (this.freqDisplay) this.freqDisplay.textContent = freq || '-';
         if (this.octaveDisplay) this.octaveDisplay.textContent = octave || '-';
     }
-
-    setOctave(octave) {
-        this.currentOctave = Math.max(this.startOctave, Math.min(this.endOctave, octave));
-        const octaveSelect = document.getElementById('octaveSelect');
-        if (octaveSelect) octaveSelect.value = this.currentOctave;
-    }
-    
-    // Method untuk re-render jika diperlukan
-    reRender() {
-        console.log('🔄 Re-render keyboard...');
-        this.render();
-    }
 }
 
-if (typeof window !== 'undefined') {
-    window.KeyboardRenderer = KeyboardRenderer;
-}
+window.KeyboardRenderer = KeyboardRenderer;
+console.log('✅ keyboard.js loaded');
