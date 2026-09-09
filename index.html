@@ -31,9 +31,7 @@
         }
         body { font-family: var(--font-family); background: var(--bg-app); color: var(--text-primary); min-height: 100vh; }
         
-        /* ============================================================
-           LANDING PAGE
-           ============================================================ */
+        /* LANDING PAGE */
         #landing-page {
             position: fixed; top:0; left:0; width:100%; height:100%;
             background: #0a0e17;
@@ -53,9 +51,7 @@
         #btnMulai:active { transform:scale(0.96); }
         #landing-page .landing-version { margin-top:2rem; font-size:0.75rem; color:#556677; }
         
-        /* ============================================================
-           SPLASH SCREEN
-           ============================================================ */
+        /* SPLASH */
         #splash-screen {
             position: fixed; top:0; left:0; width:100%; height:100%;
             background:#0a0e17; z-index:999998;
@@ -70,15 +66,11 @@
         #splash-screen .loader-bar { height:100%; width:0%; background:linear-gradient(90deg,#0F3460,#2196F3); border-radius:4px; transition:width 0.15s linear; }
         #splash-screen .splash-version { color:#556677; font-size:0.75rem; margin-top:0.5rem; }
         
-        /* ============================================================
-           APP
-           ============================================================ */
+        /* APP */
         #app { display:none; flex-direction:column; min-height:100vh; }
         #app.show { display:flex !important; }
         
-        /* ============================================================
-           HEADER
-           ============================================================ */
+        /* HEADER */
         .app-header { display:flex; align-items:center; justify-content:space-between; padding:0.5rem 1rem; background:var(--bg-card); border-bottom:1px solid var(--border-color); flex-wrap:wrap; gap:0.5rem; min-height:var(--header-height); position:sticky; top:0; z-index:100; }
         .header-left { display:flex; align-items:center; gap:10px; }
         .header-logo { width:36px; height:36px; }
@@ -90,9 +82,7 @@
         .tab-btn.active { background:var(--color-primary); color:white; }
         .menu-toggle { display:none; background:none; border:none; color:var(--text-secondary); font-size:1.5rem; cursor:pointer; }
         
-        /* ============================================================
-           CONTENT
-           ============================================================ */
+        /* CONTENT */
         .content-wrapper { display:flex; flex:1; overflow:hidden; }
         .sidebar { width:var(--sidebar-width); background:var(--bg-sidebar); border-right:1px solid var(--border-color); padding:1rem 0.5rem; flex-shrink:0; overflow-y:auto; display:flex; flex-direction:column; }
         .sidebar-nav { display:flex; flex-direction:column; gap:2px; flex:1; }
@@ -107,9 +97,7 @@
         .tab-header h2 { font-size:1.3rem; font-weight:700; }
         .tab-header p { color:var(--text-secondary); font-size:0.85rem; }
         
-        /* ============================================================
-           BUTTONS
-           ============================================================ */
+        /* BUTTONS */
         .btn { display:inline-flex; align-items:center; gap:6px; padding:0.4rem 0.8rem; border:none; border-radius:6px; font-family:var(--font-family); font-size:0.8rem; font-weight:600; cursor:pointer; transition:all 0.2s; touch-action:manipulation; }
         .btn:active { transform:scale(0.96); }
         .btn-primary { background:var(--color-secondary); color:white; }
@@ -118,7 +106,7 @@
         .btn-sm { padding:0.2rem 0.6rem; font-size:0.7rem; }
         
         /* ============================================================
-           KEYBOARD STYLES - FLEXBOX
+           KEYBOARD STYLES - YANG PALING PENTING
            ============================================================ */
         #keyboard-container {
             background: var(--bg-card);
@@ -130,7 +118,7 @@
         }
 
         #keyboard {
-            display: flex;
+            display: flex !important;
             gap: 2px;
             padding: 4px;
             min-width: max-content;
@@ -148,24 +136,29 @@
             user-select: none;
             position: relative;
             touch-action: manipulation;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
         }
 
+        /* Tuts PUTIH */
         .key-white {
             flex: 0 0 30px;
             height: 140px;
             background: #f0f0f0;
             border: 1px solid #ccc;
             border-radius: 0 0 6px 6px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-end;
             padding-bottom: 8px;
             z-index: 1;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        .key-white:hover { background: #ffffff; border-color: #999; }
+        .key-white:hover {
+            background: #ffffff;
+            border-color: #999;
+        }
+
         .key-white.active {
             background: #ffd700 !important;
             transform: scale(0.95);
@@ -173,16 +166,13 @@
             border-color: #f5a623;
         }
 
+        /* Tuts HITAM */
         .key-black {
             flex: 0 0 18px;
             height: 85px;
             background: #222;
             border: 1px solid #111;
             border-radius: 0 0 6px 6px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-end;
             padding-bottom: 4px;
             margin-left: -9px;
             margin-right: -9px;
@@ -190,7 +180,11 @@
             box-shadow: 0 2px 6px rgba(0,0,0,0.4);
         }
 
-        .key-black:hover { background: #333; border-color: #444; }
+        .key-black:hover {
+            background: #333;
+            border-color: #444;
+        }
+
         .key-black.active {
             background: #ffd700 !important;
             transform: scale(0.95);
@@ -207,9 +201,17 @@
             line-height: 1.2;
         }
 
-        .key-black .key-label { color: #888; font-size: 0.45rem; }
-        .key-white .key-label { color: #333; font-size: 0.5rem; }
+        .key-black .key-label {
+            color: #888;
+            font-size: 0.45rem;
+        }
 
+        .key-white .key-label {
+            color: #333;
+            font-size: 0.5rem;
+        }
+
+        /* Keyboard Info */
         .keyboard-info {
             padding: 0.5rem 0.75rem;
             background: var(--bg-card);
@@ -222,7 +224,9 @@
             margin-top: 0.5rem;
         }
 
-        .keyboard-info strong { color: var(--color-amber); }
+        .keyboard-info strong {
+            color: var(--color-amber);
+        }
 
         .pitch-display {
             display: flex;
@@ -236,7 +240,9 @@
             margin-top: 0.5rem;
         }
 
-        .pitch-display strong { color: var(--color-amber); }
+        .pitch-display strong {
+            color: var(--color-amber);
+        }
 
         .keyboard-controls {
             display: flex;
@@ -278,10 +284,9 @@
             font-size: 0.8rem;
         }
 
-        /* ============================================================
-           RESPONSIVE KEYBOARD
-           ============================================================ */
+        /* RESPONSIVE KEYBOARD */
         @media (max-width: 768px) {
+            #keyboard { gap: 1px; }
             .key-white { flex: 0 0 24px; height: 110px; }
             .key-black { flex: 0 0 16px; height: 70px; margin-left: -8px; margin-right: -8px; }
             .key-label { font-size: 0.4rem; }
@@ -293,15 +298,14 @@
             .key-label { font-size: 0.35rem; }
         }
 
-        /* ============================================================
-           COMPOSER, PARTITUR, DASHBOARD, TUTORIAL, ABOUT, FOOTER
-           ============================================================ */
+        /* COMPOSER */
         .composer-controls { display:flex; flex-wrap:wrap; gap:0.75rem; align-items:flex-end; padding:0.75rem; background:var(--bg-card); border-radius:12px; border:1px solid var(--border-color); margin-bottom:0.75rem; }
         .composition-display { padding:0.75rem; background:var(--bg-card); border-radius:12px; border:1px solid var(--border-color); min-height:100px; }
         .composition-notes { font-family:monospace; font-size:1rem; padding:0.5rem; background:var(--bg-input); border-radius:6px; min-height:50px; word-wrap:break-word; line-height:1.8; }
         .composition-notes .placeholder { color:var(--text-muted); font-style:italic; }
         .composition-stats { display:flex; gap:1rem; margin-top:0.5rem; font-size:0.8rem; color:var(--text-secondary); }
         
+        /* PARTITUR */
         .partitur-toolbar { display:flex; flex-wrap:wrap; gap:4px; padding:0.5rem; background:var(--bg-sidebar); border-radius:12px; border:1px solid var(--border-color); margin-bottom:0.75rem; }
         .partitur-editor { background:var(--bg-card); border-radius:12px; border:1px solid var(--border-color); padding:0.75rem; margin-bottom:0.75rem; }
         .partitur-header-info { display:flex; flex-wrap:wrap; gap:0.5rem; margin-bottom:0.75rem; }
@@ -315,6 +319,7 @@
         .partitur-preview { background:var(--bg-card); border-radius:12px; border:1px solid var(--border-color); padding:0.75rem; }
         .preview-content { padding:0.5rem; background:var(--bg-input); border-radius:6px; min-height:40px; font-family:monospace; font-size:1rem; border:1px solid var(--border-color); }
         
+        /* DASHBOARD */
         .dashboard-container { display:grid; grid-template-columns:1fr; gap:0.75rem; }
         .dashboard-card { background:var(--bg-card); border-radius:12px; border:1px solid var(--border-color); overflow:hidden; }
         .card-header { display:flex; align-items:center; gap:8px; padding:0.5rem 0.75rem; background:var(--bg-sidebar); border-bottom:1px solid var(--border-color); }
@@ -330,6 +335,7 @@
         .trainer-modules .module-item { display:flex; justify-content:space-between; padding:0.15rem 0; font-size:0.8rem; }
         .module-progress { color:var(--color-secondary); }
         
+        /* TUTORIAL & ABOUT */
         .tutorial-container { background:var(--bg-card); border-radius:12px; border:1px solid var(--border-color); padding:1rem; }
         .tutorial-container .tutorial-note { background:var(--bg-sidebar); padding:0.5rem 0.75rem; border-radius:6px; border-left:3px solid var(--color-secondary); margin:0.5rem 0; }
         .about-container { max-width:100%; }
@@ -340,11 +346,10 @@
         .about-item p { font-size:0.75rem; color:var(--text-secondary); }
         .about-credits { text-align:center; padding:0.75rem; background:var(--bg-card); border-radius:12px; border:1px solid var(--border-color); font-size:0.8rem; color:var(--text-muted); }
         
+        /* FOOTER */
         .app-footer { padding:0.5rem 1rem; background:var(--bg-card); border-top:1px solid var(--border-color); font-size:0.65rem; color:var(--text-muted); text-align:center; }
         
-        /* ============================================================
-           RESPONSIVE
-           ============================================================ */
+        /* RESPONSIVE */
         @media (max-width:768px) {
             .app-header { padding:0.3rem 0.5rem; flex-wrap:wrap; }
             .header-left { flex:1; }
@@ -372,7 +377,520 @@
     </style>
 </head>
 <body>
-    <!-- ===== HTML di sini sama seperti sebelumnya ===== -->
-    ...
+    <!-- LANDING PAGE -->
+    <div id="landing-page">
+        <div class="landing-content">
+            <div class="landing-image">
+                <img src="assets/images/landing-logo.jpg" alt="TriSonic AI Studio" class="landing-logo" onerror="this.style.display='none'" />
+            </div>
+            <h1 class="landing-title">TriSonic AI Studio</h1>
+            <p class="landing-subtitle">Eksplorasi Harmoni Tanpa Batas</p>
+            <p class="landing-description">A 20-Note Microtonal Ecosystem Powered by Multi-Agent AI for Musicians</p>
+            <button id="btnMulai">🚀 Mulai</button>
+            <p class="landing-version">v2.0.0</p>
+        </div>
+    </div>
+
+    <!-- SPLASH SCREEN -->
+    <div id="splash-screen">
+        <div class="splash-content">
+            <svg class="splash-logo" viewBox="0 0 200 200">
+                <defs>
+                    <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#0F3460" />
+                        <stop offset="100%" style="stop-color:#2196F3" />
+                    </linearGradient>
+                    <linearGradient id="greenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#2E7D32" />
+                        <stop offset="100%" style="stop-color:#4CAF50" />
+                    </linearGradient>
+                    <linearGradient id="magentaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#C2185B" />
+                        <stop offset="100%" style="stop-color:#E91E63" />
+                    </linearGradient>
+                </defs>
+                <path d="M 120 60 C 160 60, 180 90, 150 130 C 120 170, 60 160, 30 120 C 10 90, 30 50, 60 40" fill="none" stroke="#0F3460" stroke-width="12" stroke-linecap="round" />
+                <polygon points="50,60 90,140 10,140" fill="url(#blueGrad)" />
+                <rect x="80" y="70" width="70" height="70" rx="15" fill="url(#greenGrad)" />
+                <circle cx="145" cy="135" r="40" fill="url(#magentaGrad)" />
+            </svg>
+            <h1 class="splash-title">TriSonic AI Studio</h1>
+            <p class="splash-tagline">Eksplorasi Harmoni Tanpa Batas</p>
+            <p class="splash-sub">20-Note Microtonal Ecosystem · Multi-Agent AI</p>
+            <div class="splash-loader"><div class="loader-bar" id="loaderBar"></div></div>
+            <p class="splash-version">v2.0.0</p>
+        </div>
+    </div>
+    
+    <!-- MAIN APP -->
+    <div id="app">
+        <!-- HEADER -->
+        <header class="app-header">
+            <div class="header-left">
+                <svg class="header-logo" viewBox="0 0 200 200" width="36" height="36">
+                    <defs>
+                        <linearGradient id="blueGradH" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#0F3460" />
+                            <stop offset="100%" style="stop-color:#2196F3" />
+                        </linearGradient>
+                        <linearGradient id="greenGradH" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#2E7D32" />
+                            <stop offset="100%" style="stop-color:#4CAF50" />
+                        </linearGradient>
+                        <linearGradient id="magentaGradH" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#C2185B" />
+                            <stop offset="100%" style="stop-color:#E91E63" />
+                        </linearGradient>
+                    </defs>
+                    <polygon points="50,60 90,140 10,140" fill="url(#blueGradH)" />
+                    <rect x="80" y="70" width="70" height="70" rx="15" fill="url(#greenGradH)" />
+                    <circle cx="145" cy="135" r="40" fill="url(#magentaGradH)" />
+                </svg>
+                <span class="app-title">TriSonic AI Studio</span>
+            </div>
+            <nav class="tab-nav" id="tabNav">
+                <button class="tab-btn active" data-tab="keyboard">🎹 Keyboard</button>
+                <button class="tab-btn" data-tab="composer">🤖 AI Composer</button>
+                <button class="tab-btn" data-tab="partitur">📝 Partitur</button>
+                <button class="tab-btn" data-tab="dashboard">📊 Dashboard</button>
+                <button class="tab-btn" data-tab="tutorial">📚 Tutorial</button>
+                <button class="tab-btn" data-tab="about">ℹ️ About</button>
+            </nav>
+            <button class="menu-toggle" id="menuToggle">☰</button>
+        </header>
+        
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+            <div class="content-wrapper">
+                <!-- SIDEBAR -->
+                <aside class="sidebar" id="sidebar">
+                    <nav class="sidebar-nav">
+                        <button class="sidebar-btn active" data-tab="keyboard">🎹 Keyboard</button>
+                        <button class="sidebar-btn" data-tab="composer">🤖 AI Composer</button>
+                        <button class="sidebar-btn" data-tab="partitur">📝 Partitur</button>
+                        <button class="sidebar-btn" data-tab="dashboard">📊 Dashboard</button>
+                        <button class="sidebar-btn" data-tab="tutorial">📚 Tutorial</button>
+                        <button class="sidebar-btn" data-tab="about">ℹ️ About</button>
+                    </nav>
+                    <div class="sidebar-footer">
+                        <p class="sidebar-version">TriSonic v2.0</p>
+                        <p class="sidebar-credit">20-Note Microtonal Ecosystem</p>
+                    </div>
+                </aside>
+                
+                <!-- CONTENT AREA -->
+                <section class="content-area" id="contentArea">
+                    
+                    <!-- ===== TAB 1: KEYBOARD ===== -->
+                    <div class="tab-content active" id="tab-keyboard">
+                        <div class="tab-header">
+                            <h2>🎹 Keyboard 20 Nada</h2>
+                            <p>Eksplorasi harmoni mikrotonal dengan 20 nada per oktaf (5 Oktaf: C2 - D6)</p>
+                        </div>
+                        <div id="keyboard-container">
+                            <div id="keyboard">
+                                <p style="color:#8899aa;padding:40px;text-align:center;width:100%;">⏳ Memuat keyboard...</p>
+                            </div>
+                        </div>
+                        <div class="keyboard-controls">
+                            <div class="control-group">
+                                <label>Volume</label>
+                                <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="0.7" />
+                            </div>
+                            <div class="control-group">
+                                <label>Reverb</label>
+                                <input type="range" id="reverbControl" min="0" max="1" step="0.01" value="0.3" />
+                            </div>
+                            <div class="control-group">
+                                <label>Waveform</label>
+                                <select id="waveformSelect">
+                                    <option value="sine">Sine</option>
+                                    <option value="square">Square</option>
+                                    <option value="sawtooth">Sawtooth</option>
+                                    <option value="triangle">Triangle</option>
+                                </select>
+                            </div>
+                            <div class="control-group">
+                                <label>Oktaf (Keyboard QWERTY)</label>
+                                <select id="octaveSelect">
+                                    <option value="2">Oktaf 2</option>
+                                    <option value="3">Oktaf 3</option>
+                                    <option value="4" selected>Oktaf 4</option>
+                                    <option value="5">Oktaf 5</option>
+                                    <option value="6">Oktaf 6</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="pitch-display">
+                            <span>Nada: <strong id="currentNote">-</strong></span>
+                            <span>Frekuensi: <strong id="currentFreq">-</strong> Hz</span>
+                            <span>Oktaf: <strong id="currentOctave">-</strong></span>
+                        </div>
+                        <div class="keyboard-info">
+                            <p>🎵 20 Nada per Oktaf | A4 = 440 Hz | <strong style="color:#FFC107;">Rasio: 3^(1/20) ≈ 1.056467</strong></p>
+                            <p><strong style="color:#FFC107;">Skala Mayor:</strong> E E# F F# G G# H H# I J J# K K# A A# B B# C C# D</p>
+                            <p style="font-size:0.65rem;color:#8899aa;">
+                                🟦 Tuts PUTIH: E, F, G, H, I, J, K, A, B, C, D &nbsp;|&nbsp; 
+                                ⬛ Tuts HITAM: E#, F#, G#, H#, J#, K#, A#, B#, C#
+                            </p>
+                            <p style="font-size:0.6rem;color:#556677;">
+                                📌 Tuts pertama: <strong style="color:#FFC107;">C2</strong> (PUTIH) | Tuts terakhir: <strong style="color:#FFC107;">D6</strong> (PUTIH)
+                            </p>
+                            <p style="font-size:0.6rem;color:#556677;">
+                                📌 <strong>I</strong> dan <strong>J</strong> adalah dua tuts PUTIH berurutan (tanpa hitam di antaranya)
+                            </p>
+                            <p>💡 Gunakan mouse/touch untuk klik tuts | Keyboard QWERTY: Q-W-E-R-T-Y-U-I-O-P-A-S-D-F-G-H-J-K-L-;</p>
+                        </div>
+                    </div>
+                    
+                    <!-- ===== TAB 2: AI COMPOSER ===== -->
+                    <div class="tab-content" id="tab-composer">
+                        <div class="tab-header">
+                            <h2>🤖 AI Composer</h2>
+                            <p>Buat melodi otomatis dengan kecerdasan buatan</p>
+                        </div>
+                        <div class="composer-container">
+                            <div class="composer-controls">
+                                <div class="control-group">
+                                    <label>Genre</label>
+                                    <select id="composerGenre">
+                                        <option value="classical">Klasik</option>
+                                        <option value="jazz">Jazz</option>
+                                        <option value="ambient">Ambient</option>
+                                        <option value="ethnic">Etnik</option>
+                                        <option value="experimental">Eksperimental</option>
+                                    </select>
+                                </div>
+                                <div class="control-group">
+                                    <label>Panjang Nada</label>
+                                    <input type="number" id="composerLength" value="8" min="4" max="32" />
+                                </div>
+                                <div class="control-group">
+                                    <label>Tempo (BPM)</label>
+                                    <input type="number" id="composerTempo" value="120" min="60" max="200" />
+                                </div>
+                                <button class="btn btn-primary" id="composeBtn">🎵 Komposisi</button>
+                                <button class="btn btn-secondary" id="playCompositionBtn">▶️ Putar</button>
+                                <button class="btn btn-danger" id="stopCompositionBtn">⏹️ Stop</button>
+                            </div>
+                            <div class="composition-display">
+                                <h3>Hasil Komposisi</h3>
+                                <div class="composition-notes" id="compositionNotes">
+                                    <p class="placeholder">Tekan "Komposisi" untuk menghasilkan melodi...</p>
+                                </div>
+                                <div class="composition-stats">
+                                    <span>Nada: <strong id="compNoteCount">0</strong></span>
+                                    <span>Durasi: <strong id="compDuration">0</strong> detik</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- ===== TAB 3: PARTITUR ===== -->
+                    <div class="tab-content" id="tab-partitur">
+                        <div class="tab-header">
+                            <h2>📝 Editor Partitur Notasi Angka</h2>
+                            <p>Simpan, buka, dan edit partitur notasi angka (20 Nada per Oktaf)</p>
+                        </div>
+                        <div class="partitur-container">
+                            <div class="partitur-toolbar">
+                                <button class="btn btn-primary" id="newScoreBtn">📄 Baru</button>
+                                <button class="btn btn-secondary" id="saveScoreBtn">💾 Simpan</button>
+                                <button class="btn btn-secondary" id="loadScoreBtn">📂 Buka</button>
+                                <button class="btn btn-secondary" id="exportScoreBtn">📤 Export</button>
+                                <button class="btn btn-secondary" id="printScoreBtn">🖨️ Cetak</button>
+                                <input type="file" id="scoreFileInput" accept=".json,.txt" style="display:none;" />
+                            </div>
+                            <div class="partitur-editor">
+                                <div class="partitur-header-info">
+                                    <input type="text" id="scoreTitle" placeholder="Judul" value="Komposisi Baru" />
+                                    <input type="text" id="scoreComposer" placeholder="Komposer" value="TriSonic AI" />
+                                    <input type="text" id="scoreTempo" placeholder="Tempo" value="120 BPM" />
+                                </div>
+                                <div class="partitur-notation" id="partiturNotation">
+                                    <div class="notation-line">
+                                        <span class="notation-clef">♩</span>
+                                        <span class="notation-notes" id="notationNotes">1 2 3 4 5 6 7 1'</span>
+                                    </div>
+                                    <div class="notation-controls">
+                                        <div class="note-input-group">
+                                            <button class="note-btn" data-note="1">1</button>
+                                            <button class="note-btn" data-note="2">2</button>
+                                            <button class="note-btn" data-note="3">3</button>
+                                            <button class="note-btn" data-note="4">4</button>
+                                            <button class="note-btn" data-note="5">5</button>
+                                            <button class="note-btn" data-note="6">6</button>
+                                            <button class="note-btn" data-note="7">7</button>
+                                            <button class="note-btn" data-note="8">8</button>
+                                            <button class="note-btn" data-note="9">9</button>
+                                            <button class="note-btn" data-note="10">10</button>
+                                            <button class="note-btn" data-note="11">11</button>
+                                            <button class="note-btn" data-note="1'">1'</button>
+                                            <button class="note-btn" data-note="♯">♯</button>
+                                            <button class="note-btn" data-note="♭">♭</button>
+                                            <button class="note-btn" data-note=" ">␣</button>
+                                            <button class="note-btn" data-note="|">|</button>
+                                            <button class="note-btn" data-note="||">||</button>
+                                        </div>
+                                        <button class="btn btn-sm btn-secondary" id="clearNotationBtn">Clear</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="partitur-preview" id="partiturPreview">
+                                <h4>Preview</h4>
+                                <div class="preview-content" id="previewContent">
+                                    <p class="placeholder">Notasi akan ditampilkan di sini...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- ===== TAB 4: DASHBOARD ===== -->
+                    <div class="tab-content" id="tab-dashboard">
+                        <div class="tab-header">
+                            <h2>📊 Dashboard AI</h2>
+                            <p>Simulasi Agen AI: Desain · Proses · Pasar · Pelatih</p>
+                        </div>
+                        <div class="dashboard-container">
+                            <div class="dashboard-card">
+                                <div class="card-header">
+                                    <span class="card-icon">🎨</span>
+                                    <h3>Agen AI Desain</h3>
+                                    <span class="card-status online">Online</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="design-simulator">
+                                        <svg viewBox="0 0 200 100" width="100%">
+                                            <rect x="10" y="10" width="180" height="80" rx="5" fill="#1a2332" />
+                                            <path d="M 30 50 L 50 30 L 80 60 L 110 20 L 140 70 L 170 40" stroke="#2196F3" stroke-width="2" fill="none" />
+                                            <circle cx="50" cy="30" r="4" fill="#4CAF50" />
+                                            <circle cx="80" cy="60" r="4" fill="#E91E63" />
+                                            <circle cx="110" cy="20" r="4" fill="#FFC107" />
+                                            <circle cx="140" cy="70" r="4" fill="#2196F3" />
+                                            <circle cx="170" cy="40" r="4" fill="#4CAF50" />
+                                            <text x="20" y="85" fill="#888" font-size="8">PCB Design v3.2</text>
+                                        </svg>
+                                    </div>
+                                    <div class="design-specs">
+                                        <span>Material: FR-4</span>
+                                        <span>Layer: 4</span>
+                                        <span>Optimasi: 92%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dashboard-card">
+                                <div class="card-header">
+                                    <span class="card-icon">⚙️</span>
+                                    <h3>Agen AI Proses</h3>
+                                    <span class="card-status warning">Monitoring</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="process-chart">
+                                        <svg viewBox="0 0 200 80" width="100%">
+                                            <rect x="10" y="5" width="180" height="70" rx="5" fill="#1a2332" />
+                                            <path d="M 20 50 L 40 45 L 60 55 L 80 30 L 100 50 L 120 35 L 140 60 L 160 25 L 180 40" stroke="#FFC107" stroke-width="2" fill="none" />
+                                            <line x1="20" y1="60" x2="180" y2="60" stroke="#E91E63" stroke-width="1" stroke-dasharray="4" />
+                                            <text x="20" y="72" fill="#888" font-size="7">Suhu: 72°C</text>
+                                            <text x="120" y="72" fill="#888" font-size="7">Getaran: 0.4mm</text>
+                                        </svg>
+                                    </div>
+                                    <div class="process-metrics">
+                                        <span>✅ Sistem Stabil</span>
+                                        <span>⚠️ Prediksi: 15 menit</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dashboard-card">
+                                <div class="card-header">
+                                    <span class="card-icon">📈</span>
+                                    <h3>Agen AI Pasar</h3>
+                                    <span class="card-status online">Aktif</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="market-data">
+                                        <div class="market-item"><span class="market-label">Indonesia</span><span class="market-price">Rp 2.450.000</span></div>
+                                        <div class="market-item"><span class="market-label">Malaysia</span><span class="market-price">RM 850</span></div>
+                                        <div class="market-item"><span class="market-label">Singapura</span><span class="market-price">S$ 320</span></div>
+                                        <div class="market-item"><span class="market-label">Thailand</span><span class="market-price">฿ 8.900</span></div>
+                                    </div>
+                                    <div class="market-recommendation">
+                                        <span class="rec-label">💰 Rekomendasi Harga Ekspor:</span>
+                                        <span class="rec-value">$245 USD</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dashboard-card">
+                                <div class="card-header">
+                                    <span class="card-icon">🧠</span>
+                                    <h3>Agen AI Pelatih</h3>
+                                    <span class="card-status online">Siap</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="trainer-modules">
+                                        <div class="module-item"><span>📖 Teori 20 Nada</span><span class="module-progress">80%</span></div>
+                                        <div class="module-item"><span>🎯 Kalibrasi Keyboard</span><span class="module-progress">45%</span></div>
+                                        <div class="module-item"><span>🎵 Harmoni Mikrotonal</span><span class="module-progress">30%</span></div>
+                                    </div>
+                                    <button class="btn btn-sm btn-primary" id="startTrainingBtn">Mulai Pelatihan</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- ===== TAB 5: TUTORIAL ===== -->
+                    <div class="tab-content" id="tab-tutorial">
+                        <div class="tab-header">
+                            <h2>📚 Tutorial Notasi Angka</h2>
+                            <p>Panduan lengkap notasi angka dan simbol mikrotonal 20 Nada</p>
+                        </div>
+                        <div class="tutorial-container" id="tutorialContainer">
+                            <div class="tutorial-loading">Memuat tutorial...</div>
+                        </div>
+                    </div>
+                    
+                    <!-- ===== TAB 6: ABOUT ===== -->
+                    <div class="tab-content" id="tab-about">
+                        <div class="tab-header">
+                            <h2>ℹ️ Tentang TriSonic AI Studio</h2>
+                            <p>A 20-Note Microtonal Ecosystem Powered by Multi-Agent AI</p>
+                        </div>
+                        <div class="about-container">
+                            <div class="about-card">
+                                <h3>🚀 TriSonic AI Studio</h3>
+                                <p>TriSonic AI Studio adalah platform musik mikrotonal berbasis kecerdasan buatan yang menghadirkan 20 nada per oktaf untuk eksplorasi harmoni tanpa batas.</p>
+                                <p>Dikembangkan sebagai bagian dari ekosistem AI industri untuk ASEAN.</p>
+                                <p><strong>Sistem:</strong> 12-TET 20 Nada per Oktaf | A4 = 440 Hz</p>
+                                <p><strong>Rasio:</strong> 3^(1/20) ≈ 1.056467</p>
+                            </div>
+                            <div class="about-grid">
+                                <div class="about-item"><h4>🎵 20 Nada</h4><p>Sistem mikrotonal dengan 20 interval per oktaf (60 sen per step)</p></div>
+                                <div class="about-item"><h4>🤖 Multi-Agent AI</h4><p>Agen Desain, Proses, Pasar, dan Pelatih terintegrasi</p></div>
+                                <div class="about-item"><h4>🌏 ASEAN</h4><p>Didesain untuk ekosistem kreatif dan industri ASEAN</p></div>
+                                <div class="about-item"><h4>📝 Open Source</h4><p>Kode terbuka untuk kolaborasi komunitas</p></div>
+                            </div>
+                            <div class="about-credits">
+                                <p><strong>Versi:</strong> 2.0.0</p>
+                                <p><strong>Lisensi:</strong> MIT</p>
+                                <p><strong>© 2026 TriSonic AI Studio</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </section>
+            </div>
+        </main>
+        
+        <!-- FOOTER -->
+        <footer class="app-footer">
+            <p>&copy; 2026 TriSonic AI Studio · A 20-Note Microtonal Ecosystem</p>
+        </footer>
+    </div>
+    
+    <!-- MODAL -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+    
+    <!-- ============================================ -->
+    <!-- JAVASCRIPT                                  -->
+    <!-- ============================================ -->
+    <script src="js/data/frequencies.js"></script>
+    <script src="js/audio/engine.js"></script>
+    <script src="js/audio/keyboard.js"></script>
+    <script src="js/features/aiComposer.js"></script>
+    <script src="js/features/partiturEditor.js"></script>
+    <script src="js/app.js"></script>
+    
+    <!-- LANDING PAGE HANDLER -->
+    <script>
+        (function() {
+            console.log('📄 TriSonic AI Studio dimulai...');
+            
+            var landingPage = document.getElementById('landing-page');
+            var splashScreen = document.getElementById('splash-screen');
+            var appContainer = document.getElementById('app');
+            var btnMulai = document.getElementById('btnMulai');
+            var loaderBar = document.getElementById('loaderBar');
+            
+            function showSplash() {
+                console.log('🟡 Menampilkan splash screen...');
+                if (landingPage) landingPage.classList.add('hidden');
+                if (splashScreen) splashScreen.classList.add('show');
+                
+                if (loaderBar) {
+                    loaderBar.style.width = '0%';
+                    var progress = 0;
+                    var interval = setInterval(function() {
+                        progress += Math.random() * 8 + 2;
+                        if (progress >= 100) {
+                            progress = 100;
+                            clearInterval(interval);
+                            loaderBar.style.width = '100%';
+                            setTimeout(function() {
+                                hideSplashAndShowApp();
+                            }, 500);
+                        }
+                        loaderBar.style.width = progress + '%';
+                    }, 120);
+                } else {
+                    setTimeout(hideSplashAndShowApp, 2500);
+                }
+            }
+            
+            function hideSplashAndShowApp() {
+                console.log('🟢 Menampilkan aplikasi...');
+                if (splashScreen) {
+                    splashScreen.classList.remove('show');
+                    splashScreen.style.display = 'none';
+                }
+                if (appContainer) {
+                    appContainer.classList.add('show');
+                    appContainer.style.display = 'flex';
+                }
+                console.log('✅ Aplikasi siap!');
+                
+                if (typeof initApp === 'function') {
+                    initApp();
+                }
+            }
+            
+            if (btnMulai) {
+                console.log('🔵 Tombol Mulai ditemukan');
+                var newBtn = btnMulai.cloneNode(true);
+                btnMulai.parentNode.replaceChild(newBtn, btnMulai);
+                
+                newBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('🟢 Tombol Mulai DIKLIK!');
+                    showSplash();
+                });
+                
+                newBtn.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                    console.log('🟢 Tombol Mulai DIKLIK (touch)!');
+                    showSplash();
+                }, { passive: false });
+                
+                console.log('✅ Event listener tombol Mulai terpasang!');
+            } else {
+                console.error('❌ Tombol Mulai TIDAK DITEMUKAN!');
+            }
+            
+            setTimeout(function() {
+                var btn = document.getElementById('btnMulai');
+                if (btn) {
+                    btn.addEventListener('click', function(e) {
+                        console.log('🟢 Tombol Mulai DIKLIK (fallback)!');
+                        showSplash();
+                    });
+                }
+            }, 1000);
+            
+        })();
+    </script>
 </body>
 </html>
