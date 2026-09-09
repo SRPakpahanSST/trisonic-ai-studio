@@ -5,7 +5,7 @@
 // ================================================================
 
 // ================================================================
-// URUTAN NADA YANG BENAR (1 OKTAF)
+// URUTAN NADA 20 PER OKTAF (SKALA MAYOR E)
 // ================================================================
 // Index:  0    1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16   17   18   19
 // Nada:   E   E#    F   F#    G   G#    H   H#    I    J   J#    K   K#    A   A#    B   B#    C   C#    D
@@ -134,7 +134,6 @@ function getFrequencyFromNote(noteName) {
 
 function getAllNotes() {
     var allNotes = [];
-    // Mulai dari oktaf 3 (E3) sampai oktaf 6 (D6)
     for (var oct = 3; oct <= 6; oct++) {
         for (var i = 0; i < NOTES_20.length; i++) {
             var fullName = NOTES_20[i] + oct;
@@ -160,7 +159,6 @@ window.getFrequencyFromNote = getFrequencyFromNote;
 window.getAllNotes = getAllNotes;
 window.formatFrequency = formatFrequency;
 
-console.log('✅ frequencies.js loaded, ' + getAllNotes().length + ' notes');
-console.log('✅ Nada pertama: ' + getAllNotes()[0] + ' (E3 - PUTIH)');
-console.log('✅ Nada kedua: ' + getAllNotes()[1] + ' (E#3 - HITAM)');
-console.log('✅ Nada terakhir: ' + getAllNotes()[getAllNotes().length - 1] + ' (D6 - PUTIH)');
+console.log('✅ frequencies.js loaded');
+console.log('✅ Total nada: ' + getAllNotes().length + ' notes');
+console.log('✅ Urutan: ' + NOTES_20.join(' - '));
