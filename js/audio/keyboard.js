@@ -1,6 +1,5 @@
 // ================================================================
 // keyboard.js - Render Keyboard 20 Nada (C2 - D6)
-// Tuts pertama: C2 (PUTIH), Tuts terakhir: D6 (PUTIH)
 // ================================================================
 
 function KeyboardRenderer() {
@@ -82,9 +81,7 @@ KeyboardRenderer.prototype.render = function() {
         var octave = match[2];
         var index = window.getNoteIndex ? window.getNoteIndex(note) : 0;
         
-        // Tuts PUTIH = index genap (0,2,4,6,8,10,12,14,16,18)
-        // Tuts HITAM = index ganjil (1,3,5,7,9,11,13,15,17,19)
-        // C2 = index 17 (PUTIH), C#2 = index 18 (HITAM), D2 = index 19 (PUTIH)
+        // Tuts PUTIH = index genap, Tuts HITAM = index ganjil
         var isWhite = (index % 2 === 0);
         
         var key = document.createElement('div');
