@@ -20,11 +20,21 @@ class KeyboardRenderer {
     }
 
     init(audioEngine) {
+        console.log('🎹 KeyboardRenderer.init() dipanggil');
+        
         this.audioEngine = audioEngine;
         this.container = document.getElementById('keyboard');
         this.noteDisplay = document.getElementById('currentNote');
         this.freqDisplay = document.getElementById('currentFreq');
         this.octaveDisplay = document.getElementById('currentOctave');
+        
+        // Cek apakah container ditemukan
+        if (!this.container) {
+            console.error('❌ Container keyboard tidak ditemukan!');
+            return;
+        }
+        
+        console.log('✅ Container keyboard ditemukan:', this.container);
         
         // Render keyboard
         this.render();
@@ -40,18 +50,40 @@ class KeyboardRenderer {
             return;
         }
         
+        console.log('🎹 render() dipanggil, merender ' + (window.getAllNotes ? window.getAllNotes().length : '?') + ' tuts');
+        
+        // Kosongkan container
         this.container.innerHTML = '';
         this.keyElements = {};
         this.activeKeys.clear();
         
-        const allNotes = window.getAllNotes ? window.getAllNotes() : [];
-        console.log('🎹 Render ' + allNotes.length + ' tuts keyboard');
+        // Dapatkan semua nada dari C2 sampai D6
+        let allNotes = [];
+        if (typeof window.getAllNotes === 'function') {
+            allNotes = window.getAllNotes();
+        } else {
+            // Fallback jika fungsi tidak tersedia
+            console.warn('⚠️ getAllNotes tidak tersedia, menggunakan data manual');
+            const NOTES_20 = ['E','E#','F','F#','G','G#','H','H#','I','J','J#','K','K#','A','A#','B','B#','C','C#','D'];
+            for (let oct = 2; oct <= 6; oct++) {
+                for (const note of NOTES_20) {
+                    const fullName = note + oct;
+                    if (window.FREQ_MAP && window.FREQ_MAP[fullName] !== undefined) {
+                        allNotes.push(fullName);
+                    }
+                }
+            }
+        }
         
         if (allNotes.length === 0) {
-            this.container.innerHTML = '<p style="color:#8899aa;padding:20px;">⏳ Memuat keyboard...</p>';
+            console.error('❌ Tidak ada nada yang ditemukan!');
+            this.container.innerHTML = '<p style="color:#8899aa;padding:20px;text-align:center;">⚠️ Gagal memuat keyboard. Silakan refresh halaman.</p>';
             return;
         }
         
+        console.log('✅ Jumlah tuts: ' + allNotes.length);
+        
+        // Buat wrapper keyboard
         const wrapper = document.createElement('div');
         wrapper.className = 'keyboard-flex';
         wrapper.style.cssText = `
@@ -63,8 +95,10 @@ class KeyboardRenderer {
             background: #1a1a2e;
             border-radius: 10px;
             border: 2px solid #2a3a5e;
+            overflow-x: auto;
         `;
         
+        // Buat setiap tuts
         allNotes.forEach((noteName) => {
             const freq = window.getFrequencyFromNote ? window.getFrequencyFromNote(noteName) : 0;
             const match = noteName.match(/^([A-Z#]+)(\d+)$/);
@@ -125,6 +159,7 @@ class KeyboardRenderer {
                 `;
             }
             
+            // Label
             const label = document.createElement('span');
             label.className = 'key-label';
             label.textContent = note;
@@ -137,10 +172,11 @@ class KeyboardRenderer {
             `;
             key.appendChild(label);
             
+            // Tooltip dengan frekuensi
             const freqFormatted = window.formatFrequency ? window.formatFrequency(freq) : freq.toFixed(5);
             key.title = `${noteName} - ${freqFormatted} Hz`;
             
-            // Events
+            // Event listeners
             key.addEventListener('mousedown', (e) => {
                 e.preventDefault();
                 this.activateKey(key);
@@ -176,6 +212,8 @@ class KeyboardRenderer {
         this.container.appendChild(wrapper);
         this.addOctaveLabels();
         this.isRendered = true;
+        
+        console.log('✅ Keyboard selesai dirender!');
     }
 
     addOctaveLabels() {
@@ -252,6 +290,7 @@ class KeyboardRenderer {
             }
         });
         
+        // Octave selector
         const octaveSelect = document.getElementById('octaveSelect');
         if (octaveSelect) {
             octaveSelect.addEventListener('change', () => {
@@ -266,7 +305,6 @@ class KeyboardRenderer {
         const noteName = key.dataset.note;
         const freq = parseFloat(key.dataset.freq);
         const octave = key.dataset.octave;
-        const isWhite = key.dataset.isWhite === 'true';
         
         // Visual - warna emas saat aktif
         key.style.background = '#ffd700';
@@ -274,6 +312,7 @@ class KeyboardRenderer {
         key.style.boxShadow = '0 0 30px rgba(255,215,0,0.5)';
         key.style.transform = 'scale(0.95)';
         
+        // Mainkan suara
         if (this.audioEngine && freq > 0) {
             this.audioEngine.playNote(noteName, freq, 0.8);
         }
@@ -345,6 +384,7 @@ class KeyboardRenderer {
     
     // Method untuk re-render jika diperlukan
     reRender() {
+        console.log('🔄 Re-render keyboard...');
         this.render();
     }
 }
