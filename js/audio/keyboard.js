@@ -1,6 +1,5 @@
 // ================================================================
 // keyboard.js - Render Keyboard 20 Nada (C2 - D6)
-// Dengan tuts putih dan hitam yang benar
 // ================================================================
 
 class KeyboardRenderer {
@@ -14,7 +13,6 @@ class KeyboardRenderer {
         this.endOctave = 6;
         this.isMouseDown = false;
         
-        // Display elements
         this.noteDisplay = document.getElementById('currentNote');
         this.freqDisplay = document.getElementById('currentFreq');
         this.octaveDisplay = document.getElementById('currentOctave');
@@ -47,12 +45,7 @@ class KeyboardRenderer {
             border-radius: 8px;
         `;
         
-        // Dapatkan semua nada dari C2 sampai D6
         const allNotes = window.getAllNotes ? window.getAllNotes() : [];
-        
-        // Tentukan tuts putih dan hitam
-        // Tuts putih: index genap (0,2,4,6,8,10,12,14,16,18)
-        // Tuts hitam: index ganjil (1,3,5,7,9,11,13,15,17,19)
         
         allNotes.forEach((noteName) => {
             const freq = window.getFrequencyFromNote ? window.getFrequencyFromNote(noteName) : 0;
@@ -112,7 +105,6 @@ class KeyboardRenderer {
                 `;
             }
             
-            // Label
             const label = document.createElement('span');
             label.className = 'key-label';
             label.textContent = note;
@@ -125,7 +117,6 @@ class KeyboardRenderer {
             `;
             key.appendChild(label);
             
-            // Tooltip dengan presisi 5 angka
             const freqFormatted = window.formatFrequency ? window.formatFrequency(freq) : freq.toFixed(5);
             key.title = `${noteName} - ${freqFormatted} Hz`;
             
@@ -238,7 +229,6 @@ class KeyboardRenderer {
             }
         });
         
-        // Octave selector
         const octaveSelect = document.getElementById('octaveSelect');
         if (octaveSelect) {
             octaveSelect.addEventListener('change', () => {
@@ -255,7 +245,6 @@ class KeyboardRenderer {
         const octave = key.dataset.octave;
         const isWhite = key.dataset.isWhite === 'true';
         
-        // Visual - aktifkan dengan warna yang sesuai
         if (isWhite) {
             key.style.background = '#ffd700';
             key.style.borderColor = '#ffaa00';
@@ -267,14 +256,12 @@ class KeyboardRenderer {
         }
         key.style.transform = 'scale(0.95)';
         
-        // Audio
         if (this.audioEngine && freq > 0) {
             this.audioEngine.playNote(noteName, freq, 0.8);
         }
         
         this.activeKeys.add(noteName);
         
-        // Display dengan presisi 5 angka
         const freqFormatted = window.formatFrequency ? window.formatFrequency(freq) : freq.toFixed(5);
         this.updateDisplay(noteName, freqFormatted, octave);
     }
@@ -285,7 +272,6 @@ class KeyboardRenderer {
         const noteName = key.dataset.note;
         const isWhite = key.dataset.isWhite === 'true';
         
-        // Kembalikan warna asli
         if (isWhite) {
             key.style.background = '#f0f0f0';
             key.style.borderColor = '#ccc';
@@ -296,7 +282,6 @@ class KeyboardRenderer {
         key.style.transform = '';
         key.style.boxShadow = '';
         
-        // Audio
         if (this.audioEngine) {
             this.audioEngine.stopNote(noteName);
         }
@@ -340,7 +325,6 @@ class KeyboardRenderer {
     }
 }
 
-// Export
 if (typeof window !== 'undefined') {
     window.KeyboardRenderer = KeyboardRenderer;
 }
