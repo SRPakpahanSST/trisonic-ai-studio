@@ -85,9 +85,9 @@ function setupTabs() {
             
             // Jika tab keyboard, pastikan keyboard ter-render
             if (tabId === 'keyboard' && keyboardRenderer) {
-                // Re-render jika container kosong
                 const container = document.getElementById('keyboard');
                 if (container && container.children.length === 0) {
+                    console.log('🔄 Keyboard container kosong, re-render...');
                     keyboardRenderer.render();
                 }
             }
@@ -175,7 +175,19 @@ function displayComposition(composition) {
 
 // Panggil init setelah semua file load
 document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(initApp, 300);
+    console.log('📄 DOMContentLoaded - Memulai initApp dalam 500ms...');
+    setTimeout(initApp, 500);
+});
+
+// Juga panggil jika window sudah load
+window.addEventListener('load', () => {
+    // Jika belum diinisialisasi, init ulang
+    if (!keyboardRenderer || !keyboardRenderer.isRendered) {
+        console.log('🔄 Window load - Memastikan inisialisasi...');
+        if (typeof initApp === 'function' && !keyboardRenderer) {
+            initApp();
+        }
+    }
 });
 
 // Export untuk debugging
