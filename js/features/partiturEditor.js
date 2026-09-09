@@ -142,4 +142,91 @@ class PartiturEditor {
             timestamp: new Date().toISOString()
         };
         
-        const blob = new Blob([JSON.stringify(data, null, 2
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${this.title || 'partitur'}.trisonic.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    loadScore(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            try {
+                const data = JSON.parse(e.target.result);
+                this.notation = data.notation || '';
+                this.title = data.title || 'Komposisi Baru';
+                this.composer = data.composer || 'TriSonic AI';
+                this.tempo = data.tempo || '120 BPM';
+                if (this.titleInput) this.titleInput.value = this.title;
+                if (this.composerInput) this.composerInput.value = this.composer;
+                if (this.tempoInput) this.tempoInput.value = this.tempo;
+                this.updateDisplay();
+                this.updatePreview();
+            } catch (err) {
+                alert('Gagal memuat file: ' + err.message);
+            }
+        };
+        reader.readAsText(file);
+        event.target.value = '';
+    }
+
+    exportScore() {
+        const text = `Judul: ${this.title}\nKomposer: ${this.composer}\nTempo: ${this.tempo}\nNotasi: ${this.notation.trim()}\nSistem: 20 Nada per Oktaf (A4=440Hz)`;
+        const blob = new Blob([text], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${this.title || 'partitur'}.txt`;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    printScore() {
+        const printWindow = window.open('', '_blank', 'width=800,height=600');
+        if (!printWindow) {
+            alert('Mohon izinkan popup untuk mencetak.');
+            return;
+        }
+        
+        printWindow.document.write(`
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>${this.title}</title>
+                <style>
+                    body { font-family: Georgia, serif; padding: 40px; max-width: 700px; margin: 0 auto; }
+                    h1 { text-align: center; font-size: 24px; margin-bottom: 4px; }
+                    .composer { text-align: center; color: #666; margin-bottom: 20px; }
+                    .tempo { text-align: center; color: #888; margin-bottom: 30px; }
+                    .notation { font-size: 28px; letter-spacing: 0.15em; text-align: center; padding: 20px; background: #f5f5f5; border-radius: 8px; font-family: monospace; }
+                    .info { text-align: center; margin-top: 20px; color: #aaa; font-size: 12px; }
+                    .footer { text-align: center; margin-top: 40px; color: #aaa; font-size: 12px; }
+                    @media print { body { padding: 20px; } .no-print { display: none; } }
+                </style>
+            </head>
+            <body>
+                <h1>${this.title}</h1>
+                <div class="composer">${this.composer}</div>
+                <div class="tempo">${this.tempo}</div>
+                <div class="notation">${this.notation.trim() || '(kosong)'}</div>
+                <div class="info">Sistem 20 Nada per Oktaf · A4 = 440 Hz</div>
+                <div class="footer">TriSonic AI Studio · Partitur Notasi Angka</div>
+                <div class="no-print" style="text-align:center;margin-top:20px;">
+                    <button onclick="window.print()" style="padding:8px 24px;font-size:16px;cursor:pointer;">🖨️ Cetak</button>
+                </div>
+            </body>
+            </html>
+        `);
+        printWindow.document.close();
+    }
+}
+
+if (typeof window !== 'undefined') {
+    window.PartiturEditor = PartiturEditor;
+}
