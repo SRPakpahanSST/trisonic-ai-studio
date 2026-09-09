@@ -1,4 +1,4 @@
-f<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8" />
@@ -105,6 +105,141 @@ f<!DOCTYPE html>
         .btn-danger { background:var(--color-accent); color:white; }
         .btn-sm { padding:0.2rem 0.6rem; font-size:0.7rem; }
         
+        /* KEYBOARD - PERBAIKAN UTAMA */
+        #keyboard-container {
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            padding: 0.5rem;
+            overflow-x: auto;
+            min-height: 220px;
+        }
+        
+        #keyboard {
+            position: relative;
+            min-height: 200px;
+            margin: 0 auto;
+        }
+        
+        .keyboard-flex {
+            position: relative;
+            margin: 0 auto;
+        }
+        
+        .key {
+            position: absolute;
+            cursor: pointer;
+            border-radius: 0 0 6px 6px;
+            transition: all 0.08s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            user-select: none;
+            touch-action: manipulation;
+        }
+        
+        .key-white {
+            background: #f0f0f0;
+            border: 1px solid #ccc;
+            border-bottom: 3px solid #bbb;
+            z-index: 1;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .key-white:hover { background: #e0e0e0; transform: scale(1.02); }
+        .key-white.active { background: #ffd700; transform: scale(0.97); border-color: #ffaa00; }
+        
+        .key-black {
+            background: #222;
+            border: 1px solid #111;
+            border-bottom: 3px solid #111;
+            z-index: 2;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+        }
+        
+        .key-black:hover { background: #444; }
+        .key-black.active { background: #ffd700; color: #222; transform: scale(0.95); }
+        
+        .key-label {
+            font-size: 0.45rem;
+            font-weight: 700;
+            text-align: center;
+            line-height: 1.2;
+            pointer-events: none;
+        }
+        
+        .key-white .key-label { color: #333; }
+        .key-black .key-label { color: #ddd; }
+        
+        .keyboard-info {
+            padding: 0.5rem 0.75rem;
+            background: var(--bg-card);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-align: center;
+            line-height: 1.8;
+            margin-top: 0.5rem;
+        }
+        
+        .keyboard-info strong { color: var(--color-amber); }
+        
+        .pitch-display {
+            display: flex;
+            gap: 1rem;
+            padding: 0.5rem 0.75rem;
+            background: var(--bg-card);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            font-size: 0.8rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+        }
+        
+        .pitch-display strong { color: var(--color-amber); }
+        
+        .keyboard-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            margin-top: 0.75rem;
+        }
+        
+        .control-group {
+            flex: 1;
+            min-width: 80px;
+        }
+        
+        .control-group label {
+            display: block;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+        
+        .control-group input[type="range"] {
+            width: 100%;
+            accent-color: #2196F3;
+            background: transparent;
+        }
+        
+        .control-group select {
+            width: 100%;
+            padding: 0.3rem 0.6rem;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-family: var(--font-family);
+            font-size: 0.8rem;
+        }
+        
         /* COMPOSER */
         .composer-controls { display:flex; flex-wrap:wrap; gap:0.75rem; align-items:flex-end; padding:0.75rem; background:var(--bg-card); border-radius:12px; border:1px solid var(--border-color); margin-bottom:0.75rem; }
         .composition-display { padding:0.75rem; background:var(--bg-card); border-radius:12px; border:1px solid var(--border-color); min-height:100px; }
@@ -173,6 +308,9 @@ f<!DOCTYPE html>
             #btnMulai { padding:0.7rem 2rem; font-size:1rem; }
             #splash-screen .splash-title { font-size:1.8rem; }
             #splash-screen .splash-logo { width:80px; height:80px; }
+            .key-white { width:24px !important; height:130px !important; }
+            .key-black { width:16px !important; height:80px !important; }
+            .key-label { font-size:0.4rem !important; }
         }
         @media (max-width:480px) {
             .content-area { padding:0.3rem; }
@@ -180,6 +318,9 @@ f<!DOCTYPE html>
             .app-title { font-size:0.75rem; }
             .header-logo { width:28px; height:28px; }
             .about-grid { grid-template-columns:1fr; }
+            .key-white { width:20px !important; height:110px !important; }
+            .key-black { width:14px !important; height:65px !important; }
+            .key-label { font-size:0.35rem !important; }
         }
     </style>
 </head>
@@ -289,66 +430,66 @@ f<!DOCTYPE html>
                 <section class="content-area" id="contentArea">
                     
                     <!-- ===== TAB 1: KEYBOARD ===== -->
-<div class="tab-content active" id="tab-keyboard">
-    <div class="tab-header">
-        <h2>🎹 Keyboard 20 Nada</h2>
-        <p>Eksplorasi harmoni mikrotonal dengan 20 nada per oktaf (5 Oktaf: C2 - D6)</p>
-    </div>
-    <div id="keyboard-container">
-        <div id="keyboard">
-            <p style="color:#8899aa;padding:40px;text-align:center;width:100%;">⏳ Memuat keyboard...</p>
-        </div>
-    </div>
-    <div class="keyboard-controls">
-        <div class="control-group">
-            <label>Volume</label>
-            <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="0.7" />
-        </div>
-        <div class="control-group">
-            <label>Reverb</label>
-            <input type="range" id="reverbControl" min="0" max="1" step="0.01" value="0.3" />
-        </div>
-        <div class="control-group">
-            <label>Waveform</label>
-            <select id="waveformSelect">
-                <option value="sine">Sine</option>
-                <option value="square">Square</option>
-                <option value="sawtooth">Sawtooth</option>
-                <option value="triangle">Triangle</option>
-            </select>
-        </div>
-        <div class="control-group">
-            <label>Oktaf (Keyboard QWERTY)</label>
-            <select id="octaveSelect">
-                <option value="2">Oktaf 2</option>
-                <option value="3">Oktaf 3</option>
-                <option value="4" selected>Oktaf 4</option>
-                <option value="5">Oktaf 5</option>
-                <option value="6">Oktaf 6</option>
-            </select>
-        </div>
-    </div>
-    <div class="pitch-display">
-        <span>Nada: <strong id="currentNote">-</strong></span>
-        <span>Frekuensi: <strong id="currentFreq">-</strong> Hz</span>
-        <span>Oktaf: <strong id="currentOctave">-</strong></span>
-    </div>
-    <div class="keyboard-info">
-        <p>🎵 20 Nada per Oktaf | A4 = 440 Hz | <strong style="color:#FFC107;">Rasio: 3^(1/20) ≈ 1.056467</strong></p>
-        <p><strong style="color:#FFC107;">Skala Mayor:</strong> E E# F F# G G# H H# I J J# K K# A A# B B# C C# D</p>
-        <p style="font-size:0.65rem;color:#8899aa;">
-            🟦 Tuts PUTIH: E, F, G, H, I, J, K, A, B, C, D &nbsp;|&nbsp; 
-            ⬛ Tuts HITAM: E#, F#, G#, H#, J#, K#, A#, B#, C#
-        </p>
-        <p style="font-size:0.6rem;color:#556677;">
-            📌 Tuts pertama: <strong style="color:#FFC107;">C2</strong> (PUTIH) | Tuts terakhir: <strong style="color:#FFC107;">D6</strong> (PUTIH)
-        </p>
-        <p style="font-size:0.6rem;color:#556677;">
-            📌 <strong>I</strong> dan <strong>J</strong> adalah dua tuts PUTIH berurutan (tanpa hitam di antaranya)
-        </p>
-        <p>💡 Gunakan mouse/touch untuk klik tuts | Keyboard QWERTY: Q-W-E-R-T-Y-U-I-O-P-A-S-D-F-G-H-J-K-L-;</p>
-    </div>
-</div>
+                    <div class="tab-content active" id="tab-keyboard">
+                        <div class="tab-header">
+                            <h2>🎹 Keyboard 20 Nada</h2>
+                            <p>Eksplorasi harmoni mikrotonal dengan 20 nada per oktaf (5 Oktaf: C2 - D6)</p>
+                        </div>
+                        <div id="keyboard-container">
+                            <div id="keyboard">
+                                <p style="color:#8899aa;padding:40px;text-align:center;width:100%;">⏳ Memuat keyboard...</p>
+                            </div>
+                        </div>
+                        <div class="keyboard-controls">
+                            <div class="control-group">
+                                <label>Volume</label>
+                                <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="0.7" />
+                            </div>
+                            <div class="control-group">
+                                <label>Reverb</label>
+                                <input type="range" id="reverbControl" min="0" max="1" step="0.01" value="0.3" />
+                            </div>
+                            <div class="control-group">
+                                <label>Waveform</label>
+                                <select id="waveformSelect">
+                                    <option value="sine">Sine</option>
+                                    <option value="square">Square</option>
+                                    <option value="sawtooth">Sawtooth</option>
+                                    <option value="triangle">Triangle</option>
+                                </select>
+                            </div>
+                            <div class="control-group">
+                                <label>Oktaf (Keyboard QWERTY)</label>
+                                <select id="octaveSelect">
+                                    <option value="2">Oktaf 2</option>
+                                    <option value="3">Oktaf 3</option>
+                                    <option value="4" selected>Oktaf 4</option>
+                                    <option value="5">Oktaf 5</option>
+                                    <option value="6">Oktaf 6</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="pitch-display">
+                            <span>Nada: <strong id="currentNote">-</strong></span>
+                            <span>Frekuensi: <strong id="currentFreq">-</strong> Hz</span>
+                            <span>Oktaf: <strong id="currentOctave">-</strong></span>
+                        </div>
+                        <div class="keyboard-info">
+                            <p>🎵 20 Nada per Oktaf | A4 = 440 Hz | <strong style="color:#FFC107;">Rasio: 3^(1/20) ≈ 1.056467</strong></p>
+                            <p><strong style="color:#FFC107;">Skala Mayor:</strong> E E# F F# G G# H H# I J J# K K# A A# B B# C C# D</p>
+                            <p style="font-size:0.65rem;color:#8899aa;">
+                                🟦 Tuts PUTIH: E, F, G, H, I, J, K, A, B, C, D &nbsp;|&nbsp; 
+                                ⬛ Tuts HITAM: E#, F#, G#, H#, J#, K#, A#, B#, C#
+                            </p>
+                            <p style="font-size:0.6rem;color:#556677;">
+                                📌 Tuts pertama: <strong style="color:#FFC107;">C2</strong> (PUTIH) | Tuts terakhir: <strong style="color:#FFC107;">D6</strong> (PUTIH)
+                            </p>
+                            <p style="font-size:0.6rem;color:#556677;">
+                                📌 <strong>I</strong> dan <strong>J</strong> adalah dua tuts PUTIH berurutan (tanpa hitam di antaranya)
+                            </p>
+                            <p>💡 Gunakan mouse/touch untuk klik tuts | Keyboard QWERTY: Q-W-E-R-T-Y-U-I-O-P-A-S-D-F-G-H-J-K-L-;</p>
+                        </div>
+                    </div>
                     
                     <!-- ===== TAB 2: AI COMPOSER ===== -->
                     <div class="tab-content" id="tab-composer">
@@ -567,7 +708,7 @@ f<!DOCTYPE html>
                                 <p>TriSonic AI Studio adalah platform musik mikrotonal berbasis kecerdasan buatan yang menghadirkan 20 nada per oktaf untuk eksplorasi harmoni tanpa batas.</p>
                                 <p>Dikembangkan sebagai bagian dari ekosistem AI industri untuk ASEAN.</p>
                                 <p><strong>Sistem:</strong> 12-TET 20 Nada per Oktaf | A4 = 440 Hz</p>
-                                <p><strong>Rasio:</strong> 2^(1/20) ≈ 1.0352649238413775</p>
+                                <p><strong>Rasio:</strong> 3^(1/20) ≈ 1.056467</p>
                             </div>
                             <div class="about-grid">
                                 <div class="about-item"><h4>🎵 20 Nada</h4><p>Sistem mikrotonal dengan 20 interval per oktaf (60 sen per step)</p></div>
