@@ -1,7 +1,6 @@
 // ================================================================
 // keyboard.js - Render Keyboard 20 Nada (C2 - D6)
-// Tuts pertama: C2 (putih), Tuts terakhir: D6 (putih)
-// Setiap tuts diberi label nada (C2, C#2, D2, ..., D6)
+// Tuts pertama: C2 (PUTIH), Tuts terakhir: D6 (PUTIH)
 // ================================================================
 
 function KeyboardRenderer() {
@@ -63,8 +62,10 @@ KeyboardRenderer.prototype.render = function() {
     }
     
     console.log('✅ ' + allNotes.length + ' tuts akan dirender');
-    console.log('✅ Nada pertama: ' + allNotes[0] + ' (C2)');
-    console.log('✅ Nada terakhir: ' + allNotes[allNotes.length - 1] + ' (D6)');
+    console.log('✅ Nada pertama: ' + allNotes[0] + ' (C2 - PUTIH)');
+    console.log('✅ Nada kedua: ' + allNotes[1] + ' (C#2 - HITAM)');
+    console.log('✅ Nada ketiga: ' + allNotes[2] + ' (D2 - PUTIH)');
+    console.log('✅ Nada terakhir: ' + allNotes[allNotes.length - 1] + ' (D6 - PUTIH)');
     
     var wrapper = document.createElement('div');
     wrapper.className = 'keyboard-flex';
@@ -81,7 +82,9 @@ KeyboardRenderer.prototype.render = function() {
         var octave = match[2];
         var index = window.getNoteIndex ? window.getNoteIndex(note) : 0;
         
-        // Tuts PUTIH = index genap, Tuts HITAM = index ganjil
+        // Tuts PUTIH = index genap (0,2,4,6,8,10,12,14,16,18)
+        // Tuts HITAM = index ganjil (1,3,5,7,9,11,13,15,17,19)
+        // C2 = index 17 (PUTIH), C#2 = index 18 (HITAM), D2 = index 19 (PUTIH)
         var isWhite = (index % 2 === 0);
         
         var key = document.createElement('div');
@@ -92,17 +95,16 @@ KeyboardRenderer.prototype.render = function() {
         key.dataset.isWhite = isWhite;
         key.dataset.index = index;
         
-        // Styling
         if (isWhite) {
             key.style.cssText = 'flex:0 0 28px;height:130px;background:#f0f0f0;border:1px solid #ccc;border-radius:0 0 6px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:8px;z-index:1;box-shadow:0 2px 4px rgba(0,0,0,0.1);transition:all 0.08s ease;user-select:none;touch-action:manipulation;';
         } else {
             key.style.cssText = 'flex:0 0 18px;height:80px;background:#222;border:1px solid #111;border-radius:0 0 6px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:4px;margin-left:-9px;margin-right:-9px;z-index:2;box-shadow:0 2px 6px rgba(0,0,0,0.4);transition:all 0.08s ease;user-select:none;touch-action:manipulation;';
         }
         
-        // LABEL: Menampilkan NAMA NADA LENGKAP (contoh: C2, C#2, D2, ..., D6)
+        // LABEL: Menampilkan NAMA NADA LENGKAP (C2, C#2, D2, ..., D6)
         var label = document.createElement('span');
         label.className = 'key-label';
-        label.textContent = noteName; // Menampilkan nama lengkap (C2, C#2, dst)
+        label.textContent = noteName;
         label.style.cssText = 'font-size:0.45rem;color:' + (isWhite ? '#333' : '#888') + ';pointer-events:none;text-align:center;font-weight:700;line-height:1.2;';
         key.appendChild(label);
         
@@ -149,8 +151,9 @@ KeyboardRenderer.prototype.addOctaveLabels = function() {
     
     for (var oct = 2; oct <= 6; oct++) {
         var label = document.createElement('span');
-        var firstNote = window.getNoteName ? window.getNoteName(0) + oct : 'E' + oct;
-        var lastNote = window.getNoteName ? window.getNoteName(19) + oct : 'D' + oct;
+        var notes = window.getOctaveNotes ? window.getOctaveNotes(oct) : [];
+        var firstNote = notes.length > 0 ? notes[0] : '?';
+        var lastNote = notes.length > 0 ? notes[notes.length - 1] : '?';
         label.textContent = 'Oktaf ' + oct + ' (' + firstNote + ' - ' + lastNote + ')';
         label.style.cssText = 'color:#556677;font-weight:600;font-size:0.55rem;';
         labelsWrapper.appendChild(label);
