@@ -162,4 +162,55 @@
     display: block;
     font-size: 0.7rem;
     color: #8899aa;
-    margin-bottom:
+    margin-bottom: 4px;
+}
+
+.control-group input[type="range"] {
+    width: 100%;
+    accent-color: #2196F3;
+    background: transparent;
+}
+
+.control-group select {
+    width: 100%;
+    padding: 0.3rem 0.6rem;
+    background: #1a2332;
+    border: 1px solid #1a2a3a;
+    border-radius: 6px;
+    color: #e8edf5;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .key-white {
+        flex: 0 0 24px;
+        height: 110px;
+    }
+    .key-black {
+        flex: 0 0 16px;
+        height: 70px;
+        margin-left: -8px;
+        margin-right: -8px;
+    }
+    .key-label {
+        font-size: 0.4rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .key-white {
+        flex: 0 0 20px;
+        height: 90px;
+    }
+    .key-black {
+        flex: 0 0 14px;
+        height: 55px;
+        margin-left: -7px;
+        margin-right: -7px;
+    }
+    .key-label {
+        font-size: 0.35rem;
+    }
+}
