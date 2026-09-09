@@ -1,5 +1,6 @@
 // ================================================================
 // DATA FREKUENSI 12-TET (20 NADA PER OKTAF) – C2 s/d D6
+// A4 = 440 Hz (acuan)
 // ================================================================
 
 const FREQ_MAP = {
@@ -36,10 +37,10 @@ function getNoteName(index) { return NOTES_20[index % 20] || 'E'; }
 function getFrequencyFromNote(noteName) { return FREQ_MAP[noteName] || 0; }
 
 function getAllNotes() {
-    const allNotes = [];
-    for (let oct = 2; oct <= 6; oct++) {
-        for (const note of NOTES_20) {
-            const fullName = note + oct;
+    var allNotes = [];
+    for (var oct = 2; oct <= 6; oct++) {
+        for (var i = 0; i < NOTES_20.length; i++) {
+            var fullName = NOTES_20[i] + oct;
             if (FREQ_MAP[fullName] !== undefined) {
                 allNotes.push(fullName);
             }
@@ -60,4 +61,4 @@ window.getFrequencyFromNote = getFrequencyFromNote;
 window.getAllNotes = getAllNotes;
 window.formatFrequency = formatFrequency;
 
-console.log('✅ frequencies.js loaded, ' + getAllNotes().length + ' notes available');
+console.log('✅ frequencies.js loaded, ' + getAllNotes().length + ' notes');
