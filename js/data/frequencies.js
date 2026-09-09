@@ -6,7 +6,7 @@
 // ================================================================
 
 // ================================================================
-// SKALA MAYOR E - URUTAN YANG BENAR
+// SKALA MAYOR E - URUTAN YANG BENAR (1 OKTAF)
 // ================================================================
 // Index:  0    1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16   17   18   19
 // Nada:   E   E#    F   F#    G   G#    H   H#    I    J   J#    K   K#    A   A#    B   B#    C   C#    D
@@ -16,6 +16,7 @@
 // Tuts HITAM (Index Ganjil): E#, F#, G#, H#, J#, K#, A#, B#, C#
 // ================================================================
 
+// URUTAN NADA 20 PER OKTAF - SKALA MAYOR E
 const NOTES_20 = ['E','E#','F','F#','G','G#','H','H#','I','J','J#','K','K#','A','A#','B','B#','C','C#','D'];
 
 // ================================================================
@@ -135,8 +136,6 @@ NOTES_20.forEach(function(note, index) {
     NOTE_TO_INDEX[note] = index;
 });
 
-const A4_INDEX = 13; // A berada di index 13
-
 function getNoteIndex(noteName) {
     return NOTE_TO_INDEX[noteName] !== undefined ? NOTE_TO_INDEX[noteName] : 0;
 }
@@ -175,13 +174,27 @@ function isBlackKey(index) {
 }
 
 // ================================================================
+// CETAK INFORMASI UNTUK DEBUG
+// ================================================================
+
+function getOctaveNotes(octave) {
+    var notes = [];
+    for (var i = 0; i < NOTES_20.length; i++) {
+        var fullName = NOTES_20[i] + octave;
+        if (FREQ_MAP[fullName] !== undefined) {
+            notes.push(fullName);
+        }
+    }
+    return notes;
+}
+
+// ================================================================
 // EXPORT KE WINDOW
 // ================================================================
 
 window.FREQ_MAP = FREQ_MAP;
 window.NOTES_20 = NOTES_20;
 window.NOTE_TO_INDEX = NOTE_TO_INDEX;
-window.A4_INDEX = A4_INDEX;
 window.getNoteIndex = getNoteIndex;
 window.getNoteName = getNoteName;
 window.getFrequencyFromNote = getFrequencyFromNote;
@@ -189,10 +202,10 @@ window.getAllNotes = getAllNotes;
 window.formatFrequency = formatFrequency;
 window.isWhiteKey = isWhiteKey;
 window.isBlackKey = isBlackKey;
+window.getOctaveNotes = getOctaveNotes;
 
 console.log('✅ frequencies.js loaded');
-console.log('✅ RASIO = 3^(1/20) = ' + Math.pow(3, 1/20));
 console.log('✅ Total nada: ' + getAllNotes().length + ' notes');
+console.log('✅ Nada pertama: ' + getAllNotes()[0] + ' (C2)');
+console.log('✅ Nada terakhir: ' + getAllNotes()[getAllNotes().length - 1] + ' (D6)');
 console.log('✅ Skala Mayor: ' + NOTES_20.join(' - '));
-console.log('✅ PUTIH (genap): ' + NOTES_20.filter(function(n, i) { return i % 2 === 0; }).join(', '));
-console.log('✅ HITAM (ganjil): ' + NOTES_20.filter(function(n, i) { return i % 2 === 1; }).join(', '));
