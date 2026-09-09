@@ -64,7 +64,6 @@ KeyboardRenderer.prototype.render = function() {
     }
     
     console.log('✅ ' + allNotes.length + ' tuts akan dirender');
-    console.log('✅ Nada pertama: ' + allNotes[0] + ', Nada terakhir: ' + allNotes[allNotes.length - 1]);
     
     var wrapper = document.createElement('div');
     wrapper.className = 'keyboard-flex';
@@ -81,8 +80,7 @@ KeyboardRenderer.prototype.render = function() {
         var octave = match[2];
         var index = window.getNoteIndex ? window.getNoteIndex(note) : 0;
         
-        // Tuts PUTIH = index genap (0,2,4,6,8,10,12,14,16,18)
-        // Tuts HITAM = index ganjil (1,3,5,7,9,11,13,15,17,19)
+        // Tuts PUTIH = index genap, Tuts HITAM = index ganjil
         var isWhite = (index % 2 === 0);
         
         var key = document.createElement('div');
@@ -99,7 +97,7 @@ KeyboardRenderer.prototype.render = function() {
             key.style.cssText = 'flex:0 0 18px;height:80px;background:#222;border:1px solid #111;border-radius:0 0 6px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:4px;margin-left:-9px;margin-right:-9px;z-index:2;box-shadow:0 2px 6px rgba(0,0,0,0.4);transition:all 0.08s ease;user-select:none;touch-action:manipulation;';
         }
         
-        // Label - menampilkan NAMA NADA
+        // Label
         var label = document.createElement('span');
         label.className = 'key-label';
         label.textContent = note;
@@ -160,7 +158,7 @@ KeyboardRenderer.prototype.addOctaveLabels = function() {
 KeyboardRenderer.prototype.bindEvents = function() {
     var self = this;
     
-    // Keyboard QWERTY - mapping ke index 0-19
+    // Keyboard QWERTY
     document.addEventListener('keydown', function(e) {
         var keyMap = {
             'q': 0, 'w': 1, 'e': 2, 'r': 3, 't': 4, 'y': 5,
@@ -215,7 +213,6 @@ KeyboardRenderer.prototype.activateKey = function(key) {
     var noteName = key.dataset.note;
     var freq = parseFloat(key.dataset.freq);
     var octave = key.dataset.octave;
-    var isWhite = key.dataset.isWhite === 'true';
     
     key.style.background = '#ffd700';
     key.style.borderColor = '#f5a623';
