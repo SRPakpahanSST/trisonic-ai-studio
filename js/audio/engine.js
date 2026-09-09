@@ -60,7 +60,6 @@ class AudioEngine {
         const now = this.audioContext.currentTime;
         const volume = this.settings.volume * 0.7;
         
-        // ADSR Envelope
         const attack = 0.01;
         const decay = 0.1;
         const sustain = 0.3;
