@@ -1,7 +1,8 @@
 // ================================================================
 // keyboard.js - Render Keyboard 20 Nada (C2 - D6)
-// Tuts PUTIH: C, D, E, F, G, H, I, J, K, A, B
-// Tuts HITAM: C#, E#, F#, G#, H#, J#, K#, A#, B#
+// SKALA MAYOR: E, E#, F, F#, G, G#, H, H#, I, J, J#, K, K#, A, A#, B, B#, C, C#, D
+// Tuts PUTIH: E, F, G, H, I, J, K, A, B, C, D (Index Genap)
+// Tuts HITAM: E#, F#, G#, H#, J#, K#, A#, B#, C# (Index Ganjil)
 // ================================================================
 
 function KeyboardRenderer() {
@@ -159,7 +160,7 @@ KeyboardRenderer.prototype.addOctaveLabels = function() {
 KeyboardRenderer.prototype.bindEvents = function() {
     var self = this;
     
-    // Keyboard QWERTY
+    // Keyboard QWERTY - mapping ke index 0-19
     document.addEventListener('keydown', function(e) {
         var keyMap = {
             'q': 0, 'w': 1, 'e': 2, 'r': 3, 't': 4, 'y': 5,
@@ -170,7 +171,7 @@ KeyboardRenderer.prototype.bindEvents = function() {
         var keyIndex = keyMap[e.key.toLowerCase()];
         if (keyIndex !== undefined && !e.repeat) {
             var octave = self.currentOctave;
-            var noteName = window.getNoteName ? window.getNoteName(keyIndex) : 'C';
+            var noteName = window.getNoteName ? window.getNoteName(keyIndex) : 'E';
             var fullName = noteName + octave;
             var keyElement = self.keyElements[fullName];
             if (keyElement) {
@@ -190,7 +191,7 @@ KeyboardRenderer.prototype.bindEvents = function() {
         var keyIndex = keyMap[e.key.toLowerCase()];
         if (keyIndex !== undefined) {
             var octave = self.currentOctave;
-            var noteName = window.getNoteName ? window.getNoteName(keyIndex) : 'C';
+            var noteName = window.getNoteName ? window.getNoteName(keyIndex) : 'E';
             var fullName = noteName + octave;
             var keyElement = self.keyElements[fullName];
             if (keyElement) {
