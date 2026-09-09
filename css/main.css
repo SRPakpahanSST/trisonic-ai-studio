@@ -277,6 +277,28 @@ body { font-family: var(--font-family); background: var(--bg-app); color: var(--
     font-size: 0.8rem;
 }
 
+/* Tambahan di bagian keyboard info */
+.keyboard-info {
+    padding: 0.5rem 0.75rem;
+    background: var(--bg-card);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    text-align: center;
+    line-height: 1.8;
+    margin-top: 0.5rem;
+}
+
+.keyboard-info strong {
+    color: var(--color-amber);
+}
+
+.keyboard-info .highlight {
+    color: #4CAF50;
+    font-weight: 600;
+}
+
 /* RESPONSIVE KEYBOARD */
 @media (max-width: 768px) {
     .key-white { flex: 0 0 24px; height: 110px; }
