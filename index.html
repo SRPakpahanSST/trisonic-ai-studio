@@ -289,56 +289,56 @@
                 <section class="content-area" id="contentArea">
                     
                     <!-- ===== TAB 1: KEYBOARD ===== -->
-                    <div class="tab-content active" id="tab-keyboard">
-                        <div class="tab-header">
-                            <h2>🎹 Keyboard 20 Nada</h2>
-                            <p>Eksplorasi harmoni mikrotonal dengan 20 nada per oktaf (5 Oktaf: C2 - D6)</p>
-                        </div>
-                        <div id="keyboard-container">
-                            <div id="keyboard">
-                                <p style="color:#8899aa;padding:40px;text-align:center;width:100%;">⏳ Memuat keyboard...</p>
-                            </div>
-                        </div>
-                        <div class="keyboard-controls">
-                            <div class="control-group">
-                                <label>Volume</label>
-                                <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="0.7" />
-                            </div>
-                            <div class="control-group">
-                                <label>Reverb</label>
-                                <input type="range" id="reverbControl" min="0" max="1" step="0.01" value="0.3" />
-                            </div>
-                            <div class="control-group">
-                                <label>Waveform</label>
-                                <select id="waveformSelect">
-                                    <option value="sine">Sine</option>
-                                    <option value="square">Square</option>
-                                    <option value="sawtooth">Sawtooth</option>
-                                    <option value="triangle">Triangle</option>
-                                </select>
-                            </div>
-                            <div class="control-group">
-                                <label>Oktaf</label>
-                                <select id="octaveSelect">
-                                    <option value="2">Oktaf 2</option>
-                                    <option value="3">Oktaf 3</option>
-                                    <option value="4" selected>Oktaf 4</option>
-                                    <option value="5">Oktaf 5</option>
-                                    <option value="6">Oktaf 6</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="pitch-display">
-                            <span>Nada: <strong id="currentNote">-</strong></span>
-                            <span>Frekuensi: <strong id="currentFreq">-</strong> Hz</span>
-                            <span>Oktaf: <strong id="currentOctave">-</strong></span>
-                        </div>
-                        <div class="keyboard-info">
-                            <p>🎵 20 Nada per Oktaf | A4 = 440 Hz | Rasio: 2^(1/20) ≈ 1.0353</p>
-                            <p>Skala Mayor: <strong>E E# F F# G G# H H# I J J# K K# A A# B B# C C# D</strong></p>
-                            <p>💡 Gunakan mouse/touch untuk klik tuts | Keyboard QWERTY: Q-W-E-R-T-Y-U-I-O-P-A-S-D-F-G-H-J-K-L-;</p>
-                        </div>
-                    </div>
+<div class="tab-content active" id="tab-keyboard">
+    <div class="tab-header">
+        <h2>🎹 Keyboard 20 Nada</h2>
+        <p>Eksplorasi harmoni mikrotonal dengan 20 nada per oktaf (5 Oktaf: C2 - D6)</p>
+    </div>
+    <div id="keyboard-container">
+        <div id="keyboard">
+            <p style="color:#8899aa;padding:40px;text-align:center;width:100%;">⏳ Memuat keyboard...</p>
+        </div>
+    </div>
+    <div class="keyboard-controls">
+        <div class="control-group">
+            <label>Volume</label>
+            <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="0.7" />
+        </div>
+        <div class="control-group">
+            <label>Reverb</label>
+            <input type="range" id="reverbControl" min="0" max="1" step="0.01" value="0.3" />
+        </div>
+        <div class="control-group">
+            <label>Waveform</label>
+            <select id="waveformSelect">
+                <option value="sine">Sine</option>
+                <option value="square">Square</option>
+                <option value="sawtooth">Sawtooth</option>
+                <option value="triangle">Triangle</option>
+            </select>
+        </div>
+        <div class="control-group">
+            <label>Oktaf (Keyboard QWERTY)</label>
+            <select id="octaveSelect">
+                <option value="2">Oktaf 2</option>
+                <option value="3">Oktaf 3</option>
+                <option value="4" selected>Oktaf 4</option>
+                <option value="5">Oktaf 5</option>
+                <option value="6">Oktaf 6</option>
+            </select>
+        </div>
+    </div>
+    <div class="pitch-display">
+        <span>Nada: <strong id="currentNote">-</strong></span>
+        <span>Frekuensi: <strong id="currentFreq">-</strong> Hz</span>
+        <span>Oktaf: <strong id="currentOctave">-</strong></span>
+    </div>
+    <div class="keyboard-info">
+        <p>🎵 20 Nada per Oktaf | A4 = 440 Hz | Rasio: 2^(1/20) ≈ 1.0353</p>
+        <p>Skala Mayor: <strong>E E# F F# G G# H H# I J J# K K# A A# B B# C C# D</strong></p>
+        <p>💡 Gunakan mouse/touch untuk klik tuts | Keyboard QWERTY: Q-W-E-R-T-Y-U-I-O-P-A-S-D-F-G-H-J-K-L-;</p>
+    </div>
+</div>
                     
                     <!-- ===== TAB 2: AI COMPOSER ===== -->
                     <div class="tab-content" id="tab-composer">
