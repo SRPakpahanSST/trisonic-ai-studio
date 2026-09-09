@@ -4,7 +4,7 @@
 
 class KeyboardRenderer {
     constructor() {
-        this.container = document.getElementById('keyboard');
+        this.container = null;
         this.audioEngine = null;
         this.keyElements = {};
         this.activeKeys = new Set();
@@ -12,40 +12,58 @@ class KeyboardRenderer {
         this.startOctave = 2;
         this.endOctave = 6;
         this.isMouseDown = false;
+        this.isRendered = false;
         
-        this.noteDisplay = document.getElementById('currentNote');
-        this.freqDisplay = document.getElementById('currentFreq');
-        this.octaveDisplay = document.getElementById('currentOctave');
+        this.noteDisplay = null;
+        this.freqDisplay = null;
+        this.octaveDisplay = null;
     }
 
     init(audioEngine) {
         this.audioEngine = audioEngine;
+        this.container = document.getElementById('keyboard');
+        this.noteDisplay = document.getElementById('currentNote');
+        this.freqDisplay = document.getElementById('currentFreq');
+        this.octaveDisplay = document.getElementById('currentOctave');
+        
+        // Render keyboard
         this.render();
         this.bindEvents();
         this.updateDisplay(null, null, null);
+        
         console.log('✅ Keyboard siap (C2 - D6, 20 nada/oktaf)');
     }
 
     render() {
-        if (!this.container) return;
+        if (!this.container) {
+            console.warn('⚠️ Container keyboard tidak ditemukan!');
+            return;
+        }
         
         this.container.innerHTML = '';
         this.keyElements = {};
         this.activeKeys.clear();
+        
+        const allNotes = window.getAllNotes ? window.getAllNotes() : [];
+        console.log('🎹 Render ' + allNotes.length + ' tuts keyboard');
+        
+        if (allNotes.length === 0) {
+            this.container.innerHTML = '<p style="color:#8899aa;padding:20px;">⏳ Memuat keyboard...</p>';
+            return;
+        }
         
         const wrapper = document.createElement('div');
         wrapper.className = 'keyboard-flex';
         wrapper.style.cssText = `
             display: flex;
             gap: 2px;
-            padding: 4px;
+            padding: 8px;
             min-width: max-content;
             position: relative;
-            background: #0d1520;
-            border-radius: 8px;
+            background: #1a1a2e;
+            border-radius: 10px;
+            border: 2px solid #2a3a5e;
         `;
-        
-        const allNotes = window.getAllNotes ? window.getAllNotes() : [];
         
         allNotes.forEach((noteName) => {
             const freq = window.getFrequencyFromNote ? window.getFrequencyFromNote(noteName) : 0;
@@ -68,7 +86,7 @@ class KeyboardRenderer {
             if (isWhite) {
                 key.style.cssText = `
                     flex: 0 0 32px;
-                    height: 140px;
+                    height: 150px;
                     background: #f0f0f0;
                     border: 1px solid #ccc;
                     border-radius: 0 0 6px 6px;
@@ -78,15 +96,16 @@ class KeyboardRenderer {
                     flex-direction: column;
                     align-items: center;
                     justify-content: flex-end;
-                    padding-bottom: 8px;
+                    padding-bottom: 10px;
                     transition: all 0.08s ease;
                     user-select: none;
                     z-index: 1;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
                 `;
             } else {
                 key.style.cssText = `
-                    flex: 0 0 20px;
-                    height: 85px;
+                    flex: 0 0 22px;
+                    height: 90px;
                     background: #222;
                     border: 1px solid #111;
                     border-radius: 0 0 6px 6px;
@@ -96,12 +115,13 @@ class KeyboardRenderer {
                     flex-direction: column;
                     align-items: center;
                     justify-content: flex-end;
-                    padding-bottom: 4px;
-                    margin-left: -10px;
-                    margin-right: -10px;
+                    padding-bottom: 6px;
+                    margin-left: -11px;
+                    margin-right: -11px;
                     z-index: 2;
                     transition: all 0.08s ease;
                     user-select: none;
+                    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
                 `;
             }
             
@@ -109,11 +129,11 @@ class KeyboardRenderer {
             label.className = 'key-label';
             label.textContent = note;
             label.style.cssText = `
-                font-size: 0.55rem;
+                font-size: 0.6rem;
                 color: ${isWhite ? '#333' : '#888'};
                 pointer-events: none;
                 text-align: center;
-                font-weight: 600;
+                font-weight: 700;
             `;
             key.appendChild(label);
             
@@ -155,10 +175,13 @@ class KeyboardRenderer {
         
         this.container.appendChild(wrapper);
         this.addOctaveLabels();
+        this.isRendered = true;
     }
 
     addOctaveLabels() {
         const container = this.container;
+        if (!container) return;
+        
         const labelsWrapper = document.createElement('div');
         labelsWrapper.style.cssText = `
             display: flex;
@@ -167,7 +190,7 @@ class KeyboardRenderer {
             font-size: 0.7rem;
             color: #556677;
             width: 100%;
-            border-top: 1px solid #1a2a3a;
+            border-top: 1px solid #2a3a5e;
             margin-top: 4px;
         `;
         
@@ -245,15 +268,10 @@ class KeyboardRenderer {
         const octave = key.dataset.octave;
         const isWhite = key.dataset.isWhite === 'true';
         
-        if (isWhite) {
-            key.style.background = '#ffd700';
-            key.style.borderColor = '#ffaa00';
-            key.style.boxShadow = '0 0 20px rgba(255,215,0,0.4)';
-        } else {
-            key.style.background = '#ffd700';
-            key.style.borderColor = '#ffaa00';
-            key.style.boxShadow = '0 0 20px rgba(255,215,0,0.4)';
-        }
+        // Visual - warna emas saat aktif
+        key.style.background = '#ffd700';
+        key.style.borderColor = '#f5a623';
+        key.style.boxShadow = '0 0 30px rgba(255,215,0,0.5)';
         key.style.transform = 'scale(0.95)';
         
         if (this.audioEngine && freq > 0) {
@@ -272,6 +290,7 @@ class KeyboardRenderer {
         const noteName = key.dataset.note;
         const isWhite = key.dataset.isWhite === 'true';
         
+        // Kembalikan warna asli
         if (isWhite) {
             key.style.background = '#f0f0f0';
             key.style.borderColor = '#ccc';
@@ -322,6 +341,11 @@ class KeyboardRenderer {
         this.currentOctave = Math.max(this.startOctave, Math.min(this.endOctave, octave));
         const octaveSelect = document.getElementById('octaveSelect');
         if (octaveSelect) octaveSelect.value = this.currentOctave;
+    }
+    
+    // Method untuk re-render jika diperlukan
+    reRender() {
+        this.render();
     }
 }
 
