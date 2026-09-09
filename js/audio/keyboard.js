@@ -35,7 +35,6 @@ KeyboardRenderer.prototype.init = function(audioEngine) {
         return;
     }
     
-    // Set currentOctave dari selector
     var octaveSelect = document.getElementById('octaveSelect');
     if (octaveSelect) {
         this.currentOctave = parseInt(octaveSelect.value);
@@ -173,7 +172,6 @@ KeyboardRenderer.prototype.addOctaveLabels = function() {
 KeyboardRenderer.prototype.bindEvents = function() {
     var self = this;
     
-    // Keyboard QWERTY
     document.addEventListener('keydown', function(e) {
         var keyMap = {
             'q': 0, 'w': 1, 'e': 2, 'r': 3, 't': 4, 'y': 5,
@@ -214,7 +212,6 @@ KeyboardRenderer.prototype.bindEvents = function() {
         }
     });
     
-    // Octave Selector untuk QWERTY
     var octaveSelect = document.getElementById('octaveSelect');
     if (octaveSelect) {
         octaveSelect.addEventListener('change', function() {
