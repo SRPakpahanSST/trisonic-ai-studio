@@ -1,6 +1,5 @@
 // ================================================================
 // keyboard.js - Render Keyboard 20 Nada (C2 - D6)
-// Mengikuti posisi tuts yang benar seperti pada PMD Musik 12 TET
 // ================================================================
 
 function KeyboardRenderer() {
@@ -49,12 +48,9 @@ KeyboardRenderer.prototype.render = function() {
     // ================================================================
     // URUTAN NADA YANG BENAR (C2 - D6)
     // ================================================================
-    // Oktaf 2: C2, C#2, D2 (3 nada)
-    // Oktaf 3: E3, E#3, F3, F#3, G3, G#3, H3, H#3, I3, J3, J#3, K3, K#3, A3, A#3, B3, B#3, C3, C#3, D3 (20 nada)
-    // Oktaf 4: E4, E#4, F4, F#4, G4, G#4, H4, H#4, I4, J4, J#4, K4, K#4, A4, A#4, B4, B#4, C4, C#4, D4 (20 nada)
-    // Oktaf 5: E5, E#5, F5, F#5, G5, G#5, H5, H#5, I5, J5, J#5, K5, K#5, A5, A#5, B5, B#5, C5, C#5, D5 (20 nada)
-    // Oktaf 6: E6, E#6, F6, F#6, G6, G#6, H6, H#6, I6, J6, J#6, K6, K#6, A6, A#6, B6, B#6, C6, C#6, D6 (20 nada)
-    // TOTAL: 3 + 20 + 20 + 20 + 20 = 83 tuts
+    // 20 Nada per Oktaf: E, E#, F, F#, G, G#, H, H#, I, J, J#, K, K#, A, A#, B, B#, C, C#, D
+    // Tuts PUTIH: E, F, G, H, I, J, K, A, B, C, D (Index Genap)
+    // Tuts HITAM: E#, F#, G#, H#, J#, K#, A#, B#, C# (Index Ganjil)
     
     var allNotes = [];
     if (typeof window.getAllNotes === 'function') {
@@ -76,22 +72,26 @@ KeyboardRenderer.prototype.render = function() {
     console.log('✅ Nada terakhir: ' + allNotes[allNotes.length - 1] + ' (D6)');
     
     // ================================================================
-    // RENDER KEYBOARD DENGAN POSISI YANG BENAR
+    // RENDER KEYBOARD DENGAN POSISI ABSOLUTE (Seperti PMD)
     // ================================================================
     var wrapper = document.createElement('div');
     wrapper.className = 'keyboard-flex';
-    wrapper.style.cssText = 'display:flex;gap:2px;padding:8px;min-width:max-content;background:#1a1a2e;border-radius:10px;border:2px solid #2a3a5e;overflow-x:auto;margin:0 auto;';
+    wrapper.style.cssText = 'position:relative;margin:0 auto;';
     
     var self = this;
     var whiteKeyWidth = 30;
     var blackKeyWidth = 18;
     var whiteKeyHeight = 155;
     var blackKeyHeight = 95;
+    var topOffset = 10;
     
-    // Untuk tracking posisi tuts putih
+    // Track posisi tuts putih
     var whiteIndex = 0;
+    var whiteKeys = [];
     
-    // Pertama, render semua tuts PUTIH
+    // ================================================================
+    // RENDER TUTS PUTIH (Index Genap)
+    // ================================================================
     allNotes.forEach(function(noteName) {
         var match = noteName.match(/^([A-Z#]+)(\d+)$/);
         if (!match) return;
@@ -99,10 +99,8 @@ KeyboardRenderer.prototype.render = function() {
         var octave = match[2];
         var index = window.getNoteIndex ? window.getNoteIndex(note) : 0;
         
-        // Tuts PUTIH = index genap (0,2,4,6,8,10,12,14,16,18)
-        var isWhite = (index % 2 === 0);
-        
-        if (isWhite) {
+        // Tuts PUTIH = index genap
+        if (index % 2 === 0) {
             var freq = window.getFrequencyFromNote ? window.getFrequencyFromNote(noteName) : 0;
             
             var key = document.createElement('div');
@@ -114,12 +112,10 @@ KeyboardRenderer.prototype.render = function() {
             key.dataset.index = index;
             key.dataset.whiteIndex = whiteIndex;
             
-            // Posisi horizontal untuk tuts putih
             var xPos = whiteIndex * whiteKeyWidth;
             
-            key.style.cssText = 'position:absolute;left:' + xPos + 'px;top:10px;width:' + whiteKeyWidth + 'px;height:' + whiteKeyHeight + 'px;background:#f0f0f0;border:1px solid #ccc;border-radius:0 0 6px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:8px;z-index:1;box-shadow:0 2px 4px rgba(0,0,0,0.1);transition:all 0.08s ease;user-select:none;touch-action:manipulation;';
+            key.style.cssText = 'position:absolute;left:' + xPos + 'px;top:' + topOffset + 'px;width:' + whiteKeyWidth + 'px;height:' + whiteKeyHeight + 'px;background:#f0f0f0;border:1px solid #ccc;border-radius:0 0 6px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:8px;z-index:1;box-shadow:0 2px 4px rgba(0,0,0,0.1);transition:all 0.08s ease;user-select:none;touch-action:manipulation;';
             
-            // Label
             var label = document.createElement('span');
             label.className = 'key-label';
             label.textContent = noteName;
@@ -151,11 +147,14 @@ KeyboardRenderer.prototype.render = function() {
             
             wrapper.appendChild(key);
             self.keyElements[noteName] = key;
+            whiteKeys.push(noteName);
             whiteIndex++;
         }
     });
     
-    // Kedua, render semua tuts HITAM di atas tuts putih
+    // ================================================================
+    // RENDER TUTS HITAM (Index Ganjil)
+    // ================================================================
     allNotes.forEach(function(noteName) {
         var match = noteName.match(/^([A-Z#]+)(\d+)$/);
         if (!match) return;
@@ -163,10 +162,8 @@ KeyboardRenderer.prototype.render = function() {
         var octave = match[2];
         var index = window.getNoteIndex ? window.getNoteIndex(note) : 0;
         
-        // Tuts HITAM = index ganjil (1,3,5,7,9,11,13,15,17,19)
-        var isBlack = (index % 2 === 1);
-        
-        if (isBlack) {
+        // Tuts HITAM = index ganjil
+        if (index % 2 === 1) {
             var freq = window.getFrequencyFromNote ? window.getFrequencyFromNote(noteName) : 0;
             
             // Cari posisi tuts putih di sebelah kiri
@@ -188,9 +185,8 @@ KeyboardRenderer.prototype.render = function() {
             key.dataset.isWhite = false;
             key.dataset.index = index;
             
-            key.style.cssText = 'position:absolute;left:' + xPos + 'px;top:10px;width:' + blackKeyWidth + 'px;height:' + blackKeyHeight + 'px;background:#222;border:1px solid #111;border-radius:0 0 6px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:4px;z-index:2;box-shadow:0 2px 6px rgba(0,0,0,0.4);transition:all 0.08s ease;user-select:none;touch-action:manipulation;';
+            key.style.cssText = 'position:absolute;left:' + xPos + 'px;top:' + topOffset + 'px;width:' + blackKeyWidth + 'px;height:' + blackKeyHeight + 'px;background:#222;border:1px solid #111;border-radius:0 0 6px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:4px;z-index:2;box-shadow:0 2px 6px rgba(0,0,0,0.4);transition:all 0.08s ease;user-select:none;touch-action:manipulation;';
             
-            // Label
             var label = document.createElement('span');
             label.className = 'key-label';
             label.textContent = noteName;
@@ -228,16 +224,15 @@ KeyboardRenderer.prototype.render = function() {
     // Set lebar container
     var totalWidth = whiteIndex * whiteKeyWidth + 20;
     wrapper.style.width = totalWidth + 'px';
-    wrapper.style.height = (whiteKeyHeight + 30) + 'px';
-    wrapper.style.position = 'relative';
+    wrapper.style.height = (whiteKeyHeight + 40) + 'px';
     
     this.container.appendChild(wrapper);
-    this.addOctaveLabels();
+    this.addOctaveLabels(whiteKeys);
     this.isRendered = true;
     console.log('✅ Keyboard selesai dirender!');
 };
 
-KeyboardRenderer.prototype.addOctaveLabels = function() {
+KeyboardRenderer.prototype.addOctaveLabels = function(whiteKeys) {
     var container = this.container;
     if (!container) return;
     
@@ -247,31 +242,25 @@ KeyboardRenderer.prototype.addOctaveLabels = function() {
     var labelsWrapper = document.createElement('div');
     labelsWrapper.style.cssText = 'display:flex;justify-content:space-around;padding:4px 0;font-size:0.6rem;color:#556677;border-top:1px solid #2a3a5e;margin-top:4px;width:100%;';
     
-    // Oktaf 2: 3 tuts putih (C2, D2) -> posisi 0-2
-    // Oktaf 3: 11 tuts putih (E3, F3, G3, H3, I3, J3, K3, A3, B3, C3, D3) -> posisi 3-13
-    // Oktaf 4: 11 tuts putih -> posisi 14-24
-    // Oktaf 5: 11 tuts putih -> posisi 25-35
-    // Oktaf 6: 11 tuts putih -> posisi 36-46
+    // Oktaf 2: C2, D2 (2 tuts putih) -> index 0-1
+    // Oktaf 3: E3, F3, G3, H3, I3, J3, K3, A3, B3, C3, D3 (11 tuts putih) -> index 2-12
+    // Oktaf 4: E4, F4, G4, H4, I4, J4, K4, A4, B4, C4, D4 (11 tuts putih) -> index 13-23
+    // Oktaf 5: E5, F5, G5, H5, I5, J5, K5, A5, B5, C5, D5 (11 tuts putih) -> index 24-34
+    // Oktaf 6: E6, F6, G6, H6, I6, J6, K6, A6, B6, C6, D6 (11 tuts putih) -> index 35-45
     
-    var octavePositions = [
-        { octave: 2, start: 0, end: 2 },
-        { octave: 3, start: 3, end: 13 },
-        { octave: 4, start: 14, end: 24 },
-        { octave: 5, start: 25, end: 35 },
-        { octave: 6, start: 36, end: 46 }
+    var octaveRanges = [
+        { octave: 2, start: 0, end: 1 },
+        { octave: 3, start: 2, end: 12 },
+        { octave: 4, start: 13, end: 23 },
+        { octave: 5, start: 24, end: 34 },
+        { octave: 6, start: 35, end: 45 }
     ];
     
-    var whiteKeyWidth = 30;
-    var allKeys = Object.keys(this.keyElements);
-    var whiteKeys = allKeys.filter(function(k) {
-        return window.getNoteIndex ? window.getNoteIndex(k.replace(/[0-9]/g, '')) % 2 === 0 : false;
-    });
-    
-    octavePositions.forEach(function(info) {
-        var firstNote = whiteKeys[info.start] || '?';
-        var lastNote = whiteKeys[info.end] || '?';
+    octaveRanges.forEach(function(range) {
+        var firstNote = whiteKeys[range.start] || '?';
+        var lastNote = whiteKeys[range.end] || '?';
         var label = document.createElement('span');
-        label.textContent = 'Oktaf ' + info.octave + ' (' + firstNote + ' - ' + lastNote + ')';
+        label.textContent = 'Oktaf ' + range.octave + ' (' + firstNote + ' - ' + lastNote + ')';
         label.style.cssText = 'color:#556677;font-weight:600;font-size:0.55rem;';
         labelsWrapper.appendChild(label);
     });
@@ -279,4 +268,114 @@ KeyboardRenderer.prototype.addOctaveLabels = function() {
     container.appendChild(labelsWrapper);
 };
 
-// ... sisanya sama seperti sebelumnya (bindEvents, activateKey, deactivateKey, updateDisplay, reRender)
+KeyboardRenderer.prototype.bindEvents = function() {
+    var self = this;
+    
+    // Keyboard QWERTY
+    document.addEventListener('keydown', function(e) {
+        var keyMap = {
+            'q': 0, 'w': 1, 'e': 2, 'r': 3, 't': 4, 'y': 5,
+            'u': 6, 'i': 7, 'o': 8, 'p': 9, 'a': 10, 's': 11,
+            'd': 12, 'f': 13, 'g': 14, 'h': 15, 'j': 16, 'k': 17,
+            'l': 18, ';': 19
+        };
+        var keyIndex = keyMap[e.key.toLowerCase()];
+        if (keyIndex !== undefined && !e.repeat) {
+            var octave = self.currentOctave;
+            var noteName = window.getNoteName ? window.getNoteName(keyIndex) : 'E';
+            var fullName = noteName + octave;
+            var keyElement = self.keyElements[fullName];
+            if (keyElement) {
+                e.preventDefault();
+                self.activateKey(keyElement);
+            }
+        }
+    });
+    
+    document.addEventListener('keyup', function(e) {
+        var keyMap = {
+            'q': 0, 'w': 1, 'e': 2, 'r': 3, 't': 4, 'y': 5,
+            'u': 6, 'i': 7, 'o': 8, 'p': 9, 'a': 10, 's': 11,
+            'd': 12, 'f': 13, 'g': 14, 'h': 15, 'j': 16, 'k': 17,
+            'l': 18, ';': 19
+        };
+        var keyIndex = keyMap[e.key.toLowerCase()];
+        if (keyIndex !== undefined) {
+            var octave = self.currentOctave;
+            var noteName = window.getNoteName ? window.getNoteName(keyIndex) : 'E';
+            var fullName = noteName + octave;
+            var keyElement = self.keyElements[fullName];
+            if (keyElement) {
+                e.preventDefault();
+                self.deactivateKey(keyElement);
+            }
+        }
+    });
+    
+    var octaveSelect = document.getElementById('octaveSelect');
+    if (octaveSelect) {
+        octaveSelect.addEventListener('change', function() {
+            self.currentOctave = parseInt(this.value);
+        });
+    }
+};
+
+KeyboardRenderer.prototype.activateKey = function(key) {
+    if (!key) return;
+    
+    var noteName = key.dataset.note;
+    var freq = parseFloat(key.dataset.freq);
+    var octave = key.dataset.octave;
+    var isWhite = key.dataset.isWhite === 'true';
+    
+    // Visual
+    key.style.background = '#ffd700';
+    key.style.borderColor = '#f5a623';
+    key.style.boxShadow = '0 0 30px rgba(255,215,0,0.5)';
+    key.style.transform = 'scale(0.95)';
+    
+    // AUDIO
+    if (this.audioEngine && freq > 0) {
+        this.audioEngine.playNote(noteName, freq, 0.8);
+    }
+    
+    this.activeKeys[noteName] = true;
+    
+    var freqFormatted = window.formatFrequency ? window.formatFrequency(freq) : freq.toFixed(5);
+    this.updateDisplay(noteName, freqFormatted, octave);
+};
+
+KeyboardRenderer.prototype.deactivateKey = function(key) {
+    if (!key) return;
+    
+    var noteName = key.dataset.note;
+    var isWhite = key.dataset.isWhite === 'true';
+    
+    if (isWhite) {
+        key.style.background = '#f0f0f0';
+        key.style.borderColor = '#ccc';
+    } else {
+        key.style.background = '#222';
+        key.style.borderColor = '#111';
+    }
+    key.style.transform = '';
+    key.style.boxShadow = '';
+    
+    delete this.activeKeys[noteName];
+    if (Object.keys(this.activeKeys).length === 0) {
+        this.updateDisplay(null, null, null);
+    }
+};
+
+KeyboardRenderer.prototype.updateDisplay = function(noteName, freq, octave) {
+    if (this.noteDisplay) this.noteDisplay.textContent = noteName || '-';
+    if (this.freqDisplay) this.freqDisplay.textContent = freq || '-';
+    if (this.octaveDisplay) this.octaveDisplay.textContent = octave || '-';
+};
+
+KeyboardRenderer.prototype.reRender = function() {
+    this.render();
+};
+
+window.KeyboardRenderer = KeyboardRenderer;
+console.log('✅ keyboard.js loaded');
