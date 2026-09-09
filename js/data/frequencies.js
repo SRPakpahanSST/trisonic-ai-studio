@@ -2,7 +2,6 @@
 // DATA FREKUENSI 12-TET (20 NADA PER OKTAF) – E2 s/d A7
 // A4 = 440 Hz (acuan)
 // Rumus: f_n = 440 × 3^(n/20) dengan n=0 untuk A4
-// RASIO = 3^(1/20) ≈ 1.056467
 // ================================================================
 
 // ================================================================
@@ -17,6 +16,8 @@ const NOTES_20 = ['E','E#','F','F#','G','G#','H','H#','I','J','J#','K','K#','A',
 
 // Tuts PUTIH (nada tanpa #)
 const WHITE_KEYS = ['E', 'F', 'G', 'H', 'I', 'J', 'K', 'A', 'B', 'C', 'D'];
+
+// Tuts HITAM (nada dengan #)
 const BLACK_KEYS = ['E#', 'F#', 'G#', 'H#', 'J#', 'K#', 'A#', 'B#', 'C#'];
 
 function isWhiteKey(noteName) {
@@ -46,7 +47,6 @@ function calculateFrequency(index, octave) {
 // ================================================================
 const FREQ_MAP = {};
 
-// Generate semua frekuensi dari E2 sampai A7
 function generateFreqMap() {
     // Oktaf 2: E2 sampai D2 (20 nada)
     for (var i = 0; i < NOTES_20.length; i++) {
@@ -62,13 +62,13 @@ function generateFreqMap() {
         FREQ_MAP[noteName] = parseFloat(freq.toFixed(5));
     }
     
-    // Oktaf 4: E4 sampai D4 (20 nada) - A4 = 440 Hz
+    // Oktaf 4: E4 sampai D4 (20 nada)
     for (var i = 0; i < NOTES_20.length; i++) {
         var noteName = NOTES_20[i] + '4';
         var freq = calculateFrequency(i, 4);
         FREQ_MAP[noteName] = parseFloat(freq.toFixed(5));
     }
-    FREQ_MAP['A4'] = 440.00000; // Pastikan A4 = 440
+    FREQ_MAP['A4'] = 440.00000;
     
     // Oktaf 5: E5 sampai D5 (20 nada)
     for (var i = 0; i < NOTES_20.length; i++) {
@@ -84,7 +84,7 @@ function generateFreqMap() {
         FREQ_MAP[noteName] = parseFloat(freq.toFixed(5));
     }
     
-    // Oktaf 7: E7 sampai A7 (14 nada, berhenti di A7)
+    // Oktaf 7: E7 sampai A7 (14 nada)
     for (var i = 0; i <= 13; i++) {
         var noteName = NOTES_20[i] + '7';
         var freq = calculateFrequency(i, 7);
@@ -155,9 +155,6 @@ window.calculateFrequency = calculateFrequency;
 
 console.log('✅ frequencies.js loaded');
 console.log('✅ Total nada: ' + getAllNotes().length + ' notes');
-console.log('✅ Nada pertama: ' + getAllNotes()[0] + ' (E2)');
-console.log('✅ Nada terakhir: ' + getAllNotes()[getAllNotes().length - 1] + ' (A7)');
+console.log('✅ Nada pertama: ' + getAllNotes()[0] + ' (E2 - PUTIH)');
+console.log('✅ Nada terakhir: ' + getAllNotes()[getAllNotes().length - 1] + ' (A7 - PUTIH)');
 console.log('✅ A4 = ' + FREQ_MAP['A4'] + ' Hz (ACUAN)');
-console.log('✅ A3 = ' + FREQ_MAP['A3'] + ' Hz');
-console.log('✅ A2 = ' + FREQ_MAP['A2'] + ' Hz');
-console.log('✅ A7 = ' + FREQ_MAP['A7'] + ' Hz');
