@@ -1,32 +1,23 @@
 // ================================================================
-// DATA FREKUENSI 12-TET (20 NADA PER OKTAF) – C2 s/d D6
+// DATA FREKUENSI 12-TET (20 NADA PER OKTAF) – E3 s/d D6
 // A4 = 440 Hz (acuan)
 // RASIO = 3^(1/20) ≈ 1.056467
 // ================================================================
 
 // ================================================================
-// URUTAN NADA YANG BENAR (1 OKTAF) - DIMULAI DARI C
+// URUTAN NADA YANG BENAR (1 OKTAF)
 // ================================================================
 // Index:  0    1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16   17   18   19
-// Nada:   C   C#    D    E   E#    F   F#    G   G#    H   H#    I    J   J#    K   K#    A   A#    B   B#
-// Warna:  P    H    P    P    H    P    H    P    H    P    H    P    P    H    P    H    P    H    P    H
+// Nada:   E   E#    F   F#    G   G#    H   H#    I    J   J#    K   K#    A   A#    B   B#    C   C#    D
+// Warna:  P    H    P    H    P    H    P    H    P    P    H    P    H    P    H    P    H    P    H    P
 //
-// Tuts PUTIH (Index Genap): C, D, E, F, G, H, I, J, K, A, B
-// Tuts HITAM (Index Ganjil): C#, E#, F#, G#, H#, J#, K#, A#, B#
-//
-// CATATAN: I dan J adalah dua tuts PUTIH berurutan (tidak ada hitam di antaranya)
+// Tuts PUTIH (Index Genap): E, F, G, H, I, J, K, A, B, C, D
+// Tuts HITAM (Index Ganjil): E#, F#, G#, H#, J#, K#, A#, B#, C#
 // ================================================================
 
-const NOTES_20 = ['C','C#','D','E','E#','F','F#','G','G#','H','H#','I','J','J#','K','K#','A','A#','B','B#'];
+const NOTES_20 = ['E','E#','F','F#','G','G#','H','H#','I','J','J#','K','K#','A','A#','B','B#','C','C#','D'];
 
 const FREQ_MAP = {
-    // ==========================================================
-    // OKTAF 2 - C2, C#2, D2 (3 nada)
-    // ==========================================================
-    'C2': 60.90000,
-    'C#2': 64.34000,
-    'D2': 67.97400,
-    
     // ==========================================================
     // OKTAF 3 - E3 sampai D3 (20 nada)
     // ==========================================================
@@ -134,7 +125,7 @@ function getNoteIndex(noteName) {
 }
 
 function getNoteName(index) {
-    return NOTES_20[index % 20] || 'C';
+    return NOTES_20[index % 20] || 'E';
 }
 
 function getFrequencyFromNote(noteName) {
@@ -143,7 +134,8 @@ function getFrequencyFromNote(noteName) {
 
 function getAllNotes() {
     var allNotes = [];
-    for (var oct = 2; oct <= 6; oct++) {
+    // Mulai dari oktaf 3 (E3) sampai oktaf 6 (D6)
+    for (var oct = 3; oct <= 6; oct++) {
         for (var i = 0; i < NOTES_20.length; i++) {
             var fullName = NOTES_20[i] + oct;
             if (FREQ_MAP[fullName] !== undefined) {
@@ -169,7 +161,6 @@ window.getAllNotes = getAllNotes;
 window.formatFrequency = formatFrequency;
 
 console.log('✅ frequencies.js loaded, ' + getAllNotes().length + ' notes');
-console.log('✅ Nada pertama: ' + getAllNotes()[0] + ' (C2 - PUTIH)');
-console.log('✅ Nada kedua: ' + getAllNotes()[1] + ' (C#2 - HITAM)');
-console.log('✅ Nada ketiga: ' + getAllNotes()[2] + ' (D2 - PUTIH)');
+console.log('✅ Nada pertama: ' + getAllNotes()[0] + ' (E3 - PUTIH)');
+console.log('✅ Nada kedua: ' + getAllNotes()[1] + ' (E#3 - HITAM)');
 console.log('✅ Nada terakhir: ' + getAllNotes()[getAllNotes().length - 1] + ' (D6 - PUTIH)');
