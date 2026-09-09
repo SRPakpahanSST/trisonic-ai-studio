@@ -1,5 +1,5 @@
 // ================================================================
-// engine.js - Audio Engine dengan Presisi 5 Angka
+// engine.js - Audio Engine
 // ================================================================
 
 class AudioEngine {
