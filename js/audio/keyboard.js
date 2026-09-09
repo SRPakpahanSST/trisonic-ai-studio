@@ -1,7 +1,7 @@
-// ============================================================
-// keyboard.js - Render Keyboard 20 Nada (5 Oktaf: C2 - D6)
-// TriSonic AI Studio
-// ============================================================
+// ================================================================
+// keyboard.js - Render Keyboard 20 Nada (C2 - D6)
+// Dengan tuts putih dan hitam yang benar
+// ================================================================
 
 class KeyboardRenderer {
     constructor() {
@@ -12,9 +12,9 @@ class KeyboardRenderer {
         this.currentOctave = 4;
         this.startOctave = 2;
         this.endOctave = 6;
-        this.notesPerOctave = 20;
-        this.totalKeys = (this.endOctave - this.startOctave + 1) * this.notesPerOctave; // 5 * 20 = 100 tuts
         this.isMouseDown = false;
+        
+        // Display elements
         this.noteDisplay = document.getElementById('currentNote');
         this.freqDisplay = document.getElementById('currentFreq');
         this.octaveDisplay = document.getElementById('currentOctave');
@@ -25,7 +25,7 @@ class KeyboardRenderer {
         this.render();
         this.bindEvents();
         this.updateDisplay(null, null, null);
-        console.log('✅ Keyboard siap dengan 5 oktaf (C2 - D6)');
+        console.log('✅ Keyboard siap (C2 - D6, 20 nada/oktaf)');
     }
 
     render() {
@@ -35,35 +35,39 @@ class KeyboardRenderer {
         this.keyElements = {};
         this.activeKeys.clear();
         
-        // Gunakan flex layout untuk keyboard
-        const keyboardWrapper = document.createElement('div');
-        keyboardWrapper.className = 'keyboard-flex';
-        keyboardWrapper.style.cssText = `
+        const wrapper = document.createElement('div');
+        wrapper.className = 'keyboard-flex';
+        wrapper.style.cssText = `
             display: flex;
             gap: 2px;
             padding: 4px;
             min-width: max-content;
             position: relative;
+            background: #0d1520;
+            border-radius: 8px;
         `;
         
-        let whiteCount = 0;
-        const totalKeys = this.totalKeys;
+        // Dapatkan semua nada dari C2 sampai D6
+        const allNotes = window.getAllNotes ? window.getAllNotes() : [];
         
-        for (let i = 0; i < totalKeys; i++) {
-            const noteIndex = i % this.notesPerOctave;
-            const octave = Math.floor(i / this.notesPerOctave) + this.startOctave;
-            const noteName = window.getNoteName ? window.getNoteName(noteIndex) : 'E';
-            const fullName = noteName + octave;
-            const freq = window.getFrequency ? window.getFrequency(noteIndex, octave) : 440;
+        // Tentukan tuts putih dan hitam
+        // Tuts putih: index genap (0,2,4,6,8,10,12,14,16,18)
+        // Tuts hitam: index ganjil (1,3,5,7,9,11,13,15,17,19)
+        
+        allNotes.forEach((noteName) => {
+            const freq = window.getFrequencyFromNote ? window.getFrequencyFromNote(noteName) : 0;
+            const match = noteName.match(/^([A-Z#]+)(\d+)$/);
+            if (!match) return;
             
-            // Tuts putih = index genap, tuts hitam = index ganjil
-            const isWhite = noteIndex % 2 === 0;
+            const [, note, octave] = match;
+            const index = window.getNoteIndex ? window.getNoteIndex(note) : 0;
+            const isWhite = index % 2 === 0;
             
             const key = document.createElement('div');
             key.className = `key ${isWhite ? 'key-white' : 'key-black'}`;
-            key.dataset.note = fullName;
+            key.dataset.note = noteName;
             key.dataset.freq = freq;
-            key.dataset.index = noteIndex;
+            key.dataset.index = index;
             key.dataset.octave = octave;
             key.dataset.isWhite = isWhite;
             
@@ -72,8 +76,8 @@ class KeyboardRenderer {
                 key.style.cssText = `
                     flex: 0 0 32px;
                     height: 140px;
-                    background: #1a2332;
-                    border: 1px solid #2a3a4a;
+                    background: #f0f0f0;
+                    border: 1px solid #ccc;
                     border-radius: 0 0 6px 6px;
                     cursor: pointer;
                     position: relative;
@@ -86,13 +90,12 @@ class KeyboardRenderer {
                     user-select: none;
                     z-index: 1;
                 `;
-                whiteCount++;
             } else {
                 key.style.cssText = `
                     flex: 0 0 20px;
                     height: 85px;
-                    background: #0a0e17;
-                    border: 1px solid #1a2a3a;
+                    background: #222;
+                    border: 1px solid #111;
                     border-radius: 0 0 6px 6px;
                     cursor: pointer;
                     position: relative;
@@ -112,28 +115,28 @@ class KeyboardRenderer {
             // Label
             const label = document.createElement('span');
             label.className = 'key-label';
-            label.textContent = noteName;
+            label.textContent = note;
             label.style.cssText = `
                 font-size: 0.55rem;
-                color: ${isWhite ? '#8899aa' : '#556677'};
+                color: ${isWhite ? '#333' : '#888'};
                 pointer-events: none;
                 text-align: center;
                 font-weight: 600;
             `;
             key.appendChild(label);
             
-            // Tooltip
-            key.title = `${fullName} - ${freq.toFixed(2)} Hz`;
+            // Tooltip dengan presisi 5 angka
+            const freqFormatted = window.formatFrequency ? window.formatFrequency(freq) : freq.toFixed(5);
+            key.title = `${noteName} - ${freqFormatted} Hz`;
             
-            // Event listeners
+            // Events
             key.addEventListener('mousedown', (e) => {
                 e.preventDefault();
                 this.activateKey(key);
                 this.isMouseDown = true;
             });
             
-            key.addEventListener('mouseup', (e) => {
-                e.preventDefault();
+            key.addEventListener('mouseup', () => {
                 this.deactivateKey(key);
                 this.isMouseDown = false;
             });
@@ -155,11 +158,11 @@ class KeyboardRenderer {
                 this.deactivateKey(key);
             }, { passive: false });
             
-            keyboardWrapper.appendChild(key);
-            this.keyElements[fullName] = key;
-        }
+            wrapper.appendChild(key);
+            this.keyElements[noteName] = key;
+        });
         
-        this.container.appendChild(keyboardWrapper);
+        this.container.appendChild(wrapper);
         this.addOctaveLabels();
     }
 
@@ -171,7 +174,7 @@ class KeyboardRenderer {
             justify-content: space-around;
             padding: 6px 4px 0;
             font-size: 0.7rem;
-            color: var(--text-muted, #556677);
+            color: #556677;
             width: 100%;
             border-top: 1px solid #1a2a3a;
             margin-top: 4px;
@@ -192,7 +195,7 @@ class KeyboardRenderer {
     }
 
     bindEvents() {
-        // Keyboard computer (QWERTY)
+        // Keyboard QWERTY
         document.addEventListener('keydown', (e) => {
             const keyMap = {
                 'q': 0, 'w': 1, 'e': 2, 'r': 3, 't': 4, 'y': 5,
@@ -240,7 +243,6 @@ class KeyboardRenderer {
         if (octaveSelect) {
             octaveSelect.addEventListener('change', () => {
                 this.currentOctave = parseInt(octaveSelect.value);
-                this.updateDisplay(null, null, this.currentOctave);
             });
         }
     }
@@ -253,11 +255,17 @@ class KeyboardRenderer {
         const octave = key.dataset.octave;
         const isWhite = key.dataset.isWhite === 'true';
         
-        // Visual
-        key.style.background = isWhite ? '#2196F3' : '#4CAF50';
+        // Visual - aktifkan dengan warna yang sesuai
+        if (isWhite) {
+            key.style.background = '#ffd700';
+            key.style.borderColor = '#ffaa00';
+            key.style.boxShadow = '0 0 20px rgba(255,215,0,0.4)';
+        } else {
+            key.style.background = '#ffd700';
+            key.style.borderColor = '#ffaa00';
+            key.style.boxShadow = '0 0 20px rgba(255,215,0,0.4)';
+        }
         key.style.transform = 'scale(0.95)';
-        key.style.boxShadow = '0 0 25px rgba(33,150,243,0.4)';
-        key.style.borderColor = '#2196F3';
         
         // Audio
         if (this.audioEngine && freq > 0) {
@@ -265,7 +273,10 @@ class KeyboardRenderer {
         }
         
         this.activeKeys.add(noteName);
-        this.updateDisplay(noteName, freq, octave);
+        
+        // Display dengan presisi 5 angka
+        const freqFormatted = window.formatFrequency ? window.formatFrequency(freq) : freq.toFixed(5);
+        this.updateDisplay(noteName, freqFormatted, octave);
     }
 
     deactivateKey(key) {
@@ -274,11 +285,16 @@ class KeyboardRenderer {
         const noteName = key.dataset.note;
         const isWhite = key.dataset.isWhite === 'true';
         
-        // Visual
-        key.style.background = isWhite ? '#1a2332' : '#0a0e17';
+        // Kembalikan warna asli
+        if (isWhite) {
+            key.style.background = '#f0f0f0';
+            key.style.borderColor = '#ccc';
+        } else {
+            key.style.background = '#222';
+            key.style.borderColor = '#111';
+        }
         key.style.transform = '';
         key.style.boxShadow = '';
-        key.style.borderColor = isWhite ? '#2a3a4a' : '#1a2a3a';
         
         // Audio
         if (this.audioEngine) {
@@ -296,10 +312,10 @@ class KeyboardRenderer {
             const key = this.keyElements[noteName];
             if (key) {
                 const isWhite = key.dataset.isWhite === 'true';
-                key.style.background = isWhite ? '#1a2332' : '#0a0e17';
+                key.style.background = isWhite ? '#f0f0f0' : '#222';
+                key.style.borderColor = isWhite ? '#ccc' : '#111';
                 key.style.transform = '';
                 key.style.boxShadow = '';
-                key.style.borderColor = isWhite ? '#2a3a4a' : '#1a2a3a';
             }
         });
         
@@ -313,7 +329,7 @@ class KeyboardRenderer {
 
     updateDisplay(noteName, freq, octave) {
         if (this.noteDisplay) this.noteDisplay.textContent = noteName || '-';
-        if (this.freqDisplay) this.freqDisplay.textContent = freq ? freq.toFixed(2) : '-';
+        if (this.freqDisplay) this.freqDisplay.textContent = freq || '-';
         if (this.octaveDisplay) this.octaveDisplay.textContent = octave || '-';
     }
 
@@ -324,6 +340,7 @@ class KeyboardRenderer {
     }
 }
 
+// Export
 if (typeof window !== 'undefined') {
     window.KeyboardRenderer = KeyboardRenderer;
 }
