@@ -108,7 +108,6 @@ NOTES_20.forEach((note, index) => {
     NOTE_TO_INDEX[note] = index;
 });
 
-// Fungsi-fungsi
 function getNoteIndex(noteName) {
     return NOTE_TO_INDEX[noteName] !== undefined ? NOTE_TO_INDEX[noteName] : 0;
 }
@@ -119,17 +118,6 @@ function getNoteName(index) {
 
 function getFrequencyFromNote(noteName) {
     return FREQ_MAP[noteName] || 0;
-}
-
-function getNotesForOctave(octave) {
-    const notes = [];
-    for (let i = 0; i < NOTES_20.length; i++) {
-        const noteName = NOTES_20[i] + octave;
-        if (FREQ_MAP[noteName] !== undefined) {
-            notes.push(noteName);
-        }
-    }
-    return notes;
 }
 
 function getAllNotes() {
@@ -157,7 +145,6 @@ if (typeof window !== 'undefined') {
     window.getNoteIndex = getNoteIndex;
     window.getNoteName = getNoteName;
     window.getFrequencyFromNote = getFrequencyFromNote;
-    window.getNotesForOctave = getNotesForOctave;
     window.getAllNotes = getAllNotes;
     window.formatFrequency = formatFrequency;
 }
