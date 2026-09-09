@@ -82,7 +82,6 @@ function setupTabs() {
                 c.classList.toggle('active', c.id === 'tab-' + tabId);
             });
             
-            // Jika tab keyboard, re-render jika kosong
             if (tabId === 'keyboard' && keyboardRenderer) {
                 var container = document.getElementById('keyboard');
                 if (container && container.children.length === 0) {
@@ -186,7 +185,6 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(initApp, 300);
 });
 
-// FALLBACK
 window.addEventListener('load', function() {
     if (!keyboardRenderer || !keyboardRenderer.isRendered) {
         console.log('🔄 Window load - init ulang...');
