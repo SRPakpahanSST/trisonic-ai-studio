@@ -140,20 +140,6 @@ class AIComposer {
         }
         this.sequenceIndex = 0;
     }
-
-    getCompositionStats(composition) {
-        if (!composition || composition.length === 0) return null;
-        
-        const totalDuration = composition.reduce((sum, item) => sum + item.duration, 0);
-        const uniqueNotes = new Set(composition.map(item => item.note));
-        
-        return {
-            totalNotes: composition.length,
-            totalDuration: totalDuration.toFixed(2),
-            uniqueNotes: uniqueNotes.size,
-            tempo: Math.round(60 / (composition.reduce((sum, item) => sum + item.duration, 0) / composition.length))
-        };
-    }
 }
 
 if (typeof window !== 'undefined') {
