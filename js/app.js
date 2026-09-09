@@ -167,3 +167,14 @@ function displayComposition(composition) {
 document.addEventListener('DOMContentLoaded', () => {
     setTimeout(initApp, 300);
 });
+
+// Export untuk debugging
+if (typeof window !== 'undefined') {
+    window.__TRI_SONIC = {
+        audioEngine,
+        keyboardRenderer,
+        aiComposer,
+        partiturEditor,
+        initApp
+    };
+}
