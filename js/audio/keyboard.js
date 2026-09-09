@@ -1,5 +1,6 @@
 // ================================================================
 // keyboard.js - Render Keyboard 20 Nada (E2 - A7)
+// Keyboard menyesuaikan dengan dropdown Oktaf yang dipilih
 // ================================================================
 
 function KeyboardRenderer() {
@@ -13,6 +14,7 @@ function KeyboardRenderer() {
     this.freqDisplay = null;
     this.octaveDisplay = null;
     this.allNotes = [];
+    this.visibleOctaves = [2, 3, 4, 5, 6, 7];
 }
 
 KeyboardRenderer.prototype.init = function(audioEngine) {
@@ -35,20 +37,32 @@ KeyboardRenderer.prototype.init = function(audioEngine) {
         return;
     }
     
+    // Ambil nilai dropdown Oktaf
     var octaveSelect = document.getElementById('octaveSelect');
     if (octaveSelect) {
         this.currentOctave = parseInt(octaveSelect.value);
+        this.updateVisibleOctaves(this.currentOctave);
     }
     
-    console.log('✅ ' + this.allNotes.length + ' nada ditemukan');
+    console.log('✅ ' + this.allNotes.length + ' nada tersedia');
     console.log('✅ Nada pertama: ' + this.allNotes[0] + ' (E2 - PUTIH)');
     console.log('✅ Nada terakhir: ' + this.allNotes[this.allNotes.length - 1] + ' (A7 - PUTIH)');
-    console.log('✅ A4 = ' + (window.FREQ_MAP ? window.FREQ_MAP['A4'] : '440') + ' Hz (ACUAN)');
+    console.log('✅ Oktaf aktif: ' + this.currentOctave);
     
     this.render();
     this.bindEvents();
     this.updateDisplay(null, null, null);
     console.log('✅ Keyboard siap!');
+};
+
+KeyboardRenderer.prototype.updateVisibleOctaves = function(octave) {
+    // Saat dropdown berubah, kita hanya menampilkan tuts dengan oktaf yang dipilih
+    // plus oktaf di atas dan bawahnya untuk konteks (opsional)
+    // Di sini kita tampilkan semua oktaf, tapi QWERTY hanya memainkan oktaf yang dipilih
+    this.currentOctave = octave;
+    // visibleOctaves tetap semua oktaf agar keyboard lengkap
+    // Tapi QWERTY hanya akan memainkan oktaf yang dipilih
+    console.log('🔄 Oktaf QWERTY diubah ke: ' + octave);
 };
 
 KeyboardRenderer.prototype.render = function() {
@@ -70,6 +84,7 @@ KeyboardRenderer.prototype.render = function() {
     }
     
     console.log('✅ ' + allNotes.length + ' tuts akan dirender');
+    console.log('✅ Oktaf QWERTY aktif: ' + this.currentOctave);
     
     var wrapper = document.createElement('div');
     wrapper.className = 'keyboard-flex';
@@ -102,10 +117,24 @@ KeyboardRenderer.prototype.render = function() {
         key.dataset.index = index;
         key.dataset.noteName = note;
         
+        // Tandai oktaf yang aktif untuk QWERTY
+        if (octave === self.currentOctave) {
+            key.dataset.isActiveOctave = 'true';
+            key.style.border = '2px solid #FFC107';
+        } else {
+            key.dataset.isActiveOctave = 'false';
+        }
+        
         if (isWhite) {
             key.style.cssText = 'flex:0 0 30px;height:140px;background:#f0f0f0;border:1px solid #ccc;border-radius:0 0 6px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:8px;z-index:1;box-shadow:0 2px 4px rgba(0,0,0,0.1);transition:all 0.08s ease;user-select:none;touch-action:manipulation;';
+            if (octave === self.currentOctave) {
+                key.style.border = '2px solid #FFC107';
+            }
         } else {
             key.style.cssText = 'flex:0 0 18px;height:85px;background:#222;border:1px solid #111;border-radius:0 0 6px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:4px;margin-left:-9px;margin-right:-9px;z-index:2;box-shadow:0 2px 6px rgba(0,0,0,0.4);transition:all 0.08s ease;user-select:none;touch-action:manipulation;';
+            if (octave === self.currentOctave) {
+                key.style.border = '2px solid #FFC107';
+            }
         }
         
         // LABEL: tampilkan NAMA NADA LENGKAP dengan OKTAF
@@ -116,7 +145,7 @@ KeyboardRenderer.prototype.render = function() {
         key.appendChild(label);
         
         var freqFormatted = window.formatFrequency ? window.formatFrequency(freq) : freq.toFixed(5);
-        key.title = noteName + ' - ' + freqFormatted + ' Hz';
+        key.title = noteName + ' - ' + freqFormatted + ' Hz' + (octave === self.currentOctave ? ' (QWERTY aktif)' : '');
         
         key.addEventListener('mousedown', function(e) {
             e.preventDefault();
@@ -156,6 +185,7 @@ KeyboardRenderer.prototype.addOctaveLabels = function() {
     
     var allNotes = this.allNotes;
     var octaves = [2, 3, 4, 5, 6, 7];
+    var self = this;
     
     octaves.forEach(function(oct) {
         var notesInOctave = allNotes.filter(function(n) { return n.endsWith(oct); });
@@ -163,8 +193,9 @@ KeyboardRenderer.prototype.addOctaveLabels = function() {
             var first = notesInOctave[0];
             var last = notesInOctave[notesInOctave.length - 1];
             var label = document.createElement('span');
-            label.textContent = 'Oktaf ' + oct + ' (' + first + ' - ' + last + ')';
-            label.style.cssText = 'color:#556677;font-weight:600;font-size:0.55rem;';
+            var isActive = (oct === self.currentOctave);
+            label.textContent = 'Oktaf ' + oct + ' (' + first + ' - ' + last + ')' + (isActive ? ' ★' : '');
+            label.style.cssText = 'color:' + (isActive ? '#FFC107' : '#556677') + ';font-weight:' + (isActive ? '700' : '600') + ';font-size:0.55rem;';
             labelsWrapper.appendChild(label);
         }
     });
@@ -175,6 +206,7 @@ KeyboardRenderer.prototype.addOctaveLabels = function() {
 KeyboardRenderer.prototype.bindEvents = function() {
     var self = this;
     
+    // Keyboard QWERTY - hanya memainkan oktaf yang dipilih
     document.addEventListener('keydown', function(e) {
         var keyMap = {
             'q': 0, 'w': 1, 'e': 2, 'r': 3, 't': 4, 'y': 5,
@@ -215,14 +247,75 @@ KeyboardRenderer.prototype.bindEvents = function() {
         }
     });
     
+    // Octave Selector untuk QWERTY - UPDATE TAMPILAN KEYBOARD
     var octaveSelect = document.getElementById('octaveSelect');
     if (octaveSelect) {
         octaveSelect.addEventListener('change', function() {
-            self.currentOctave = parseInt(this.value);
-            console.log('🔄 Oktaf QWERTY diubah ke: ' + self.currentOctave);
-            self.updateDisplay(null, null, self.currentOctave);
+            var newOctave = parseInt(this.value);
+            self.currentOctave = newOctave;
+            console.log('🔄 Oktaf QWERTY diubah ke: ' + newOctave);
+            
+            // Update border pada tuts yang aktif
+            self.updateActiveOctaveBorder(newOctave);
+            
+            // Update label oktaf
+            self.updateOctaveLabels(newOctave);
+            
+            // Update display
+            self.updateDisplay(null, null, newOctave);
         });
     }
+};
+
+KeyboardRenderer.prototype.updateActiveOctaveBorder = function(activeOctave) {
+    // Update border untuk semua tuts
+    Object.keys(this.keyElements).forEach(function(noteName) {
+        var key = this.keyElements[noteName];
+        var octave = parseInt(key.dataset.octave);
+        var isWhite = key.dataset.isWhite === 'true';
+        
+        if (octave === activeOctave) {
+            key.style.border = '2px solid #FFC107';
+            key.title = key.dataset.note + ' - ' + key.dataset.freq + ' Hz (QWERTY aktif)';
+        } else {
+            if (isWhite) {
+                key.style.border = '1px solid #ccc';
+            } else {
+                key.style.border = '1px solid #111';
+            }
+            key.title = key.dataset.note + ' - ' + key.dataset.freq + ' Hz';
+        }
+    }, this);
+};
+
+KeyboardRenderer.prototype.updateOctaveLabels = function(activeOctave) {
+    // Cari container label oktaf
+    var container = this.container;
+    if (!container) return;
+    
+    var labelsWrapper = container.querySelector('.octave-labels');
+    if (!labelsWrapper) return;
+    
+    // Update setiap label
+    var labels = labelsWrapper.querySelectorAll('span');
+    var octaves = [2, 3, 4, 5, 6, 7];
+    var self = this;
+    
+    labels.forEach(function(label, index) {
+        var oct = octaves[index];
+        if (oct === activeOctave) {
+            label.style.color = '#FFC107';
+            label.style.fontWeight = '700';
+            // Tambahkan ★ jika belum ada
+            if (!label.textContent.includes('★')) {
+                label.textContent = label.textContent.replace(')', ' ★)');
+            }
+        } else {
+            label.style.color = '#556677';
+            label.style.fontWeight = '600';
+            label.textContent = label.textContent.replace(' ★', '');
+        }
+    });
 };
 
 KeyboardRenderer.prototype.activateKey = function(key) {
@@ -252,13 +345,23 @@ KeyboardRenderer.prototype.deactivateKey = function(key) {
     
     var noteName = key.dataset.note;
     var isWhite = key.dataset.isWhite === 'true';
+    var octave = parseInt(key.dataset.octave);
+    var isActiveOctave = (octave === this.currentOctave);
     
     if (isWhite) {
         key.style.background = '#f0f0f0';
-        key.style.borderColor = '#ccc';
+        if (isActiveOctave) {
+            key.style.border = '2px solid #FFC107';
+        } else {
+            key.style.border = '1px solid #ccc';
+        }
     } else {
         key.style.background = '#222';
-        key.style.borderColor = '#111';
+        if (isActiveOctave) {
+            key.style.border = '2px solid #FFC107';
+        } else {
+            key.style.border = '1px solid #111';
+        }
     }
     key.style.transform = '';
     key.style.boxShadow = '';
