@@ -1,5 +1,5 @@
 // ================================================================
-// keyboard.js - Render Keyboard 20 Nada (E3 - D6)
+// keyboard.js - Render Keyboard 20 Nada (E2 - A7)
 // ================================================================
 
 function KeyboardRenderer() {
@@ -41,9 +41,9 @@ KeyboardRenderer.prototype.init = function(audioEngine) {
     }
     
     console.log('✅ ' + this.allNotes.length + ' nada ditemukan');
-    console.log('✅ Nada pertama: ' + this.allNotes[0] + ' (E3 - PUTIH)');
-    console.log('✅ Nada kedua: ' + this.allNotes[1] + ' (E#3 - HITAM)');
-    console.log('✅ Nada terakhir: ' + this.allNotes[this.allNotes.length - 1] + ' (D6 - PUTIH)');
+    console.log('✅ Nada pertama: ' + this.allNotes[0] + ' (E2 - PUTIH)');
+    console.log('✅ Nada terakhir: ' + this.allNotes[this.allNotes.length - 1] + ' (A7 - PUTIH)');
+    console.log('✅ A4 = ' + (window.FREQ_MAP ? window.FREQ_MAP['A4'] : '440') + ' Hz (ACUAN)');
     
     this.render();
     this.bindEvents();
@@ -86,14 +86,10 @@ KeyboardRenderer.prototype.render = function() {
         var octave = parseInt(match[2]);
         var index = window.getNoteIndex ? window.getNoteIndex(note) : 0;
         
-        // ================================================================
-        // MENENTUKAN WARNA TUTS MENGGUNAKAN LIST NADA, BUKAN INDEX
-        // ================================================================
         var isWhite = false;
         if (typeof window.isWhiteKey === 'function') {
             isWhite = window.isWhiteKey(note);
         } else {
-            // Fallback: jika fungsi tidak tersedia, gunakan index
             isWhite = (index % 2 === 0);
         }
         
@@ -112,7 +108,7 @@ KeyboardRenderer.prototype.render = function() {
             key.style.cssText = 'flex:0 0 18px;height:85px;background:#222;border:1px solid #111;border-radius:0 0 6px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:4px;margin-left:-9px;margin-right:-9px;z-index:2;box-shadow:0 2px 6px rgba(0,0,0,0.4);transition:all 0.08s ease;user-select:none;touch-action:manipulation;';
         }
         
-        // Label - tampilkan NAMA NADA LENGKAP
+        // LABEL: tampilkan NAMA NADA LENGKAP dengan OKTAF
         var label = document.createElement('span');
         label.className = 'key-label';
         label.textContent = noteName;
@@ -159,7 +155,7 @@ KeyboardRenderer.prototype.addOctaveLabels = function() {
     labelsWrapper.style.cssText = 'display:flex;justify-content:space-around;padding:6px 4px 0;font-size:0.6rem;color:#556677;width:100%;border-top:1px solid #2a3a5e;margin-top:4px;';
     
     var allNotes = this.allNotes;
-    var octaves = [3, 4, 5, 6];
+    var octaves = [2, 3, 4, 5, 6, 7];
     
     octaves.forEach(function(oct) {
         var notesInOctave = allNotes.filter(function(n) { return n.endsWith(oct); });
