@@ -46,7 +46,7 @@ const FREQ_MAP = {
     'J#4': 373.15100,
     'K4': 394.22200,
     'K#4': 416.48200,
-    'A4': 440.00000,  // Referensi
+    'A4': 440.00000,
     'A#4': 464.84600,
     'B4': 491.09400,
     'B#4': 518.82500,
@@ -108,22 +108,19 @@ NOTES_20.forEach((note, index) => {
     NOTE_TO_INDEX[note] = index;
 });
 
-// Mendapatkan index nada
+// Fungsi-fungsi
 function getNoteIndex(noteName) {
     return NOTE_TO_INDEX[noteName] !== undefined ? NOTE_TO_INDEX[noteName] : 0;
 }
 
-// Mendapatkan nama nada dari index
 function getNoteName(index) {
     return NOTES_20[index % 20] || 'E';
 }
 
-// Mendapatkan frekuensi dari nama nada
 function getFrequencyFromNote(noteName) {
     return FREQ_MAP[noteName] || 0;
 }
 
-// Mendapatkan semua nada dalam satu oktaf
 function getNotesForOctave(octave) {
     const notes = [];
     for (let i = 0; i < NOTES_20.length; i++) {
@@ -135,13 +132,11 @@ function getNotesForOctave(octave) {
     return notes;
 }
 
-// Mendapatkan semua nada dari C2 sampai D6
 function getAllNotes() {
     const allNotes = [];
-    const octaves = [2, 3, 4, 5, 6];
-    for (const octave of octaves) {
+    for (let oct = 2; oct <= 6; oct++) {
         for (const note of NOTES_20) {
-            const fullName = note + octave;
+            const fullName = note + oct;
             if (FREQ_MAP[fullName] !== undefined) {
                 allNotes.push(fullName);
             }
@@ -150,7 +145,6 @@ function getAllNotes() {
     return allNotes;
 }
 
-// Format frekuensi dengan 5 angka di belakang koma
 function formatFrequency(freq) {
     return freq.toFixed(5);
 }
