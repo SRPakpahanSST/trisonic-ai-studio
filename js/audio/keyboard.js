@@ -1,5 +1,5 @@
 // ================================================================
-// keyboard.js - Render Keyboard 20 Nada (C2 - D6)
+// keyboard.js - Render Keyboard 20 Nada (E3 - D6)
 // ================================================================
 
 function KeyboardRenderer() {
@@ -42,9 +42,8 @@ KeyboardRenderer.prototype.init = function(audioEngine) {
     }
     
     console.log('✅ ' + this.allNotes.length + ' nada ditemukan');
-    console.log('✅ Nada pertama: ' + this.allNotes[0] + ' (C2 - PUTIH)');
-    console.log('✅ Nada kedua: ' + this.allNotes[1] + ' (C#2 - HITAM)');
-    console.log('✅ Nada ketiga: ' + this.allNotes[2] + ' (D2 - PUTIH)');
+    console.log('✅ Nada pertama: ' + this.allNotes[0] + ' (E3 - PUTIH)');
+    console.log('✅ Nada kedua: ' + this.allNotes[1] + ' (E#3 - HITAM)');
     console.log('✅ Nada terakhir: ' + this.allNotes[this.allNotes.length - 1] + ' (D6 - PUTIH)');
     
     this.render();
@@ -154,7 +153,7 @@ KeyboardRenderer.prototype.addOctaveLabels = function() {
     labelsWrapper.style.cssText = 'display:flex;justify-content:space-around;padding:6px 4px 0;font-size:0.6rem;color:#556677;width:100%;border-top:1px solid #2a3a5e;margin-top:4px;';
     
     var allNotes = this.allNotes;
-    var octaves = [2, 3, 4, 5, 6];
+    var octaves = [3, 4, 5, 6];
     
     octaves.forEach(function(oct) {
         var notesInOctave = allNotes.filter(function(n) { return n.endsWith(oct); });
@@ -185,7 +184,7 @@ KeyboardRenderer.prototype.bindEvents = function() {
         var keyIndex = keyMap[e.key.toLowerCase()];
         if (keyIndex !== undefined && !e.repeat) {
             var octave = self.currentOctave;
-            var noteName = window.getNoteName ? window.getNoteName(keyIndex) : 'C';
+            var noteName = window.getNoteName ? window.getNoteName(keyIndex) : 'E';
             var fullName = noteName + octave;
             var keyElement = self.keyElements[fullName];
             if (keyElement) {
@@ -205,7 +204,7 @@ KeyboardRenderer.prototype.bindEvents = function() {
         var keyIndex = keyMap[e.key.toLowerCase()];
         if (keyIndex !== undefined) {
             var octave = self.currentOctave;
-            var noteName = window.getNoteName ? window.getNoteName(keyIndex) : 'C';
+            var noteName = window.getNoteName ? window.getNoteName(keyIndex) : 'E';
             var fullName = noteName + octave;
             var keyElement = self.keyElements[fullName];
             if (keyElement) {
