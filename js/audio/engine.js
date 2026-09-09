@@ -38,7 +38,6 @@ AudioEngine.prototype.playNote = function(noteName, frequency, duration) {
     if (!this.initialized) this.init();
     if (!this.audioContext) return null;
     this.resume();
-    this.stopNote(noteName);
     
     var osc = this.audioContext.createOscillator();
     var gain = this.audioContext.createGain();
@@ -65,10 +64,6 @@ AudioEngine.prototype.playNote = function(noteName, frequency, duration) {
         self.activeOscillators = self.activeOscillators.filter(function(o) { return o !== osc; });
     };
     return { osc: osc, gain: gain };
-};
-
-AudioEngine.prototype.stopNote = function(noteName) {
-    // Tidak perlu implementasi khusus karena note berhenti otomatis
 };
 
 AudioEngine.prototype.stopAll = function() {
