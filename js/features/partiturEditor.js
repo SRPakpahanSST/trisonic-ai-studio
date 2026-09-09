@@ -20,7 +20,6 @@ PartiturEditor.prototype.init = function() {
     this.composerInput = document.getElementById('scoreComposer');
     this.tempoInput = document.getElementById('scoreTempo');
     
-    // Note buttons
     document.querySelectorAll('.note-btn').forEach(function(btn) {
         btn.addEventListener('click', function() {
             var note = this.dataset.note;
@@ -104,7 +103,6 @@ PartiturEditor.prototype.updatePreview = function() {
         var composer = this.composer || 'Komposer';
         var tempo = this.tempo || '120 BPM';
         var notes = this.notation.trim() || '(kosong)';
-        
         this.previewDisplay.innerHTML = '<div style="font-size:0.9rem;color:#8899aa;margin-bottom:0.25rem;"><strong>' + title + '</strong> · ' + composer + ' · ' + tempo + '</div><div style="font-size:1.4rem;letter-spacing:0.1em;color:#e8edf5;">' + notes + '</div>';
     }
 };
@@ -131,7 +129,6 @@ PartiturEditor.prototype.saveScore = function() {
         notation: this.notation,
         timestamp: new Date().toISOString()
     };
-    
     var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     var url = URL.createObjectURL(blob);
     var a = document.createElement('a');
@@ -144,7 +141,6 @@ PartiturEditor.prototype.saveScore = function() {
 PartiturEditor.prototype.loadScore = function(event) {
     var file = event.target.files[0];
     if (!file) return;
-    
     var reader = new FileReader();
     var self = this;
     reader.onload = function(e) {
@@ -180,10 +176,7 @@ PartiturEditor.prototype.exportScore = function() {
 
 PartiturEditor.prototype.printScore = function() {
     var printWindow = window.open('', '_blank', 'width=800,height=600');
-    if (!printWindow) {
-        alert('Mohon izinkan popup untuk mencetak.');
-        return;
-    }
+    if (!printWindow) { alert('Mohon izinkan popup untuk mencetak.'); return; }
     printWindow.document.write('<!DOCTYPE html><html><head><title>' + this.title + '</title><style>body{font-family:Georgia,serif;padding:40px;max-width:700px;margin:0 auto;}h1{text-align:center;font-size:24px;}.composer{text-align:center;color:#666;margin-bottom:20px;}.tempo{text-align:center;color:#888;margin-bottom:30px;}.notation{font-size:28px;letter-spacing:0.15em;text-align:center;padding:20px;background:#f5f5f5;border-radius:8px;font-family:monospace;}.footer{text-align:center;margin-top:40px;color:#aaa;font-size:12px;}@media print{body{padding:20px;}.no-print{display:none;}}</style></head><body><h1>' + this.title + '</h1><div class="composer">' + this.composer + '</div><div class="tempo">' + this.tempo + '</div><div class="notation">' + (this.notation.trim() || '(kosong)') + '</div><div class="footer">TriSonic AI Studio · Partitur Notasi Angka</div><div class="no-print" style="text-align:center;margin-top:20px;"><button onclick="window.print()" style="padding:8px 24px;font-size:16px;cursor:pointer;">🖨️ Cetak</button></div></body></html>');
     printWindow.document.close();
 };
