@@ -1,8 +1,13 @@
 // ================================================================
-// DATA FREKUENSI 12-TET (20 NADA PER OKTAF) – C2 s/d D6
+// DATA FREKUENSI 12-TET (20 NADA PER OKTAF) – C2 s/d C'6
 // A4 = 440 Hz (acuan)
 // Rumus: f_n = 440 × 3^(n/20) dengan n=0 untuk A4
 // ================================================================
+
+// URUTAN NADA YANG BENAR:
+// C, C#, D, E, E#, F, F#, G, G#, H, H#, I, J, J#, K, K#, A, A#, B, B#, C'
+// Tuts PUTIH: C, D, E, F, G, H, I, J, K, A, B
+// Tuts HITAM: C#, E#, F#, G#, H#, J#, K#, A#, B#
 
 const FREQ_MAP = {
     // Oktaf 2
@@ -99,11 +104,15 @@ const FREQ_MAP = {
     'D6': 5505.94200
 };
 
-// 20 Nada per Oktaf (Mayor)
-// URUTAN YANG BENAR: E, E#, F, F#, G, G#, H, H#, I, J, J#, K, K#, A, A#, B, B#, C, C#, D
-const NOTES_20 = ['E','E#','F','F#','G','G#','H','H#','I','J','J#','K','K#','A','A#','B','B#','C','C#','D'];
+// URUTAN NADA 20 PER OKTAF YANG BENAR:
+// C, C#, D, E, E#, F, F#, G, G#, H, H#, I, J, J#, K, K#, A, A#, B, B#, C'
+// Index: 0, 1,  2, 3, 4,  5, 6,  7, 8,  9, 10, 11,12, 13, 14, 15,16, 17, 18,19
+const NOTES_20 = ['C','C#','D','E','E#','F','F#','G','G#','H','H#','I','J','J#','K','K#','A','A#','B','B#'];
 
-// Mapping nada ke index
+// Tuts PUTIH (index genap): C, D, E, F, G, H, I, J, K, A, B
+// Tuts HITAM (index ganjil): C#, E#, F#, G#, H#, J#, K#, A#, B#
+// NOTE: Index 0=C (putih), 1=C# (hitam), 2=D (putih), 3=E (putih), 4=E# (hitam), dst
+
 const NOTE_TO_INDEX = {};
 NOTES_20.forEach(function(note, index) {
     NOTE_TO_INDEX[note] = index;
@@ -114,7 +123,7 @@ function getNoteIndex(noteName) {
 }
 
 function getNoteName(index) {
-    return NOTES_20[index % 20] || 'E';
+    return NOTES_20[index % 20] || 'C';
 }
 
 function getFrequencyFromNote(noteName) {
@@ -123,8 +132,6 @@ function getFrequencyFromNote(noteName) {
 
 function getAllNotes() {
     var allNotes = [];
-    // Dari C2 sampai D6
-    // Urutan oktaf: 2, 3, 4, 5, 6
     for (var oct = 2; oct <= 6; oct++) {
         for (var i = 0; i < NOTES_20.length; i++) {
             var fullName = NOTES_20[i] + oct;
@@ -151,4 +158,4 @@ window.getAllNotes = getAllNotes;
 window.formatFrequency = formatFrequency;
 
 console.log('✅ frequencies.js loaded, ' + getAllNotes().length + ' notes');
-console.log('✅ Contoh nada: ' + getAllNotes().slice(0, 10).join(', '));
+console.log('✅ Urutan nada: ' + NOTES_20.join(' - '));
