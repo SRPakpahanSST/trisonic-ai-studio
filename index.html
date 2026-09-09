@@ -105,140 +105,221 @@
         .btn-danger { background:var(--color-accent); color:white; }
         .btn-sm { padding:0.2rem 0.6rem; font-size:0.7rem; }
         
-        /* KEYBOARD - PERBAIKAN UTAMA */
-        #keyboard-container {
-            background: var(--bg-card);
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            padding: 0.5rem;
-            overflow-x: auto;
-            min-height: 220px;
-        }
-        
-        #keyboard {
-            position: relative;
-            min-height: 200px;
-            margin: 0 auto;
-        }
-        
-        .keyboard-flex {
-            position: relative;
-            margin: 0 auto;
-        }
-        
-        .key {
-            position: absolute;
-            cursor: pointer;
-            border-radius: 0 0 6px 6px;
-            transition: all 0.08s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-end;
-            user-select: none;
-            touch-action: manipulation;
-        }
-        
-        .key-white {
-            background: #f0f0f0;
-            border: 1px solid #ccc;
-            border-bottom: 3px solid #bbb;
-            z-index: 1;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        .key-white:hover { background: #e0e0e0; transform: scale(1.02); }
-        .key-white.active { background: #ffd700; transform: scale(0.97); border-color: #ffaa00; }
-        
-        .key-black {
-            background: #222;
-            border: 1px solid #111;
-            border-bottom: 3px solid #111;
-            z-index: 2;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.4);
-        }
-        
-        .key-black:hover { background: #444; }
-        .key-black.active { background: #ffd700; color: #222; transform: scale(0.95); }
-        
-        .key-label {
-            font-size: 0.45rem;
-            font-weight: 700;
-            text-align: center;
-            line-height: 1.2;
-            pointer-events: none;
-        }
-        
-        .key-white .key-label { color: #333; }
-        .key-black .key-label { color: #ddd; }
-        
-        .keyboard-info {
-            padding: 0.5rem 0.75rem;
-            background: var(--bg-card);
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-            text-align: center;
-            line-height: 1.8;
-            margin-top: 0.5rem;
-        }
-        
-        .keyboard-info strong { color: var(--color-amber); }
-        
-        .pitch-display {
-            display: flex;
-            gap: 1rem;
-            padding: 0.5rem 0.75rem;
-            background: var(--bg-card);
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            font-size: 0.8rem;
-            flex-wrap: wrap;
-            margin-top: 0.5rem;
-        }
-        
-        .pitch-display strong { color: var(--color-amber); }
-        
-        .keyboard-controls {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-            padding: 0.75rem;
-            background: var(--bg-card);
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            margin-top: 0.75rem;
-        }
-        
-        .control-group {
-            flex: 1;
-            min-width: 80px;
-        }
-        
-        .control-group label {
-            display: block;
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-            margin-bottom: 4px;
-        }
-        
-        .control-group input[type="range"] {
-            width: 100%;
-            accent-color: #2196F3;
-            background: transparent;
-        }
-        
-        .control-group select {
-            width: 100%;
-            padding: 0.3rem 0.6rem;
-            background: var(--bg-input);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            color: var(--text-primary);
-            font-family: var(--font-family);
-            font-size: 0.8rem;
-        }
+        /* ============================================================
+   KEYBOARD STYLES - FLEXBOX (SESUAI RENDERER)
+   ============================================================ */
+#keyboard-container {
+    background: var(--bg-card);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    padding: 0.5rem;
+    overflow-x: auto;
+    min-height: 200px;
+}
+
+#keyboard {
+    display: flex;
+    gap: 2px;
+    padding: 4px;
+    min-width: max-content;
+    background: #1a1a2e;
+    border-radius: 10px;
+    border: 2px solid #2a3a5e;
+    margin: 0 auto;
+    min-height: 170px;
+    align-items: flex-end;
+}
+
+.key {
+    cursor: pointer;
+    transition: all 0.08s ease;
+    user-select: none;
+    position: relative;
+    touch-action: manipulation;
+}
+
+/* Tuts PUTIH */
+.key-white {
+    flex: 0 0 30px;
+    height: 140px;
+    background: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 0 0 6px 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding-bottom: 8px;
+    z-index: 1;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.key-white:hover {
+    background: #ffffff;
+    border-color: #999;
+}
+
+.key-white.active {
+    background: #ffd700 !important;
+    transform: scale(0.95);
+    box-shadow: 0 0 30px rgba(255,215,0,0.5);
+    border-color: #f5a623;
+}
+
+/* Tuts HITAM */
+.key-black {
+    flex: 0 0 18px;
+    height: 85px;
+    background: #222;
+    border: 1px solid #111;
+    border-radius: 0 0 6px 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding-bottom: 4px;
+    margin-left: -9px;
+    margin-right: -9px;
+    z-index: 2;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+}
+
+.key-black:hover {
+    background: #333;
+    border-color: #444;
+}
+
+.key-black.active {
+    background: #ffd700 !important;
+    transform: scale(0.95);
+    box-shadow: 0 0 30px rgba(255,215,0,0.5);
+    border-color: #f5a623;
+}
+
+.key-label {
+    font-size: 0.5rem;
+    color: #333;
+    pointer-events: none;
+    text-align: center;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.key-black .key-label {
+    color: #888;
+    font-size: 0.45rem;
+}
+
+.key-white .key-label {
+    color: #333;
+    font-size: 0.5rem;
+}
+
+/* Keyboard Info */
+.keyboard-info {
+    padding: 0.5rem 0.75rem;
+    background: var(--bg-card);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    text-align: center;
+    line-height: 1.8;
+    margin-top: 0.5rem;
+}
+
+.keyboard-info strong {
+    color: var(--color-amber);
+}
+
+.pitch-display {
+    display: flex;
+    gap: 1rem;
+    padding: 0.5rem 0.75rem;
+    background: var(--bg-card);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    font-size: 0.8rem;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+}
+
+.pitch-display strong {
+    color: var(--color-amber);
+}
+
+.keyboard-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: var(--bg-card);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    margin-top: 0.75rem;
+}
+
+.control-group {
+    flex: 1;
+    min-width: 80px;
+}
+
+.control-group label {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+
+.control-group input[type="range"] {
+    width: 100%;
+    accent-color: #2196F3;
+    background: transparent;
+}
+
+.control-group select {
+    width: 100%;
+    padding: 0.3rem 0.6rem;
+    background: var(--bg-input);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-primary);
+    font-family: var(--font-family);
+    font-size: 0.8rem;
+}
+
+/* Responsive Keyboard */
+@media (max-width: 768px) {
+    .key-white {
+        flex: 0 0 24px;
+        height: 110px;
+    }
+    .key-black {
+        flex: 0 0 16px;
+        height: 70px;
+        margin-left: -8px;
+        margin-right: -8px;
+    }
+    .key-label {
+        font-size: 0.4rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .key-white {
+        flex: 0 0 20px;
+        height: 90px;
+    }
+    .key-black {
+        flex: 0 0 14px;
+        height: 55px;
+        margin-left: -7px;
+        margin-right: -7px;
+    }
+    .key-label {
+        font-size: 0.35rem;
+    }
+}
         
         /* COMPOSER */
         .composer-controls { display:flex; flex-wrap:wrap; gap:0.75rem; align-items:flex-end; padding:0.75rem; background:var(--bg-card); border-radius:12px; border:1px solid var(--border-color); margin-bottom:0.75rem; }
