@@ -4,21 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>TriSonic AI Studio</title>
-    
-    <link rel="icon" type="image/svg+xml" href="assets/images/trisonic-icon.svg" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="css/main.css" />
-    
     <style>
         /* ============================================================
-           GLOBAL STYLES
+           GLOBAL STYLES - LANGSUNG DI SINI AGAR PASTI TERBACA
            ============================================================ */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
+        * { margin:0; padding:0; box-sizing:border-box; }
         :root {
             --color-primary: #0F3460;
             --color-secondary: #2196F3;
@@ -36,808 +28,177 @@
             --font-family: 'Inter', sans-serif;
             --header-height: 60px;
             --sidebar-width: 200px;
-            --border-radius: 12px;
         }
+        body { font-family: var(--font-family); background: var(--bg-app); color: var(--text-primary); min-height: 100vh; }
         
-        body {
-            font-family: var(--font-family);
-            background: var(--bg-app);
-            color: var(--text-primary);
-            min-height: 100vh;
-        }
-        
-        /* ============================================================
-           LANDING PAGE
-           ============================================================ */
+        /* LANDING PAGE */
         #landing-page {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            position: fixed; top:0; left:0; width:100%; height:100%;
             background: #0a0e17;
-            background-image: 
-                radial-gradient(ellipse at 10% 20%, rgba(33,150,243,0.08) 0%, transparent 50%),
-                radial-gradient(ellipse at 90% 80%, rgba(233,30,99,0.06) 0%, transparent 50%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 999999;
-            padding: 2rem;
+            display: flex; align-items: center; justify-content: center;
+            z-index: 999999; padding: 2rem;
             transition: opacity 0.8s ease, transform 0.8s ease;
         }
+        #landing-page.hidden { opacity:0; transform:scale(1.05); pointer-events:none; }
+        #landing-page .landing-content { text-align:center; max-width:500px; width:100%; animation:landingFadeIn 1s ease-out; }
+        @keyframes landingFadeIn { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+        #landing-page .landing-logo { width:120px; height:120px; object-fit:cover; border-radius:50%; box-shadow:0 0 60px rgba(33,150,243,0.15); animation:logoPulse 3s ease-in-out infinite; }
+        @keyframes logoPulse { 0%,100% { transform:scale(1); } 50% { transform:scale(1.05); } }
+        #landing-page .landing-title { font-size:2.5rem; font-weight:800; background:linear-gradient(135deg,#0F3460,#2196F3); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-bottom:0.5rem; }
+        #landing-page .landing-subtitle { font-size:1.1rem; color:#8899aa; }
+        #landing-page .landing-description { font-size:0.9rem; color:#556677; margin-bottom:2.5rem; }
+        #btnMulai { display:inline-flex; align-items:center; gap:10px; padding:0.9rem 3rem; font-size:1.2rem; font-weight:700; font-family:var(--font-family); background:linear-gradient(135deg,#0F3460,#2196F3); color:white; border:none; border-radius:50px; cursor:pointer; transition:all 0.3s ease; box-shadow:0 4px 30px rgba(33,150,243,0.35); z-index:9999999; touch-action:manipulation; }
+        #btnMulai:active { transform:scale(0.96); }
+        #landing-page .landing-version { margin-top:2rem; font-size:0.75rem; color:#556677; }
         
-        #landing-page.hidden {
-            opacity: 0;
-            transform: scale(1.05);
-            pointer-events: none;
-        }
-        
-        #landing-page .landing-content {
-            text-align: center;
-            max-width: 500px;
-            width: 100%;
-            animation: landingFadeIn 1s ease-out;
-        }
-        
-        @keyframes landingFadeIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        #landing-page .landing-logo {
-            width: 140px;
-            height: 140px;
-            object-fit: cover;
-            border-radius: 50%;
-            box-shadow: 0 0 60px rgba(33,150,243,0.15);
-            animation: logoPulse 3s ease-in-out infinite;
-        }
-        
-        @keyframes logoPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-        
-        #landing-page .landing-title {
-            font-size: 2.8rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #0F3460, #2196F3);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 0.5rem;
-        }
-        
-        #landing-page .landing-subtitle {
-            font-size: 1.2rem;
-            color: #8899aa;
-        }
-        
-        #landing-page .landing-description {
-            font-size: 0.95rem;
-            color: #556677;
-            margin-bottom: 2.5rem;
-        }
-        
-        #btnMulai {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 0.9rem 3rem;
-            font-size: 1.2rem;
-            font-weight: 700;
-            font-family: var(--font-family);
-            background: linear-gradient(135deg, #0F3460, #2196F3);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 30px rgba(33,150,243,0.35);
-            z-index: 9999999;
-            pointer-events: auto;
-        }
-        
-        #btnMulai:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 40px rgba(33,150,243,0.5);
-        }
-        
-        #btnMulai:active {
-            transform: scale(0.96);
-        }
-        
-        #landing-page .landing-version {
-            margin-top: 2rem;
-            font-size: 0.75rem;
-            color: #556677;
-        }
-        
-        /* ============================================================
-           SPLASH SCREEN
-           ============================================================ */
+        /* SPLASH */
         #splash-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #0a0e17;
-            z-index: 999998;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-        }
-        
-        #splash-screen.show {
-            display: flex !important;
-        }
-        
-        #splash-screen .splash-logo {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 1.5rem;
-            display: block;
-        }
-        
-        #splash-screen .splash-title {
-            font-size: 2.5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #0F3460, #2196F3);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        #splash-screen .splash-tagline {
-            color: #8899aa;
-            font-size: 1.1rem;
-        }
-        
-        #splash-screen .splash-sub {
-            color: #556677;
-            font-size: 0.85rem;
-        }
-        
-        #splash-screen .splash-loader {
-            width: 200px;
-            height: 4px;
-            background: #1a2332;
-            border-radius: 4px;
-            margin: 1.5rem auto 0.5rem;
-            overflow: hidden;
-        }
-        
-        #splash-screen .loader-bar {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, #0F3460, #2196F3);
-            border-radius: 4px;
-            transition: width 0.15s linear;
-        }
-        
-        #splash-screen .splash-version {
-            color: #556677;
-            font-size: 0.75rem;
-            margin-top: 0.5rem;
-        }
-        
-        /* ============================================================
-           APP
-           ============================================================ */
-        #app {
-            display: none;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        
-        #app.show {
-            display: flex !important;
-        }
-        
-        /* ============================================================
-           HEADER
-           ============================================================ */
-        .app-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0.5rem 1.5rem;
-            background: var(--bg-card);
-            border-bottom: 1px solid var(--border-color);
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            min-height: var(--header-height);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .header-logo {
-            width: 36px;
-            height: 36px;
-        }
-        
-        .app-title {
-            font-weight: 700;
-            font-size: 1.1rem;
-            background: linear-gradient(135deg, #0F3460, #2196F3);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .tab-nav {
-            display: flex;
-            gap: 4px;
-            background: var(--bg-sidebar);
-            padding: 4px;
-            border-radius: 8px;
-            overflow-x: auto;
-            scrollbar-width: none;
-        }
-        
-        .tab-nav::-webkit-scrollbar { display: none; }
-        
-        .tab-btn {
-            padding: 0.3rem 0.8rem;
-            background: transparent;
-            border: none;
-            border-radius: 6px;
-            color: var(--text-secondary);
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-family: var(--font-family);
-            white-space: nowrap;
-            transition: all 0.2s;
-        }
-        
-        .tab-btn:hover { color: var(--text-primary); background: var(--bg-input); }
-        .tab-btn.active { background: var(--color-primary); color: white; }
-        
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-        
-        /* ============================================================
-           CONTENT
-           ============================================================ */
-        .content-wrapper {
-            display: flex;
-            flex: 1;
-            overflow: hidden;
-        }
-        
-        .sidebar {
-            width: var(--sidebar-width);
-            background: var(--bg-sidebar);
-            border-right: 1px solid var(--border-color);
-            padding: 1rem 0.5rem;
-            flex-shrink: 0;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .sidebar-nav {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-            flex: 1;
-        }
-        
-        .sidebar-btn {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 0.5rem 1rem;
-            background: transparent;
-            border: none;
-            border-radius: 6px;
-            color: var(--text-secondary);
-            cursor: pointer;
-            width: 100%;
-            font-size: 0.9rem;
-            font-family: var(--font-family);
-            transition: all 0.2s;
-        }
-        
-        .sidebar-btn:hover { color: var(--text-primary); background: var(--bg-input); }
-        .sidebar-btn.active { background: var(--color-primary); color: white; }
-        
-        .sidebar-footer {
-            margin-top: auto;
-            padding-top: 1rem;
-            border-top: 1px solid var(--border-color);
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-            text-align: center;
-        }
-        
-        .content-area {
-            flex: 1;
-            padding: 1.5rem 2rem;
-            overflow-y: auto;
-            background: var(--bg-app);
-        }
-        
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-        
-        .tab-header {
-            margin-bottom: 1.5rem;
-        }
-        
-        .tab-header h2 {
-            font-size: 1.6rem;
-            font-weight: 700;
-        }
-        
-        .tab-header p {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-        }
-        
-        /* ============================================================
-           BUTTONS
-           ============================================================ */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 0.4rem 1rem;
-            border: none;
-            border-radius: 6px;
-            font-family: var(--font-family);
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .btn:active { transform: scale(0.96); }
-        .btn-primary { background: var(--color-secondary); color: white; }
-        .btn-primary:hover { box-shadow: 0 4px 20px rgba(33,150,243,0.4); }
-        .btn-secondary { background: var(--bg-input); color: var(--text-primary); border: 1px solid var(--border-color); }
-        .btn-secondary:hover { background: var(--color-primary-light); border-color: var(--color-secondary); }
-        .btn-danger { background: var(--color-accent); color: white; }
-        .btn-success { background: var(--color-green); color: white; }
-        .btn-sm { padding: 0.25rem 0.7rem; font-size: 0.75rem; }
-        
-        /* ============================================================
-           COMPOSER
-           ============================================================ */
-        .composer-controls {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            align-items: flex-end;
-            padding: 1rem;
-            background: var(--bg-card);
-            border-radius: var(--border-radius);
-            border: 1px solid var(--border-color);
-            margin-bottom: 1rem;
-        }
-        
-        .composition-display {
-            padding: 1rem;
-            background: var(--bg-card);
-            border-radius: var(--border-radius);
-            border: 1px solid var(--border-color);
-            min-height: 120px;
-        }
-        
-        .composition-notes {
-            font-family: monospace;
-            font-size: 1.1rem;
-            padding: 0.5rem;
-            background: var(--bg-input);
-            border-radius: 6px;
-            min-height: 60px;
-            word-wrap: break-word;
-            line-height: 1.8;
-        }
-        
-        .composition-notes .placeholder {
-            color: var(--text-muted);
-            font-style: italic;
-        }
-        
-        .composition-stats {
-            display: flex;
-            gap: 1.5rem;
-            margin-top: 0.75rem;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-        }
-        
-        /* ============================================================
-           PARTITUR
-           ============================================================ */
-        .partitur-toolbar {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            padding: 0.5rem 0.75rem;
-            background: var(--bg-sidebar);
-            border-radius: var(--border-radius);
-            border: 1px solid var(--border-color);
-            margin-bottom: 1rem;
-        }
-        
-        .partitur-editor {
-            background: var(--bg-card);
-            border-radius: var(--border-radius);
-            border: 1px solid var(--border-color);
-            padding: 1rem;
-            margin-bottom: 1rem;
-        }
-        
-        .partitur-header-info {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-            margin-bottom: 1rem;
-        }
-        
-        .partitur-header-info input {
-            flex: 1;
-            min-width: 120px;
-            padding: 0.4rem 0.7rem;
-            background: var(--bg-input);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            color: var(--text-primary);
-            font-family: var(--font-family);
-        }
-        
-        .notation-line {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.5rem 0.75rem;
-            background: var(--bg-app);
-            border-radius: 6px;
-            min-height: 50px;
-            border: 1px solid var(--border-color);
-        }
-        
-        .notation-clef {
-            font-size: 2rem;
-            color: var(--text-secondary);
-        }
-        
-        .notation-notes {
-            font-family: monospace;
-            font-size: 1.4rem;
-            letter-spacing: 0.1em;
-            word-break: break-all;
-            flex: 1;
-        }
-        
-        .note-input-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px;
-            margin-top: 0.75rem;
-        }
-        
-        .note-btn {
-            width: 38px;
-            height: 38px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            background: var(--bg-input);
-            color: var(--text-primary);
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: monospace;
-        }
-        
-        .note-btn:hover {
-            background: var(--color-primary);
-            border-color: var(--color-secondary);
-        }
-        
-        .partitur-preview {
-            background: var(--bg-card);
-            border-radius: var(--border-radius);
-            border: 1px solid var(--border-color);
-            padding: 1rem;
-        }
-        
-        .preview-content {
-            padding: 0.5rem 1rem;
-            background: var(--bg-input);
-            border-radius: 6px;
-            min-height: 50px;
-            font-family: monospace;
-            font-size: 1.2rem;
-            border: 1px solid var(--border-color);
-        }
-        
-        /* ============================================================
-           DASHBOARD
-           ============================================================ */
-        .dashboard-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 1.25rem;
-        }
-        
-        .dashboard-card {
-            background: var(--bg-card);
-            border-radius: var(--border-radius);
-            border: 1px solid var(--border-color);
-            overflow: hidden;
-        }
-        
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 0.75rem 1rem;
-            background: var(--bg-sidebar);
-            border-bottom: 1px solid var(--border-color);
-        }
-        
-        .card-header .card-icon { font-size: 1.4rem; }
-        .card-header h3 { font-size: 1rem; font-weight: 600; flex: 1; }
-        
-        .card-status {
-            font-size: 0.6rem;
-            padding: 0.1rem 0.6rem;
-            border-radius: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-        
-        .card-status.online {
-            background: rgba(76,175,80,0.2);
-            color: #4CAF50;
-        }
-        .card-status.warning {
-            background: rgba(255,193,7,0.2);
-            color: #FFC107;
-        }
-        
-        .card-body { padding: 1rem; }
-        
-        .design-specs, .process-metrics, .market-data {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            font-size: 0.8rem;
-        }
-        
-        .market-item {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-            padding: 0.2rem 0;
-            border-bottom: 1px solid var(--border-color);
-        }
-        
-        .market-recommendation {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 0.5rem;
-            padding-top: 0.5rem;
-            border-top: 1px solid var(--border-color);
-            font-weight: 600;
-        }
-        
-        .trainer-modules .module-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 0.2rem 0;
-            font-size: 0.85rem;
-        }
-        
-        .module-progress { color: var(--color-secondary); }
-        
-        /* ============================================================
-           TUTORIAL & ABOUT
-           ============================================================ */
-        .tutorial-container {
-            background: var(--bg-card);
-            border-radius: var(--border-radius);
-            border: 1px solid var(--border-color);
-            padding: 1.5rem;
-        }
-        
-        .tutorial-container .tutorial-note {
-            background: var(--bg-sidebar);
-            padding: 0.75rem 1rem;
-            border-radius: 6px;
-            border-left: 3px solid var(--color-secondary);
-            margin: 0.75rem 0;
-        }
-        
-        .about-container { max-width: 800px; margin: 0 auto; }
-        
-        .about-card {
-            background: var(--bg-card);
-            border-radius: var(--border-radius);
-            border: 1px solid var(--border-color);
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .about-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .about-item {
-            background: var(--bg-card);
-            border-radius: var(--border-radius);
-            border: 1px solid var(--border-color);
-            padding: 1rem;
-            text-align: center;
-        }
-        
-        .about-item h4 {
-            font-size: 1rem;
-            color: var(--color-secondary);
-            margin-bottom: 0.25rem;
-        }
-        
-        .about-item p {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-        }
-        
-        .about-credits {
-            text-align: center;
-            padding: 1rem;
-            background: var(--bg-card);
-            border-radius: var(--border-radius);
-            border: 1px solid var(--border-color);
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-        
-        /* ============================================================
-           FOOTER
-           ============================================================ */
-        .app-footer {
-            padding: 0.5rem 1.5rem;
-            background: var(--bg-card);
-            border-top: 1px solid var(--border-color);
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            text-align: center;
-        }
-        
-        /* ============================================================
-           MODAL
-           ============================================================ */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(8px);
-            z-index: 10000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-        }
-        
-        .modal-overlay.show { display: flex !important; }
-        
-        .modal-content {
-            background: var(--bg-card);
-            border-radius: 20px;
-            max-width: 600px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-            padding: 2rem;
-            position: relative;
-            border: 1px solid var(--border-color);
-        }
-        
-        .modal-close {
-            position: absolute;
-            top: 12px;
-            right: 16px;
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 1.8rem;
-            cursor: pointer;
-        }
-        
-        /* ============================================================
-           RESPONSIVE
-           ============================================================ */
-        @media (max-width: 768px) {
-            .app-header { padding: 0.5rem 0.75rem; flex-wrap: wrap; }
-            .header-left { flex: 1; }
-            .app-title { font-size: 0.95rem; }
-            .tab-nav { order: 3; width: 100%; background: transparent; padding: 0; }
-            .tab-btn { font-size: 0.7rem; padding: 0.2rem 0.5rem; }
-            .menu-toggle { display: block; }
-            
-            .sidebar {
-                position: fixed;
-                top: var(--header-height);
-                left: -280px;
-                width: 280px;
-                height: calc(100vh - var(--header-height));
-                z-index: 50;
-                transition: left 0.3s ease;
-                box-shadow: 4px 0 20px rgba(0,0,0,0.5);
-            }
-            .sidebar.open { left: 0; }
-            
-            .content-area { padding: 1rem; }
-            .tab-header h2 { font-size: 1.3rem; }
-            .dashboard-container { grid-template-columns: 1fr; }
-            
-            #landing-page .landing-title { font-size: 2rem; }
-            #landing-page .landing-logo { width: 100px; height: 100px; }
-            #btnMulai { padding: 0.7rem 2rem !important; font-size: 1rem !important; }
-            #splash-screen .splash-title { font-size: 1.8rem; }
-            #splash-screen .splash-logo { width: 80px; height: 80px; }
-        }
-        
-        @media (max-width: 480px) {
-            .content-area { padding: 0.5rem 0.75rem; }
-            .tab-btn { font-size: 0.6rem; padding: 0.15rem 0.35rem; }
-            .app-title { font-size: 0.8rem; }
-            .header-logo { width: 28px; height: 28px; }
-            .about-grid { grid-template-columns: 1fr; }
+            position: fixed; top:0; left:0; width:100%; height:100%;
+            background:#0a0e17; z-index:999998;
+            display:none; align-items:center; justify-content:center; flex-direction:column;
+        }
+        #splash-screen.show { display:flex !important; }
+        #splash-screen .splash-logo { width:120px; height:120px; margin:0 auto 1.5rem; display:block; }
+        #splash-screen .splash-title { font-size:2.5rem; font-weight:800; background:linear-gradient(135deg,#0F3460,#2196F3); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+        #splash-screen .splash-tagline { color:#8899aa; font-size:1.1rem; }
+        #splash-screen .splash-sub { color:#556677; font-size:0.85rem; }
+        #splash-screen .splash-loader { width:200px; height:4px; background:#1a2332; border-radius:4px; margin:1.5rem auto 0.5rem; overflow:hidden; }
+        #splash-screen .loader-bar { height:100%; width:0%; background:linear-gradient(90deg,#0F3460,#2196F3); border-radius:4px; transition:width 0.15s linear; }
+        #splash-screen .splash-version { color:#556677; font-size:0.75rem; margin-top:0.5rem; }
+        
+        /* APP */
+        #app { display:none; flex-direction:column; min-height:100vh; }
+        #app.show { display:flex !important; }
+        
+        /* HEADER */
+        .app-header { display:flex; align-items:center; justify-content:space-between; padding:0.5rem 1rem; background:var(--bg-card); border-bottom:1px solid var(--border-color); flex-wrap:wrap; gap:0.5rem; min-height:var(--header-height); position:sticky; top:0; z-index:100; }
+        .header-left { display:flex; align-items:center; gap:10px; }
+        .header-logo { width:36px; height:36px; }
+        .app-title { font-weight:700; font-size:1.1rem; background:linear-gradient(135deg,#0F3460,#2196F3); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+        .tab-nav { display:flex; gap:4px; background:var(--bg-sidebar); padding:4px; border-radius:8px; overflow-x:auto; scrollbar-width:none; flex:1; min-width:0; }
+        .tab-nav::-webkit-scrollbar { display:none; }
+        .tab-btn { padding:0.3rem 0.8rem; background:transparent; border:none; border-radius:6px; color:var(--text-secondary); cursor:pointer; font-size:0.8rem; font-family:var(--font-family); white-space:nowrap; transition:all 0.2s; }
+        .tab-btn:hover { color:var(--text-primary); background:var(--bg-input); }
+        .tab-btn.active { background:var(--color-primary); color:white; }
+        .menu-toggle { display:none; background:none; border:none; color:var(--text-secondary); font-size:1.5rem; cursor:pointer; }
+        
+        /* CONTENT */
+        .content-wrapper { display:flex; flex:1; overflow:hidden; }
+        .sidebar { width:var(--sidebar-width); background:var(--bg-sidebar); border-right:1px solid var(--border-color); padding:1rem 0.5rem; flex-shrink:0; overflow-y:auto; display:flex; flex-direction:column; }
+        .sidebar-nav { display:flex; flex-direction:column; gap:2px; flex:1; }
+        .sidebar-btn { display:flex; align-items:center; gap:10px; padding:0.5rem 1rem; background:transparent; border:none; border-radius:6px; color:var(--text-secondary); cursor:pointer; width:100%; font-size:0.9rem; font-family:var(--font-family); transition:all 0.2s; }
+        .sidebar-btn:hover { color:var(--text-primary); background:var(--bg-input); }
+        .sidebar-btn.active { background:var(--color-primary); color:white; }
+        .sidebar-footer { margin-top:auto; padding-top:1rem; border-top:1px solid var(--border-color); font-size:0.7rem; color:var(--text-secondary); text-align:center; }
+        .content-area { flex:1; padding:1rem; overflow-y:auto; background:var(--bg-app); }
+        .tab-content { display:none; }
+        .tab-content.active { display:block; }
+        .tab-header { margin-bottom:1rem; }
+        .tab-header h2 { font-size:1.3rem; font-weight:700; }
+        .tab-header p { color:var(--text-secondary); font-size:0.85rem; }
+        
+        /* BUTTONS */
+        .btn { display:inline-flex; align-items:center; gap:6px; padding:0.4rem 0.8rem; border:none; border-radius:6px; font-family:var(--font-family); font-size:0.8rem; font-weight:600; cursor:pointer; transition:all 0.2s; touch-action:manipulation; }
+        .btn:active { transform:scale(0.96); }
+        .btn-primary { background:var(--color-secondary); color:white; }
+        .btn-secondary { background:var(--bg-input); color:var(--text-primary); border:1px solid var(--border-color); }
+        .btn-danger { background:var(--color-accent); color:white; }
+        .btn-sm { padding:0.2rem 0.6rem; font-size:0.7rem; }
+        
+        /* COMPOSER */
+        .composer-controls { display:flex; flex-wrap:wrap; gap:0.75rem; align-items:flex-end; padding:0.75rem; background:var(--bg-card); border-radius:12px; border:1px solid var(--border-color); margin-bottom:0.75rem; }
+        .composition-display { padding:0.75rem; background:var(--bg-card); border-radius:12px; border:1px solid var(--border-color); min-height:100px; }
+        .composition-notes { font-family:monospace; font-size:1rem; padding:0.5rem; background:var(--bg-input); border-radius:6px; min-height:50px; word-wrap:break-word; line-height:1.8; }
+        .composition-notes .placeholder { color:var(--text-muted); font-style:italic; }
+        .composition-stats { display:flex; gap:1rem; margin-top:0.5rem; font-size:0.8rem; color:var(--text-secondary); }
+        
+        /* PARTITUR */
+        .partitur-toolbar { display:flex; flex-wrap:wrap; gap:4px; padding:0.5rem; background:var(--bg-sidebar); border-radius:12px; border:1px solid var(--border-color); margin-bottom:0.75rem; }
+        .partitur-editor { background:var(--bg-card); border-radius:12px; border:1px solid var(--border-color); padding:0.75rem; margin-bottom:0.75rem; }
+        .partitur-header-info { display:flex; flex-wrap:wrap; gap:0.5rem; margin-bottom:0.75rem; }
+        .partitur-header-info input { flex:1; min-width:100px; padding:0.3rem 0.6rem; background:var(--bg-input); border:1px solid var(--border-color); border-radius:6px; color:var(--text-primary); font-family:var(--font-family); font-size:0.8rem; }
+        .notation-line { display:flex; align-items:center; gap:0.5rem; padding:0.5rem; background:var(--bg-app); border-radius:6px; min-height:40px; border:1px solid var(--border-color); flex-wrap:wrap; }
+        .notation-clef { font-size:1.5rem; color:var(--text-secondary); }
+        .notation-notes { font-family:monospace; font-size:1.2rem; letter-spacing:0.1em; word-break:break-all; flex:1; }
+        .note-input-group { display:flex; flex-wrap:wrap; gap:4px; margin-top:0.5rem; }
+        .note-btn { width:32px; height:32px; border:1px solid var(--border-color); border-radius:6px; background:var(--bg-input); color:var(--text-primary); font-size:0.8rem; font-weight:600; cursor:pointer; transition:all 0.2s; font-family:monospace; touch-action:manipulation; }
+        .note-btn:hover { background:var(--color-primary); border-color:var(--color-secondary); }
+        .partitur-preview { background:var(--bg-card); border-radius:12px; border:1px solid var(--border-color); padding:0.75rem; }
+        .preview-content { padding:0.5rem; background:var(--bg-input); border-radius:6px; min-height:40px; font-family:monospace; font-size:1rem; border:1px solid var(--border-color); }
+        
+        /* DASHBOARD */
+        .dashboard-container { display:grid; grid-template-columns:1fr; gap:0.75rem; }
+        .dashboard-card { background:var(--bg-card); border-radius:12px; border:1px solid var(--border-color); overflow:hidden; }
+        .card-header { display:flex; align-items:center; gap:8px; padding:0.5rem 0.75rem; background:var(--bg-sidebar); border-bottom:1px solid var(--border-color); }
+        .card-header .card-icon { font-size:1.2rem; }
+        .card-header h3 { font-size:0.9rem; font-weight:600; flex:1; }
+        .card-status { font-size:0.55rem; padding:0.1rem 0.5rem; border-radius:12px; font-weight:600; text-transform:uppercase; }
+        .card-status.online { background:rgba(76,175,80,0.2); color:#4CAF50; }
+        .card-status.warning { background:rgba(255,193,7,0.2); color:#FFC107; }
+        .card-body { padding:0.75rem; }
+        .design-specs, .process-metrics, .market-data { display:flex; flex-wrap:wrap; gap:0.5rem; font-size:0.75rem; }
+        .market-item { display:flex; justify-content:space-between; width:100%; padding:0.15rem 0; border-bottom:1px solid var(--border-color); }
+        .market-recommendation { display:flex; justify-content:space-between; margin-top:0.5rem; padding-top:0.5rem; border-top:1px solid var(--border-color); font-weight:600; }
+        .trainer-modules .module-item { display:flex; justify-content:space-between; padding:0.15rem 0; font-size:0.8rem; }
+        .module-progress { color:var(--color-secondary); }
+        
+        /* TUTORIAL & ABOUT */
+        .tutorial-container { background:var(--bg-card); border-radius:12px; border:1px solid var(--border-color); padding:1rem; }
+        .tutorial-container .tutorial-note { background:var(--bg-sidebar); padding:0.5rem 0.75rem; border-radius:6px; border-left:3px solid var(--color-secondary); margin:0.5rem 0; }
+        .about-container { max-width:100%; }
+        .about-card { background:var(--bg-card); border-radius:12px; border:1px solid var(--border-color); padding:1rem; margin-bottom:1rem; }
+        .about-grid { display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin-bottom:1rem; }
+        .about-item { background:var(--bg-card); border-radius:12px; border:1px solid var(--border-color); padding:0.75rem; text-align:center; }
+        .about-item h4 { font-size:0.9rem; color:var(--color-secondary); margin-bottom:0.25rem; }
+        .about-item p { font-size:0.75rem; color:var(--text-secondary); }
+        .about-credits { text-align:center; padding:0.75rem; background:var(--bg-card); border-radius:12px; border:1px solid var(--border-color); font-size:0.8rem; color:var(--text-muted); }
+        
+        /* FOOTER */
+        .app-footer { padding:0.5rem 1rem; background:var(--bg-card); border-top:1px solid var(--border-color); font-size:0.65rem; color:var(--text-muted); text-align:center; }
+        
+        /* RESPONSIVE */
+        @media (max-width:768px) {
+            .app-header { padding:0.3rem 0.5rem; flex-wrap:wrap; }
+            .header-left { flex:1; }
+            .app-title { font-size:0.85rem; }
+            .tab-nav { order:3; width:100%; background:transparent; padding:0; }
+            .tab-btn { font-size:0.65rem; padding:0.15rem 0.4rem; }
+            .menu-toggle { display:block; }
+            .sidebar { position:fixed; top:var(--header-height); left:-280px; width:280px; height:calc(100vh - var(--header-height)); z-index:50; transition:left 0.3s ease; box-shadow:4px 0 20px rgba(0,0,0,0.5); }
+            .sidebar.open { left:0; }
+            .content-area { padding:0.5rem; }
+            .tab-header h2 { font-size:1.1rem; }
+            #landing-page .landing-title { font-size:2rem; }
+            #landing-page .landing-logo { width:100px; height:100px; }
+            #btnMulai { padding:0.7rem 2rem; font-size:1rem; }
+            #splash-screen .splash-title { font-size:1.8rem; }
+            #splash-screen .splash-logo { width:80px; height:80px; }
+        }
+        @media (max-width:480px) {
+            .content-area { padding:0.3rem; }
+            .tab-btn { font-size:0.55rem; padding:0.1rem 0.3rem; }
+            .app-title { font-size:0.75rem; }
+            .header-logo { width:28px; height:28px; }
+            .about-grid { grid-template-columns:1fr; }
         }
     </style>
 </head>
 <body>
-    <!-- ============================================ -->
-    <!-- LANDING PAGE                                 -->
-    <!-- ============================================ -->
+    <!-- LANDING PAGE -->
     <div id="landing-page">
         <div class="landing-content">
             <div class="landing-image">
-                <img src="assets/images/landing-logo.jpg" 
-                     alt="TriSonic AI Studio" 
-                     class="landing-logo"
-                     onerror="this.style.display='none'" />
+                <img src="assets/images/landing-logo.jpg" alt="TriSonic AI Studio" class="landing-logo" onerror="this.style.display='none'" />
             </div>
             <h1 class="landing-title">TriSonic AI Studio</h1>
             <p class="landing-subtitle">Eksplorasi Harmoni Tanpa Batas</p>
-            <p class="landing-description">
-                A 20-Note Microtonal Ecosystem Powered by Multi-Agent AI for Musicians
-            </p>
+            <p class="landing-description">A 20-Note Microtonal Ecosystem Powered by Multi-Agent AI for Musicians</p>
             <button id="btnMulai">🚀 Mulai</button>
             <p class="landing-version">v2.0.0</p>
         </div>
     </div>
 
-    <!-- ============================================ -->
-    <!-- SPLASH SCREEN                               -->
-    <!-- ============================================ -->
+    <!-- SPLASH SCREEN -->
     <div id="splash-screen">
         <div class="splash-content">
             <svg class="splash-logo" viewBox="0 0 200 200">
@@ -855,8 +216,7 @@
                         <stop offset="100%" style="stop-color:#E91E63" />
                     </linearGradient>
                 </defs>
-                <path d="M 120 60 C 160 60, 180 90, 150 130 C 120 170, 60 160, 30 120 C 10 90, 30 50, 60 40" 
-                      fill="none" stroke="#0F3460" stroke-width="12" stroke-linecap="round" />
+                <path d="M 120 60 C 160 60, 180 90, 150 130 C 120 170, 60 160, 30 120 C 10 90, 30 50, 60 40" fill="none" stroke="#0F3460" stroke-width="12" stroke-linecap="round" />
                 <polygon points="50,60 90,140 10,140" fill="url(#blueGrad)" />
                 <rect x="80" y="70" width="70" height="70" rx="15" fill="url(#greenGrad)" />
                 <circle cx="145" cy="135" r="40" fill="url(#magentaGrad)" />
@@ -864,16 +224,12 @@
             <h1 class="splash-title">TriSonic AI Studio</h1>
             <p class="splash-tagline">Eksplorasi Harmoni Tanpa Batas</p>
             <p class="splash-sub">20-Note Microtonal Ecosystem · Multi-Agent AI</p>
-            <div class="splash-loader">
-                <div class="loader-bar" id="loaderBar"></div>
-            </div>
+            <div class="splash-loader"><div class="loader-bar" id="loaderBar"></div></div>
             <p class="splash-version">v2.0.0</p>
         </div>
     </div>
     
-    <!-- ============================================ -->
-    <!-- MAIN APP                                     -->
-    <!-- ============================================ -->
+    <!-- MAIN APP -->
     <div id="app">
         <!-- HEADER -->
         <header class="app-header">
@@ -933,21 +289,56 @@
                 <section class="content-area" id="contentArea">
                     
                     <!-- ===== TAB 1: KEYBOARD ===== -->
-<div class="tab-content active" id="tab-keyboard">
-    <div class="tab-header">
-        <h2>🎹 Keyboard 20 Nada</h2>
-        <p>Eksplorasi harmoni mikrotonal dengan 20 nada per oktaf (5 Oktaf: C2 - D6)</p>
-    </div>
-    <div class="keyboard-container">
-        <div class="keyboard-wrapper">
-            <!-- PASTIKAN ID = "keyboard" -->
-            <div id="keyboard" class="keyboard" style="min-height:200px;">
-                <p style="color:#8899aa;padding:40px;text-align:center;">⏳ Memuat keyboard...</p>
-            </div>
-        </div>
-        <!-- ... controls ... -->
-    </div>
-</div>
+                    <div class="tab-content active" id="tab-keyboard">
+                        <div class="tab-header">
+                            <h2>🎹 Keyboard 20 Nada</h2>
+                            <p>Eksplorasi harmoni mikrotonal dengan 20 nada per oktaf (5 Oktaf: C2 - D6)</p>
+                        </div>
+                        <div id="keyboard-container">
+                            <div id="keyboard">
+                                <p style="color:#8899aa;padding:40px;text-align:center;width:100%;">⏳ Memuat keyboard...</p>
+                            </div>
+                        </div>
+                        <div class="keyboard-controls">
+                            <div class="control-group">
+                                <label>Volume</label>
+                                <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="0.7" />
+                            </div>
+                            <div class="control-group">
+                                <label>Reverb</label>
+                                <input type="range" id="reverbControl" min="0" max="1" step="0.01" value="0.3" />
+                            </div>
+                            <div class="control-group">
+                                <label>Waveform</label>
+                                <select id="waveformSelect">
+                                    <option value="sine">Sine</option>
+                                    <option value="square">Square</option>
+                                    <option value="sawtooth">Sawtooth</option>
+                                    <option value="triangle">Triangle</option>
+                                </select>
+                            </div>
+                            <div class="control-group">
+                                <label>Oktaf</label>
+                                <select id="octaveSelect">
+                                    <option value="2">Oktaf 2</option>
+                                    <option value="3">Oktaf 3</option>
+                                    <option value="4" selected>Oktaf 4</option>
+                                    <option value="5">Oktaf 5</option>
+                                    <option value="6">Oktaf 6</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="pitch-display">
+                            <span>Nada: <strong id="currentNote">-</strong></span>
+                            <span>Frekuensi: <strong id="currentFreq">-</strong> Hz</span>
+                            <span>Oktaf: <strong id="currentOctave">-</strong></span>
+                        </div>
+                        <div class="keyboard-info">
+                            <p>🎵 20 Nada per Oktaf | A4 = 440 Hz | Rasio: 2^(1/20) ≈ 1.0353</p>
+                            <p>Skala Mayor: <strong>E E# F F# G G# H H# I J J# K K# A A# B B# C C# D</strong></p>
+                            <p>💡 Gunakan mouse/touch untuk klik tuts | Keyboard QWERTY: Q-W-E-R-T-Y-U-I-O-P-A-S-D-F-G-H-J-K-L-;</p>
+                        </div>
+                    </div>
                     
                     <!-- ===== TAB 2: AI COMPOSER ===== -->
                     <div class="tab-content" id="tab-composer">
@@ -1114,22 +505,10 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="market-data">
-                                        <div class="market-item">
-                                            <span class="market-label">Indonesia</span>
-                                            <span class="market-price">Rp 2.450.000</span>
-                                        </div>
-                                        <div class="market-item">
-                                            <span class="market-label">Malaysia</span>
-                                            <span class="market-price">RM 850</span>
-                                        </div>
-                                        <div class="market-item">
-                                            <span class="market-label">Singapura</span>
-                                            <span class="market-price">S$ 320</span>
-                                        </div>
-                                        <div class="market-item">
-                                            <span class="market-label">Thailand</span>
-                                            <span class="market-price">฿ 8.900</span>
-                                        </div>
+                                        <div class="market-item"><span class="market-label">Indonesia</span><span class="market-price">Rp 2.450.000</span></div>
+                                        <div class="market-item"><span class="market-label">Malaysia</span><span class="market-price">RM 850</span></div>
+                                        <div class="market-item"><span class="market-label">Singapura</span><span class="market-price">S$ 320</span></div>
+                                        <div class="market-item"><span class="market-label">Thailand</span><span class="market-price">฿ 8.900</span></div>
                                     </div>
                                     <div class="market-recommendation">
                                         <span class="rec-label">💰 Rekomendasi Harga Ekspor:</span>
@@ -1145,18 +524,9 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="trainer-modules">
-                                        <div class="module-item">
-                                            <span>📖 Teori 20 Nada</span>
-                                            <span class="module-progress">80%</span>
-                                        </div>
-                                        <div class="module-item">
-                                            <span>🎯 Kalibrasi Keyboard</span>
-                                            <span class="module-progress">45%</span>
-                                        </div>
-                                        <div class="module-item">
-                                            <span>🎵 Harmoni Mikrotonal</span>
-                                            <span class="module-progress">30%</span>
-                                        </div>
+                                        <div class="module-item"><span>📖 Teori 20 Nada</span><span class="module-progress">80%</span></div>
+                                        <div class="module-item"><span>🎯 Kalibrasi Keyboard</span><span class="module-progress">45%</span></div>
+                                        <div class="module-item"><span>🎵 Harmoni Mikrotonal</span><span class="module-progress">30%</span></div>
                                     </div>
                                     <button class="btn btn-sm btn-primary" id="startTrainingBtn">Mulai Pelatihan</button>
                                 </div>
@@ -1190,22 +560,10 @@
                                 <p><strong>Rasio:</strong> 2^(1/20) ≈ 1.0352649238413775</p>
                             </div>
                             <div class="about-grid">
-                                <div class="about-item">
-                                    <h4>🎵 20 Nada</h4>
-                                    <p>Sistem mikrotonal dengan 20 interval per oktaf (60 sen per step)</p>
-                                </div>
-                                <div class="about-item">
-                                    <h4>🤖 Multi-Agent AI</h4>
-                                    <p>Agen Desain, Proses, Pasar, dan Pelatih terintegrasi</p>
-                                </div>
-                                <div class="about-item">
-                                    <h4>🌏 ASEAN</h4>
-                                    <p>Didesain untuk ekosistem kreatif dan industri ASEAN</p>
-                                </div>
-                                <div class="about-item">
-                                    <h4>📝 Open Source</h4>
-                                    <p>Kode terbuka untuk kolaborasi komunitas</p>
-                                </div>
+                                <div class="about-item"><h4>🎵 20 Nada</h4><p>Sistem mikrotonal dengan 20 interval per oktaf (60 sen per step)</p></div>
+                                <div class="about-item"><h4>🤖 Multi-Agent AI</h4><p>Agen Desain, Proses, Pasar, dan Pelatih terintegrasi</p></div>
+                                <div class="about-item"><h4>🌏 ASEAN</h4><p>Didesain untuk ekosistem kreatif dan industri ASEAN</p></div>
+                                <div class="about-item"><h4>📝 Open Source</h4><p>Kode terbuka untuk kolaborasi komunitas</p></div>
                             </div>
                             <div class="about-credits">
                                 <p><strong>Versi:</strong> 2.0.0</p>
@@ -1243,18 +601,16 @@
     <script src="js/features/partiturEditor.js"></script>
     <script src="js/app.js"></script>
     
-    <!-- Landing Page Handler -->
+    <!-- LANDING PAGE HANDLER -->
     <script>
         (function() {
-            'use strict';
-            
             console.log('📄 TriSonic AI Studio dimulai...');
             
-            const landingPage = document.getElementById('landing-page');
-            const splashScreen = document.getElementById('splash-screen');
-            const appContainer = document.getElementById('app');
-            const btnMulai = document.getElementById('btnMulai');
-            const loaderBar = document.getElementById('loaderBar');
+            var landingPage = document.getElementById('landing-page');
+            var splashScreen = document.getElementById('splash-screen');
+            var appContainer = document.getElementById('app');
+            var btnMulai = document.getElementById('btnMulai');
+            var loaderBar = document.getElementById('loaderBar');
             
             function showSplash() {
                 console.log('🟡 Menampilkan splash screen...');
@@ -1263,14 +619,14 @@
                 
                 if (loaderBar) {
                     loaderBar.style.width = '0%';
-                    let progress = 0;
-                    const interval = setInterval(() => {
+                    var progress = 0;
+                    var interval = setInterval(function() {
                         progress += Math.random() * 8 + 2;
                         if (progress >= 100) {
                             progress = 100;
                             clearInterval(interval);
                             loaderBar.style.width = '100%';
-                            setTimeout(() => {
+                            setTimeout(function() {
                                 hideSplashAndShowApp();
                             }, 500);
                         }
@@ -1300,7 +656,7 @@
             
             if (btnMulai) {
                 console.log('🔵 Tombol Mulai ditemukan');
-                const newBtn = btnMulai.cloneNode(true);
+                var newBtn = btnMulai.cloneNode(true);
                 btnMulai.parentNode.replaceChild(newBtn, btnMulai);
                 
                 newBtn.addEventListener('click', function(e) {
@@ -1322,7 +678,7 @@
             }
             
             setTimeout(function() {
-                const btn = document.getElementById('btnMulai');
+                var btn = document.getElementById('btnMulai');
                 if (btn) {
                     btn.addEventListener('click', function(e) {
                         console.log('🟢 Tombol Mulai DIKLIK (fallback)!');
