@@ -1,7 +1,6 @@
-// ============================================================
-// engine.js - Audio Engine (Web Audio API)
-// TriSonic AI Studio
-// ============================================================
+// ================================================================
+// engine.js - Audio Engine dengan Presisi 5 Angka
+// ================================================================
 
 class AudioEngine {
     constructor() {
@@ -28,7 +27,6 @@ class AudioEngine {
             this.masterGain.gain.value = this.settings.masterVolume * this.settings.volume;
             this.masterGain.connect(this.audioContext.destination);
             
-            // Reverb sederhana
             this.reverbGain = this.audioContext.createGain();
             this.reverbGain.gain.value = this.settings.reverb * 0.3;
             this.reverbGain.connect(this.masterGain);
