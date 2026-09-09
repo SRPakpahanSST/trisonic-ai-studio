@@ -7,8 +7,6 @@ console.log('🚀 app.js loaded');
 
 let audioEngine = null;
 let keyboardRenderer = null;
-let aiComposer = null;
-let partiturEditor = null;
 
 function initApp() {
     console.log('🔧 Inisialisasi aplikasi...');
@@ -19,31 +17,18 @@ function initApp() {
         audioEngine.init();
         console.log('✅ Audio Engine siap');
         
-        // Keyboard - RENDER SETELAH APP TERBUKA
+        // Keyboard
         keyboardRenderer = new KeyboardRenderer();
         keyboardRenderer.init(audioEngine);
-        console.log('✅ Keyboard siap (5 oktaf: C2-D6)');
+        console.log('✅ Keyboard siap');
         
-        // AI Composer
-        aiComposer = new AIComposer();
-        aiComposer.init(audioEngine);
-        console.log('✅ AI Composer siap');
-        
-        // Partitur Editor
-        partiturEditor = new PartiturEditor();
-        partiturEditor.init();
-        console.log('✅ Partitur Editor siap');
-        
-        // Setup controls
-        setupControls();
         setupTabs();
         setupSidebar();
-        setupModal();
-        setupComposerEvents();
+        setupControls();
         
-        console.log('🎉 TriSonic AI Studio initialized successfully!');
+        console.log('🎉 TriSonic AI Studio initialized!');
     } catch (error) {
-        console.error('❌ Error saat inisialisasi:', error);
+        console.error('❌ Error:', error);
     }
 }
 
@@ -83,11 +68,11 @@ function setupTabs() {
                 c.classList.toggle('active', c.id === `tab-${tabId}`);
             });
             
-            // Jika tab keyboard, pastikan keyboard ter-render
+            // Jika tab keyboard, re-render jika kosong
             if (tabId === 'keyboard' && keyboardRenderer) {
                 const container = document.getElementById('keyboard');
                 if (container && container.children.length === 0) {
-                    console.log('🔄 Keyboard container kosong, re-render...');
+                    console.log('🔄 Re-render keyboard...');
                     keyboardRenderer.render();
                 }
             }
@@ -112,91 +97,21 @@ function closeSidebar() {
     if (sidebar) sidebar.classList.remove('open');
 }
 
-function setupModal() {
-    const close = document.getElementById('modalClose');
-    const overlay = document.getElementById('modalOverlay');
-    if (close && overlay) {
-        close.addEventListener('click', () => {
-            overlay.classList.remove('show');
-        });
-        overlay.addEventListener('click', (e) => {
-            if (e.target === overlay) overlay.classList.remove('show');
-        });
-    }
-}
-
-function setupComposerEvents() {
-    document.getElementById('composeBtn')?.addEventListener('click', () => {
-        if (!aiComposer) return;
-        
-        const genre = document.getElementById('composerGenre')?.value || 'classical';
-        const length = parseInt(document.getElementById('composerLength')?.value) || 8;
-        const tempo = parseInt(document.getElementById('composerTempo')?.value) || 120;
-        
-        const composition = aiComposer.generateComposition(genre, length, tempo);
-        displayComposition(composition);
-    });
-    
-    document.getElementById('playCompositionBtn')?.addEventListener('click', () => {
-        if (!aiComposer) return;
-        const composition = aiComposer.currentComposition;
-        if (!composition || composition.length === 0) {
-            alert('Silakan buat komposisi terlebih dahulu!');
-            return;
-        }
-        aiComposer.playComposition(composition);
-    });
-    
-    document.getElementById('stopCompositionBtn')?.addEventListener('click', () => {
-        if (aiComposer) aiComposer.stopComposition();
-    });
-}
-
-function displayComposition(composition) {
-    const display = document.getElementById('compositionNotes');
-    const noteCount = document.getElementById('compNoteCount');
-    const duration = document.getElementById('compDuration');
-    
-    if (display) {
-        if (composition && composition.length > 0) {
-            const notes = composition.map(item => item.note).join(' ');
-            display.innerHTML = `<span style="color:#2196F3;">${notes}</span>`;
-        } else {
-            display.innerHTML = '<p class="placeholder">Tidak ada nada yang dihasilkan.</p>';
-        }
-    }
-    
-    if (noteCount) noteCount.textContent = composition ? composition.length : 0;
-    if (duration && composition) {
-        const totalDuration = composition.reduce((sum, item) => sum + item.duration, 0);
-        duration.textContent = totalDuration.toFixed(2);
-    }
-}
-
-// Panggil init setelah semua file load
+// STARTUP - Tunggu DOM dan file JS selesai
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('📄 DOMContentLoaded - Memulai initApp dalam 500ms...');
-    setTimeout(initApp, 500);
+    console.log('📄 DOMContentLoaded - init dalam 300ms...');
+    setTimeout(initApp, 300);
 });
 
-// Juga panggil jika window sudah load
-window.addEventListener('load', () => {
-    // Jika belum diinisialisasi, init ulang
+// FALLBACK - Jika masih belum, coba lagi
+window.addEventListener('load', function() {
     if (!keyboardRenderer || !keyboardRenderer.isRendered) {
-        console.log('🔄 Window load - Memastikan inisialisasi...');
-        if (typeof initApp === 'function' && !keyboardRenderer) {
+        console.log('🔄 Window load - init ulang...');
+        if (typeof initApp === 'function') {
             initApp();
         }
     }
 });
 
-// Export untuk debugging
-if (typeof window !== 'undefined') {
-    window.__TRI_SONIC = {
-        audioEngine,
-        keyboardRenderer,
-        aiComposer,
-        partiturEditor,
-        initApp
-    };
-}
+window.__TRI_SONIC = { audioEngine, keyboardRenderer, initApp };
+console.log('✅ app.js loaded, menunggu DOM...');
