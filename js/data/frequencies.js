@@ -147,4 +147,6 @@ if (typeof window !== 'undefined') {
     window.getFrequencyFromNote = getFrequencyFromNote;
     window.getAllNotes = getAllNotes;
     window.formatFrequency = formatFrequency;
+    
+    console.log('✅ frequencies.js loaded, ' + getAllNotes().length + ' notes available');
 }
