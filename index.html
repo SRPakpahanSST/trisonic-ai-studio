@@ -1,175 +1,564 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
     <meta charset="UTF-8" />
-    <title>TriSonic Keyboard - 20 Nada</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>TriSonic AI Studio</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/images/trisonic-icon.svg" />
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/main.css" />
+    
     <style>
-        /* Style keyboard di sini */
-        .keyboard-flex {
-            display: flex;
-            gap: 2px;
-            padding: 10px;
-            background: #1a1a2e;
-            border-radius: 10px;
-            overflow-x: auto;
+        /* ============================================================
+           GLOBAL STYLES
+           ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .key-white {
-            flex: 0 0 32px;
-            height: 150px;
-            background: #f0f0f0;
-            border: 1px solid #ccc;
-            border-radius: 0 0 6px 6px;
-            cursor: pointer;
+        
+        :root {
+            --color-primary: #0F3460;
+            --color-secondary: #2196F3;
+            --color-accent: #E91E63;
+            --color-green: #4CAF50;
+            --color-amber: #FFC107;
+            --bg-app: #0a0e17;
+            --bg-card: #111927;
+            --bg-sidebar: #0d1520;
+            --bg-input: #1a2332;
+            --text-primary: #e8edf5;
+            --text-secondary: #8899aa;
+            --text-muted: #556677;
+            --border-color: #1a2a3a;
+            --font-family: 'Inter', sans-serif;
+            --header-height: 60px;
+            --sidebar-width: 200px;
+            --border-radius: 12px;
+        }
+        
+        body {
+            font-family: var(--font-family);
+            background: var(--bg-app);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+        
+        /* ============================================================
+           LANDING PAGE
+           ============================================================ */
+        #landing-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0e17;
+            background-image: 
+                radial-gradient(ellipse at 10% 20%, rgba(33,150,243,0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 90% 80%, rgba(233,30,99,0.06) 0%, transparent 50%);
             display: flex;
-            flex-direction: column;
             align-items: center;
-            justify-content: flex-end;
-            padding-bottom: 10px;
-            z-index: 1;
+            justify-content: center;
+            z-index: 999999;
+            padding: 2rem;
+            transition: opacity 0.8s ease, transform 0.8s ease;
         }
-        .key-black {
-            flex: 0 0 22px;
-            height: 90px;
-            background: #222;
-            border: 1px solid #111;
-            border-radius: 0 0 6px 6px;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
+        
+        #landing-page.hidden {
+            opacity: 0;
+            transform: scale(1.05);
+            pointer-events: none;
+        }
+        
+        #landing-page .landing-content {
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            animation: landingFadeIn 1s ease-out;
+        }
+        
+        @keyframes landingFadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        #landing-page .landing-logo {
+            width: 140px;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 50%;
+            box-shadow: 0 0 60px rgba(33,150,243,0.15);
+            animation: logoPulse 3s ease-in-out infinite;
+        }
+        
+        @keyframes logoPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        #landing-page .landing-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #0F3460, #2196F3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+        
+        #landing-page .landing-subtitle {
+            font-size: 1.2rem;
+            color: #8899aa;
+        }
+        
+        #landing-page .landing-description {
+            font-size: 0.95rem;
+            color: #556677;
+            margin-bottom: 2.5rem;
+        }
+        
+        #btnMulai {
+            display: inline-flex;
             align-items: center;
-            justify-content: flex-end;
-            padding-bottom: 6px;
-            margin-left: -11px;
-            margin-right: -11px;
-            z-index: 2;
+            gap: 10px;
+            padding: 0.9rem 3rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            font-family: var(--font-family);
+            background: linear-gradient(135deg, #0F3460, #2196F3);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 30px rgba(33,150,243,0.35);
+            z-index: 9999999;
+            pointer-events: auto;
         }
-        .key-white.active { background: #ffd700; }
-        .key-black.active { background: #ffd700; }
-        .key-label { font-size: 0.6rem; color: #333; pointer-events: none; }
-        .key-black .key-label { color: #888; }
-        .pitch-display {
-            padding: 10px;
-            background: #1a1a2e;
+        
+        #btnMulai:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 40px rgba(33,150,243,0.5);
+        }
+        
+        #btnMulai:active {
+            transform: scale(0.96);
+        }
+        
+        #landing-page .landing-version {
+            margin-top: 2rem;
+            font-size: 0.75rem;
+            color: #556677;
+        }
+        
+        /* ============================================================
+           SPLASH SCREEN
+           ============================================================ */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0e17;
+            z-index: 999998;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        
+        #splash-screen.show {
+            display: flex !important;
+        }
+        
+        #splash-screen .splash-logo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 1.5rem;
+            display: block;
+        }
+        
+        #splash-screen .splash-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #0F3460, #2196F3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        #splash-screen .splash-tagline {
+            color: #8899aa;
+            font-size: 1.1rem;
+        }
+        
+        #splash-screen .splash-sub {
+            color: #556677;
+            font-size: 0.85rem;
+        }
+        
+        #splash-screen .splash-loader {
+            width: 200px;
+            height: 4px;
+            background: #1a2332;
+            border-radius: 4px;
+            margin: 1.5rem auto 0.5rem;
+            overflow: hidden;
+        }
+        
+        #splash-screen .loader-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #0F3460, #2196F3);
+            border-radius: 4px;
+            transition: width 0.15s linear;
+        }
+        
+        #splash-screen .splash-version {
+            color: #556677;
+            font-size: 0.75rem;
+            margin-top: 0.5rem;
+        }
+        
+        /* ============================================================
+           APP
+           ============================================================ */
+        #app {
+            display: none;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        #app.show {
+            display: flex !important;
+        }
+        
+        /* ============================================================
+           HEADER
+           ============================================================ */
+        .app-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.5rem 1.5rem;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            min-height: var(--header-height);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .header-logo {
+            width: 36px;
+            height: 36px;
+        }
+        
+        .app-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            background: linear-gradient(135deg, #0F3460, #2196F3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .tab-nav {
+            display: flex;
+            gap: 4px;
+            background: var(--bg-sidebar);
+            padding: 4px;
             border-radius: 8px;
-            margin-top: 10px;
-            color: #fff;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        
+        .tab-nav::-webkit-scrollbar { display: none; }
+        
+        .tab-btn {
+            padding: 0.3rem 0.8rem;
+            background: transparent;
+            border: none;
+            border-radius: 6px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-family: var(--font-family);
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+        
+        .tab-btn:hover { color: var(--text-primary); background: var(--bg-input); }
+        .tab-btn.active { background: var(--color-primary); color: white; }
+        
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* ============================================================
+           CONTENT
+           ============================================================ */
+        .content-wrapper {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--bg-sidebar);
+            border-right: 1px solid var(--border-color);
+            padding: 1rem 0.5rem;
+            flex-shrink: 0;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            flex: 1;
+        }
+        
+        .sidebar-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0.5rem 1rem;
+            background: transparent;
+            border: none;
+            border-radius: 6px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            width: 100%;
+            font-size: 0.9rem;
+            font-family: var(--font-family);
+            transition: all 0.2s;
+        }
+        
+        .sidebar-btn:hover { color: var(--text-primary); background: var(--bg-input); }
+        .sidebar-btn.active { background: var(--color-primary); color: white; }
+        
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+        
+        .content-area {
+            flex: 1;
+            padding: 1.5rem 2rem;
+            overflow-y: auto;
+            background: var(--bg-app);
+        }
+        
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        .tab-header {
+            margin-bottom: 1.5rem;
+        }
+        
+        .tab-header h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+        
+        .tab-header p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        
+        /* ============================================================
+           BUTTONS
+           ============================================================ */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 0.4rem 1rem;
+            border: none;
+            border-radius: 6px;
+            font-family: var(--font-family);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn:active { transform: scale(0.96); }
+        .btn-primary { background: var(--color-secondary); color: white; }
+        .btn-primary:hover { box-shadow: 0 4px 20px rgba(33,150,243,0.4); }
+        .btn-secondary { background: var(--bg-input); color: var(--text-primary); border: 1px solid var(--border-color); }
+        .btn-secondary:hover { background: var(--color-primary-light); border-color: var(--color-secondary); }
+        .btn-danger { background: var(--color-accent); color: white; }
+        .btn-success { background: var(--color-green); color: white; }
+        .btn-sm { padding: 0.25rem 0.7rem; font-size: 0.75rem; }
+        
+        /* ============================================================
+           COMPOSER
+           ============================================================ */
+        .composer-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: flex-end;
+            padding: 1rem;
+            background: var(--bg-card);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+        }
+        
+        .composition-display {
+            padding: 1rem;
+            background: var(--bg-card);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            min-height: 120px;
+        }
+        
+        .composition-notes {
+            font-family: monospace;
+            font-size: 1.1rem;
+            padding: 0.5rem;
+            background: var(--bg-input);
+            border-radius: 6px;
+            min-height: 60px;
+            word-wrap: break-word;
+            line-height: 1.8;
+        }
+        
+        .composition-notes .placeholder {
+            color: var(--text-muted);
+            font-style: italic;
+        }
+        
+        .composition-stats {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 0.75rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        
+        /* ============================================================
+           PARTITUR
+           ============================================================ */
+        .partitur-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            padding: 0.5rem 0.75rem;
+            background: var(--bg-sidebar);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+        }
+        
+        .partitur-editor {
+            background: var(--bg-card);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .partitur-header-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        .partitur-header-info input {
+            flex: 1;
+            min-width: 120px;
+            padding: 0.4rem 0.7rem;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-family: var(--font-family);
+        }
+        
+        .notation-line {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 0.75rem;
+            background: var(--bg-app);
+            border-radius: 6px;
+            min-height: 50px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .notation-clef {
+            font-size: 2rem;
+            color: var(--text-secondary);
+        }
+        
+        .notation-notes {
+            font-family: monospace;
+            font-size: 1.4rem;
+            letter-spacing: 0.1em;
+            word-break: break-all;
+            flex: 1;
+        }
+        
+        .note-input-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-top: 0.75rem;
+        }
+        
+        .note-btn {
+            width: 38px;
+            height: 38px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--bg-input);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
             font-family: monospace;
         }
-        .pitch-display strong { color: #ffd700; }
-    </style>
-</head>
-<body>
-    <div id="keyboard" class="keyboard-flex"></div>
-    <div class="pitch-display">
-        <span>Nada: <strong id="currentNote">-</strong></span>
-        <span>Frekuensi: <strong id="currentFreq">-</strong> Hz</span>
-        <span>Oktaf: <strong id="currentOctave">-</strong></span>
-    </div>
-
-    <script>
-        // ============================================================
-        // DATA FREKUENSI LENGKAP
-        // ============================================================
-        const FREQ_MAP = {
-            'C2': 60.90000, 'C#2': 64.34000, 'D2': 67.97400,
-            'E3': 71.81300, 'E#3': 75.86800, 'F3': 80.15200, 'F#3': 84.67800,
-            'G3': 89.46000, 'G#3': 94.51100, 'H3': 99.84800, 'H#3': 105.48600,
-            'I3': 111.44300, 'J3': 117.73500, 'J#3': 124.38400, 'K3': 131.40700,
-            'K#3': 138.82700, 'A3': 146.66700, 'A#3': 154.94900, 'B3': 163.69800,
-            'B#3': 172.94200, 'C3': 182.70700, 'C#3': 193.02400, 'D3': 203.92400,
-            'E4': 215.43900, 'E#4': 227.60400, 'F4': 240.45600, 'F#4': 254.03400,
-            'G4': 268.37900, 'G#4': 283.53300, 'H4': 299.54400, 'H#4': 316.45800,
-            'I4': 334.32800, 'J4': 353.20600, 'J#4': 373.15100, 'K4': 394.22200,
-            'K#4': 416.48200, 'A4': 440.00000, 'A#4': 464.84600, 'B4': 491.09400,
-            'B#4': 518.82500, 'C4': 548.12200, 'C#4': 579.07300, 'D4': 611.77100,
-            'E5': 646.31600, 'E#5': 682.81200, 'F5': 721.36900, 'F#5': 762.10200,
-            'G5': 805.13600, 'G#5': 850.60000, 'H5': 898.63100, 'H#5': 949.37400,
-            'I5': 1002.98300, 'J5': 1059.61900, 'J#5': 1119.45300, 'K5': 1182.66500,
-            'K#5': 1249.44700, 'A5': 1320.00000, 'A#5': 1394.53700, 'B5': 1473.28300,
-            'B#5': 1556.47500, 'C5': 1644.36500, 'C#5': 1737.21800, 'D5': 1835.31400,
-            'E6': 1938.94900, 'E#6': 2048.43600, 'F6': 2164.10600, 'F#6': 2286.30700,
-            'G6': 2415.40900, 'G#6': 2551.80000, 'H6': 2695.89400, 'H#6': 2848.12300,
-            'I6': 3008.94900, 'J6': 3178.85700, 'J#6': 3358.35800, 'K6': 3547.99600,
-            'K#6': 3748.34100, 'A6': 3960.00000, 'A#6': 4183.61100, 'B6': 4419.84800,
-            'B#6': 4669.42500, 'C6': 4933.09500, 'C#6': 5211.65300, 'D6': 5505.94200
-        };
-
-        const NOTES_20 = ['E','E#','F','F#','G','G#','H','H#','I','J','J#','K','K#','A','A#','B','B#','C','C#','D'];
-        const NOTE_TO_INDEX = {};
-        NOTES_20.forEach((n, i) => NOTE_TO_INDEX[n] = i);
-
-        function getNoteName(idx) { return NOTES_20[idx % 20] || 'E'; }
-        function getNoteIndex(n) { return NOTE_TO_INDEX[n] !== undefined ? NOTE_TO_INDEX[n] : 0; }
-        function getFreq(n) { return FREQ_MAP[n] || 0; }
-        function formatFreq(f) { return f.toFixed(5); }
-
-        function getAllNotes() {
-            const result = [];
-            for (let oct = 2; oct <= 6; oct++) {
-                for (const note of NOTES_20) {
-                    const name = note + oct;
-                    if (FREQ_MAP[name] !== undefined) result.push(name);
-                }
-            }
-            return result;
+        
+        .note-btn:hover {
+            background: var(--color-primary);
+            border-color: var(--color-secondary);
         }
-
-        // ============================================================
-        // RENDER KEYBOARD
-        // ============================================================
-        const container = document.getElementById('keyboard');
-        const noteDisplay = document.getElementById('currentNote');
-        const freqDisplay = document.getElementById('currentFreq');
-        const octaveDisplay = document.getElementById('currentOctave');
-
-        function renderKeyboard() {
-            container.innerHTML = '';
-            const allNotes = getAllNotes();
-
-            allNotes.forEach(noteName => {
-                const freq = getFreq(noteName);
-                const match = noteName.match(/^([A-Z#]+)(\d+)$/);
-                if (!match) return;
-                const [, note, octave] = match;
-                const idx = getNoteIndex(note);
-                const isWhite = idx % 2 === 0;
-
-                const key = document.createElement('div');
-                key.className = `key ${isWhite ? 'key-white' : 'key-black'}`;
-                key.dataset.note = noteName;
-                key.dataset.freq = freq;
-                key.dataset.octave = octave;
-                key.dataset.isWhite = isWhite;
-
-                const label = document.createElement('span');
-                label.className = 'key-label';
-                label.textContent = note;
-                key.appendChild(label);
-
-                key.title = `${noteName} - ${formatFreq(freq)} Hz`;
-
-                key.addEventListener('click', () => {
-                    // Toggle active
-                    const isActive = key.classList.contains('active');
-                    document.querySelectorAll('.key.active').forEach(k => k.classList.remove('active'));
-                    if (!isActive) {
-                        key.classList.add('active');
-                        noteDisplay.textContent = noteName;
-                        freqDisplay.textContent = formatFreq(freq);
-                        octaveDisplay.textContent = octave;
-                    } else {
-                        noteDisplay.textContent = '-';
-                        freqDisplay.textContent = '-';
-                        octaveDisplay.textContent = '-';
-                    }
-                });
-
-                container.appendChild(key);
-            });
-        }
-
-        renderKeyboard();
-        console.log('✅ Keyboard siap dengan ' + getAllNotes().length + ' tuts (C2-D6)');
-    </script>
-</body>
-</html>
+        
+        .partitur-preview {
+            background: var(--bg-card);
+            border-radius: var(--border
