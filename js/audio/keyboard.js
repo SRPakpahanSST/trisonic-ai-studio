@@ -1,5 +1,6 @@
 // ================================================================
 // keyboard.js - Render Keyboard 20 Nada (C2 - D6)
+// Setiap tuts menampilkan nama nada yang benar
 // ================================================================
 
 function KeyboardRenderer() {
@@ -61,6 +62,7 @@ KeyboardRenderer.prototype.render = function() {
     }
     
     console.log('✅ ' + allNotes.length + ' tuts akan dirender');
+    console.log('✅ Nada pertama: ' + allNotes[0] + ', Nada terakhir: ' + allNotes[allNotes.length - 1]);
     
     var wrapper = document.createElement('div');
     wrapper.className = 'keyboard-flex';
@@ -76,6 +78,7 @@ KeyboardRenderer.prototype.render = function() {
         var note = match[1];
         var octave = match[2];
         var index = window.getNoteIndex ? window.getNoteIndex(note) : 0;
+        // Tuts putih = index genap, tuts hitam = index ganjil
         var isWhite = (index % 2 === 0);
         
         var key = document.createElement('div');
@@ -84,6 +87,7 @@ KeyboardRenderer.prototype.render = function() {
         key.dataset.freq = freq;
         key.dataset.octave = octave;
         key.dataset.isWhite = isWhite;
+        key.dataset.index = index;
         
         if (isWhite) {
             key.style.cssText = 'flex:0 0 28px;height:130px;background:#f0f0f0;border:1px solid #ccc;border-radius:0 0 6px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:8px;z-index:1;box-shadow:0 2px 4px rgba(0,0,0,0.1);transition:all 0.08s ease;user-select:none;touch-action:manipulation;';
@@ -91,12 +95,14 @@ KeyboardRenderer.prototype.render = function() {
             key.style.cssText = 'flex:0 0 18px;height:80px;background:#222;border:1px solid #111;border-radius:0 0 6px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:4px;margin-left:-9px;margin-right:-9px;z-index:2;box-shadow:0 2px 6px rgba(0,0,0,0.4);transition:all 0.08s ease;user-select:none;touch-action:manipulation;';
         }
         
+        // Label - menampilkan NAMA NADA (contoh: C, C#, D, dst)
         var label = document.createElement('span');
         label.className = 'key-label';
         label.textContent = note;
         label.style.cssText = 'font-size:0.5rem;color:' + (isWhite ? '#333' : '#888') + ';pointer-events:none;text-align:center;font-weight:700;';
         key.appendChild(label);
         
+        // Tooltip - menampilkan nama lengkap + frekuensi
         var freqFormatted = window.formatFrequency ? window.formatFrequency(freq) : freq.toFixed(5);
         key.title = noteName + ' - ' + freqFormatted + ' Hz';
         
