@@ -11,11 +11,33 @@
 // Nada:   E   E#    F   F#    G   G#    H   H#    I    J   J#    K   K#    A   A#    B   B#    C   C#    D
 // Warna:  P    H    P    H    P    H    P    H    P    P    H    P    H    P    H    P    H    P    H    P
 //
-// Tuts PUTIH (Index Genap): E, F, G, H, I, J, K, A, B, C, D
-// Tuts HITAM (Index Ganjil): E#, F#, G#, H#, J#, K#, A#, B#, C#
+// Tuts PUTIH: E, F, G, H, I, J, K, A, B, C, D
+// Tuts HITAM:  E#, F#, G#, H#, J#, K#, A#, B#, C#
 // ================================================================
 
 const NOTES_20 = ['E','E#','F','F#','G','G#','H','H#','I','J','J#','K','K#','A','A#','B','B#','C','C#','D'];
+
+// ================================================================
+// MAPPING WARNA TUTS - MENGGUNAKAN LIST NADA, BUKAN INDEX GENAP/GANJIL
+// ================================================================
+// Tuts PUTIH (nada tanpa #)
+const WHITE_KEYS = ['E', 'F', 'G', 'H', 'I', 'J', 'K', 'A', 'B', 'C', 'D'];
+
+// Tuts HITAM (nada dengan #)
+const BLACK_KEYS = ['E#', 'F#', 'G#', 'H#', 'J#', 'K#', 'A#', 'B#', 'C#'];
+
+// Fungsi untuk mengecek apakah suatu nada adalah tuts PUTIH
+function isWhiteKey(noteName) {
+    // Hapus angka oktaf, ambil nama nada saja
+    var note = noteName.replace(/[0-9]/g, '');
+    return WHITE_KEYS.indexOf(note) !== -1;
+}
+
+// Fungsi untuk mengecek apakah suatu nada adalah tuts HITAM
+function isBlackKey(noteName) {
+    var note = noteName.replace(/[0-9]/g, '');
+    return BLACK_KEYS.indexOf(note) !== -1;
+}
 
 const FREQ_MAP = {
     // ==========================================================
@@ -153,6 +175,10 @@ function formatFrequency(freq) {
 window.FREQ_MAP = FREQ_MAP;
 window.NOTES_20 = NOTES_20;
 window.NOTE_TO_INDEX = NOTE_TO_INDEX;
+window.WHITE_KEYS = WHITE_KEYS;
+window.BLACK_KEYS = BLACK_KEYS;
+window.isWhiteKey = isWhiteKey;
+window.isBlackKey = isBlackKey;
 window.getNoteIndex = getNoteIndex;
 window.getNoteName = getNoteName;
 window.getFrequencyFromNote = getFrequencyFromNote;
@@ -161,4 +187,6 @@ window.formatFrequency = formatFrequency;
 
 console.log('✅ frequencies.js loaded');
 console.log('✅ Total nada: ' + getAllNotes().length + ' notes');
+console.log('✅ Tuts PUTIH: ' + WHITE_KEYS.join(', '));
+console.log('✅ Tuts HITAM: ' + BLACK_KEYS.join(', '));
 console.log('✅ Urutan: ' + NOTES_20.join(' - '));
