@@ -1,7 +1,6 @@
-// ============================================================
-// partiturEditor.js - Partitur Editor (20 Nada per Oktaf)
-// TriSonic AI Studio
-// ============================================================
+// ================================================================
+// partiturEditor.js - Partitur Editor
+// ================================================================
 
 class PartiturEditor {
     constructor() {
@@ -11,9 +10,7 @@ class PartiturEditor {
         this.tempo = '120 BPM';
         this.history = [];
         this.historyIndex = -1;
-        this.maxHistory = 50;
         
-        // DOM references
         this.notationDisplay = document.getElementById('notationNotes');
         this.previewDisplay = document.getElementById('previewContent');
         this.titleInput = document.getElementById('scoreTitle');
@@ -21,11 +18,7 @@ class PartiturEditor {
         this.tempoInput = document.getElementById('scoreTempo');
     }
 
-    /**
-     * Inisialisasi editor
-     */
     init() {
-        // Note buttons
         document.querySelectorAll('.note-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 const note = btn.dataset.note;
@@ -33,22 +26,18 @@ class PartiturEditor {
             });
         });
         
-        // Clear button
         document.getElementById('clearNotationBtn')?.addEventListener('click', () => {
             this.clearNotation();
         });
         
-        // New score
         document.getElementById('newScoreBtn')?.addEventListener('click', () => {
             this.newScore();
         });
         
-        // Save
         document.getElementById('saveScoreBtn')?.addEventListener('click', () => {
             this.saveScore();
         });
         
-        // Load
         document.getElementById('loadScoreBtn')?.addEventListener('click', () => {
             document.getElementById('scoreFileInput')?.click();
         });
@@ -56,17 +45,14 @@ class PartiturEditor {
             this.loadScore(e);
         });
         
-        // Export
         document.getElementById('exportScoreBtn')?.addEventListener('click', () => {
             this.exportScore();
         });
         
-        // Print
         document.getElementById('printScoreBtn')?.addEventListener('click', () => {
             this.printScore();
         });
         
-        // Input changes
         if (this.titleInput) {
             this.titleInput.addEventListener('change', () => {
                 this.title = this.titleInput.value;
@@ -86,15 +72,11 @@ class PartiturEditor {
             });
         }
         
-        // Load saved
         this.loadFromLocalStorage();
         this.updateDisplay();
         this.updatePreview();
     }
 
-    /**
-     * Insert note
-     */
     insertNote(note) {
         this.notation += note + ' ';
         this.updateDisplay();
@@ -103,9 +85,6 @@ class PartiturEditor {
         this.pushHistory();
     }
 
-    /**
-     * Clear notation
-     */
     clearNotation() {
         if (this.notation && !confirm('Hapus semua notasi?')) return;
         this.notation = '';
@@ -115,18 +94,12 @@ class PartiturEditor {
         this.pushHistory();
     }
 
-    /**
-     * Update display
-     */
     updateDisplay() {
         if (this.notationDisplay) {
             this.notationDisplay.textContent = this.notation.trim() || 'Kosong';
         }
     }
 
-    /**
-     * Update preview
-     */
     updatePreview() {
         if (this.previewDisplay) {
             const title = this.title || 'Judul';
@@ -145,9 +118,6 @@ class PartiturEditor {
         }
     }
 
-    /**
-     * New score
-     */
     newScore() {
         if (this.notation && !confirm('Hapus partitur saat ini?')) return;
         this.notation = '';
@@ -164,9 +134,6 @@ class PartiturEditor {
         this.historyIndex = -1;
     }
 
-    /**
-     * Save to localStorage
-     */
     saveToLocalStorage() {
         try {
             const data = {
@@ -182,9 +149,6 @@ class PartiturEditor {
         }
     }
 
-    /**
-     * Load from localStorage
-     */
     loadFromLocalStorage() {
         try {
             const raw = localStorage.getItem('trisonic_partitur');
@@ -203,9 +167,6 @@ class PartiturEditor {
         }
     }
 
-    /**
-     * Save score as file
-     */
     saveScore() {
         const data = {
             version: '2.0',
@@ -226,9 +187,6 @@ class PartiturEditor {
         URL.revokeObjectURL(url);
     }
 
-    /**
-     * Load score from file
-     */
     loadScore(event) {
         const file = event.target.files[0];
         if (!file) return;
@@ -255,9 +213,6 @@ class PartiturEditor {
         event.target.value = '';
     }
 
-    /**
-     * Export as text
-     */
     exportScore() {
         const text = `Judul: ${this.title}\nKomposer: ${this.composer}\nTempo: ${this.tempo}\nNotasi: ${this.notation.trim()}\nSistem: 20 Nada per Oktaf (A4=440Hz)`;
         const blob = new Blob([text], { type: 'text/plain' });
@@ -269,9 +224,6 @@ class PartiturEditor {
         URL.revokeObjectURL(url);
     }
 
-    /**
-     * Print score
-     */
     printScore() {
         const printWindow = window.open('', '_blank', 'width=800,height=600');
         if (!printWindow) {
@@ -311,47 +263,17 @@ class PartiturEditor {
         printWindow.document.close();
     }
 
-    /**
-     * Push to history
-     */
     pushHistory() {
         this.history = this.history.slice(0, this.historyIndex + 1);
         this.history.push(this.notation);
         this.historyIndex = this.history.length - 1;
-        if (this.history.length > this.maxHistory) {
+        if (this.history.length > 50) {
             this.history.shift();
             this.historyIndex--;
         }
     }
-
-    /**
-     * Undo
-     */
-    undo() {
-        if (this.historyIndex > 0) {
-            this.historyIndex--;
-            this.notation = this.history[this.historyIndex] || '';
-            this.updateDisplay();
-            this.updatePreview();
-            this.saveToLocalStorage();
-        }
-    }
-
-    /**
-     * Redo
-     */
-    redo() {
-        if (this.historyIndex < this.history.length - 1) {
-            this.historyIndex++;
-            this.notation = this.history[this.historyIndex] || '';
-            this.updateDisplay();
-            this.updatePreview();
-            this.saveToLocalStorage();
-        }
-    }
 }
 
-// Export untuk browser
 if (typeof window !== 'undefined') {
     window.PartiturEditor = PartiturEditor;
 }
