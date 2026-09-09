@@ -1,18 +1,117 @@
 /* ============================================================
-   main.css - Keyboard Styles
+   main.css - TriSonic AI Studio
    ============================================================ */
 
+/* GLOBAL */
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+    --color-primary: #0F3460;
+    --color-secondary: #2196F3;
+    --color-accent: #E91E63;
+    --color-green: #4CAF50;
+    --color-amber: #FFC107;
+    --bg-app: #0a0e17;
+    --bg-card: #111927;
+    --bg-sidebar: #0d1520;
+    --bg-input: #1a2332;
+    --text-primary: #e8edf5;
+    --text-secondary: #8899aa;
+    --text-muted: #556677;
+    --border-color: #1a2a3a;
+    --font-family: 'Inter', sans-serif;
+    --header-height: 60px;
+    --sidebar-width: 200px;
+}
+body { font-family: var(--font-family); background: var(--bg-app); color: var(--text-primary); min-height: 100vh; }
+
+/* LANDING PAGE */
+#landing-page {
+    position: fixed; top:0; left:0; width:100%; height:100%;
+    background: #0a0e17;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 999999; padding: 2rem;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+#landing-page.hidden { opacity:0; transform:scale(1.05); pointer-events:none; }
+#landing-page .landing-content { text-align:center; max-width:500px; width:100%; animation:landingFadeIn 1s ease-out; }
+@keyframes landingFadeIn { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+#landing-page .landing-logo { width:120px; height:120px; object-fit:cover; border-radius:50%; box-shadow:0 0 60px rgba(33,150,243,0.15); animation:logoPulse 3s ease-in-out infinite; }
+@keyframes logoPulse { 0%,100% { transform:scale(1); } 50% { transform:scale(1.05); } }
+#landing-page .landing-title { font-size:2.5rem; font-weight:800; background:linear-gradient(135deg,#0F3460,#2196F3); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-bottom:0.5rem; }
+#landing-page .landing-subtitle { font-size:1.1rem; color:#8899aa; }
+#landing-page .landing-description { font-size:0.9rem; color:#556677; margin-bottom:2.5rem; }
+#btnMulai { display:inline-flex; align-items:center; gap:10px; padding:0.9rem 3rem; font-size:1.2rem; font-weight:700; font-family:var(--font-family); background:linear-gradient(135deg,#0F3460,#2196F3); color:white; border:none; border-radius:50px; cursor:pointer; transition:all 0.3s ease; box-shadow:0 4px 30px rgba(33,150,243,0.35); z-index:9999999; touch-action:manipulation; }
+#btnMulai:active { transform:scale(0.96); }
+#landing-page .landing-version { margin-top:2rem; font-size:0.75rem; color:#556677; }
+
+/* SPLASH */
+#splash-screen {
+    position: fixed; top:0; left:0; width:100%; height:100%;
+    background:#0a0e17; z-index:999998;
+    display:none; align-items:center; justify-content:center; flex-direction:column;
+}
+#splash-screen.show { display:flex !important; }
+#splash-screen .splash-logo { width:120px; height:120px; margin:0 auto 1.5rem; display:block; }
+#splash-screen .splash-title { font-size:2.5rem; font-weight:800; background:linear-gradient(135deg,#0F3460,#2196F3); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+#splash-screen .splash-tagline { color:#8899aa; font-size:1.1rem; }
+#splash-screen .splash-sub { color:#556677; font-size:0.85rem; }
+#splash-screen .splash-loader { width:200px; height:4px; background:#1a2332; border-radius:4px; margin:1.5rem auto 0.5rem; overflow:hidden; }
+#splash-screen .loader-bar { height:100%; width:0%; background:linear-gradient(90deg,#0F3460,#2196F3); border-radius:4px; transition:width 0.15s linear; }
+#splash-screen .splash-version { color:#556677; font-size:0.75rem; margin-top:0.5rem; }
+
+/* APP */
+#app { display:none; flex-direction:column; min-height:100vh; }
+#app.show { display:flex !important; }
+
+/* HEADER */
+.app-header { display:flex; align-items:center; justify-content:space-between; padding:0.5rem 1rem; background:var(--bg-card); border-bottom:1px solid var(--border-color); flex-wrap:wrap; gap:0.5rem; min-height:var(--header-height); position:sticky; top:0; z-index:100; }
+.header-left { display:flex; align-items:center; gap:10px; }
+.header-logo { width:36px; height:36px; }
+.app-title { font-weight:700; font-size:1.1rem; background:linear-gradient(135deg,#0F3460,#2196F3); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.tab-nav { display:flex; gap:4px; background:var(--bg-sidebar); padding:4px; border-radius:8px; overflow-x:auto; scrollbar-width:none; flex:1; min-width:0; }
+.tab-nav::-webkit-scrollbar { display:none; }
+.tab-btn { padding:0.3rem 0.8rem; background:transparent; border:none; border-radius:6px; color:var(--text-secondary); cursor:pointer; font-size:0.8rem; font-family:var(--font-family); white-space:nowrap; transition:all 0.2s; }
+.tab-btn:hover { color:var(--text-primary); background:var(--bg-input); }
+.tab-btn.active { background:var(--color-primary); color:white; }
+.menu-toggle { display:none; background:none; border:none; color:var(--text-secondary); font-size:1.5rem; cursor:pointer; }
+
+/* CONTENT */
+.content-wrapper { display:flex; flex:1; overflow:hidden; }
+.sidebar { width:var(--sidebar-width); background:var(--bg-sidebar); border-right:1px solid var(--border-color); padding:1rem 0.5rem; flex-shrink:0; overflow-y:auto; display:flex; flex-direction:column; }
+.sidebar-nav { display:flex; flex-direction:column; gap:2px; flex:1; }
+.sidebar-btn { display:flex; align-items:center; gap:10px; padding:0.5rem 1rem; background:transparent; border:none; border-radius:6px; color:var(--text-secondary); cursor:pointer; width:100%; font-size:0.9rem; font-family:var(--font-family); transition:all 0.2s; }
+.sidebar-btn:hover { color:var(--text-primary); background:var(--bg-input); }
+.sidebar-btn.active { background:var(--color-primary); color:white; }
+.sidebar-footer { margin-top:auto; padding-top:1rem; border-top:1px solid var(--border-color); font-size:0.7rem; color:var(--text-secondary); text-align:center; }
+.content-area { flex:1; padding:1rem; overflow-y:auto; background:var(--bg-app); }
+.tab-content { display:none; }
+.tab-content.active { display:block; }
+.tab-header { margin-bottom:1rem; }
+.tab-header h2 { font-size:1.3rem; font-weight:700; }
+.tab-header p { color:var(--text-secondary); font-size:0.85rem; }
+
+/* BUTTONS */
+.btn { display:inline-flex; align-items:center; gap:6px; padding:0.4rem 0.8rem; border:none; border-radius:6px; font-family:var(--font-family); font-size:0.8rem; font-weight:600; cursor:pointer; transition:all 0.2s; touch-action:manipulation; }
+.btn:active { transform:scale(0.96); }
+.btn-primary { background:var(--color-secondary); color:white; }
+.btn-secondary { background:var(--bg-input); color:var(--text-primary); border:1px solid var(--border-color); }
+.btn-danger { background:var(--color-accent); color:white; }
+.btn-sm { padding:0.2rem 0.6rem; font-size:0.7rem; }
+
+/* ============================================================
+   KEYBOARD STYLES - FLEXBOX
+   ============================================================ */
 #keyboard-container {
-    background: #111927;
+    background: var(--bg-card);
     border-radius: 12px;
-    border: 1px solid #1a2a3a;
+    border: 1px solid var(--border-color);
     padding: 0.5rem;
     overflow-x: auto;
     min-height: 200px;
 }
 
 #keyboard {
-    display: flex;
+    display: flex !important;
     gap: 2px;
     padding: 4px;
     min-width: max-content;
@@ -30,18 +129,19 @@
     user-select: none;
     position: relative;
     touch-action: manipulation;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
 }
 
+/* Tuts PUTIH */
 .key-white {
     flex: 0 0 30px;
     height: 140px;
     background: #f0f0f0;
     border: 1px solid #ccc;
     border-radius: 0 0 6px 6px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-end;
     padding-bottom: 8px;
     z-index: 1;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -59,16 +159,13 @@
     border-color: #f5a623;
 }
 
+/* Tuts HITAM */
 .key-black {
     flex: 0 0 18px;
     height: 85px;
     background: #222;
     border: 1px solid #111;
     border-radius: 0 0 6px 6px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-end;
     padding-bottom: 4px;
     margin-left: -9px;
     margin-right: -9px;
@@ -110,46 +207,44 @@
 /* Keyboard Info */
 .keyboard-info {
     padding: 0.5rem 0.75rem;
-    background: #111927;
+    background: var(--bg-card);
     border-radius: 8px;
-    border: 1px solid #1a2a3a;
+    border: 1px solid var(--border-color);
     font-size: 0.7rem;
-    color: #8899aa;
+    color: var(--text-secondary);
     text-align: center;
     line-height: 1.8;
     margin-top: 0.5rem;
 }
 
 .keyboard-info strong {
-    color: #FFC107;
+    color: var(--color-amber);
 }
 
-/* Pitch Display */
 .pitch-display {
     display: flex;
     gap: 1rem;
     padding: 0.5rem 0.75rem;
-    background: #111927;
+    background: var(--bg-card);
     border-radius: 8px;
-    border: 1px solid #1a2a3a;
+    border: 1px solid var(--border-color);
     font-size: 0.8rem;
     flex-wrap: wrap;
     margin-top: 0.5rem;
 }
 
 .pitch-display strong {
-    color: #FFC107;
+    color: var(--color-amber);
 }
 
-/* Keyboard Controls */
 .keyboard-controls {
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
     padding: 0.75rem;
-    background: #111927;
+    background: var(--bg-card);
     border-radius: 12px;
-    border: 1px solid #1a2a3a;
+    border: 1px solid var(--border-color);
     margin-top: 0.75rem;
 }
 
@@ -161,7 +256,7 @@
 .control-group label {
     display: block;
     font-size: 0.7rem;
-    color: #8899aa;
+    color: var(--text-secondary);
     margin-bottom: 4px;
 }
 
@@ -174,43 +269,110 @@
 .control-group select {
     width: 100%;
     padding: 0.3rem 0.6rem;
-    background: #1a2332;
-    border: 1px solid #1a2a3a;
+    background: var(--bg-input);
+    border: 1px solid var(--border-color);
     border-radius: 6px;
-    color: #e8edf5;
-    font-family: 'Inter', sans-serif;
+    color: var(--text-primary);
+    font-family: var(--font-family);
     font-size: 0.8rem;
 }
 
-/* Responsive */
+/* RESPONSIVE KEYBOARD */
 @media (max-width: 768px) {
-    .key-white {
-        flex: 0 0 24px;
-        height: 110px;
-    }
-    .key-black {
-        flex: 0 0 16px;
-        height: 70px;
-        margin-left: -8px;
-        margin-right: -8px;
-    }
-    .key-label {
-        font-size: 0.4rem;
-    }
+    .key-white { flex: 0 0 24px; height: 110px; }
+    .key-black { flex: 0 0 16px; height: 70px; margin-left: -8px; margin-right: -8px; }
+    .key-label { font-size: 0.4rem; }
 }
 
 @media (max-width: 480px) {
-    .key-white {
-        flex: 0 0 20px;
-        height: 90px;
-    }
-    .key-black {
-        flex: 0 0 14px;
-        height: 55px;
-        margin-left: -7px;
-        margin-right: -7px;
-    }
-    .key-label {
-        font-size: 0.35rem;
-    }
+    .key-white { flex: 0 0 20px; height: 90px; }
+    .key-black { flex: 0 0 14px; height: 55px; margin-left: -7px; margin-right: -7px; }
+    .key-label { font-size: 0.35rem; }
+}
+
+/* COMPOSER */
+.composer-controls { display:flex; flex-wrap:wrap; gap:0.75rem; align-items:flex-end; padding:0.75rem; background:var(--bg-card); border-radius:12px; border:1px solid var(--border-color); margin-bottom:0.75rem; }
+.composition-display { padding:0.75rem; background:var(--bg-card); border-radius:12px; border:1px solid var(--border-color); min-height:100px; }
+.composition-notes { font-family:monospace; font-size:1rem; padding:0.5rem; background:var(--bg-input); border-radius:6px; min-height:50px; word-wrap:break-word; line-height:1.8; }
+.composition-notes .placeholder { color:var(--text-muted); font-style:italic; }
+.composition-stats { display:flex; gap:1rem; margin-top:0.5rem; font-size:0.8rem; color:var(--text-secondary); }
+
+/* PARTITUR */
+.partitur-toolbar { display:flex; flex-wrap:wrap; gap:4px; padding:0.5rem; background:var(--bg-sidebar); border-radius:12px; border:1px solid var(--border-color); margin-bottom:0.75rem; }
+.partitur-editor { background:var(--bg-card); border-radius:12px; border:1px solid var(--border-color); padding:0.75rem; margin-bottom:0.75rem; }
+.partitur-header-info { display:flex; flex-wrap:wrap; gap:0.5rem; margin-bottom:0.75rem; }
+.partitur-header-info input { flex:1; min-width:100px; padding:0.3rem 0.6rem; background:var(--bg-input); border:1px solid var(--border-color); border-radius:6px; color:var(--text-primary); font-family:var(--font-family); font-size:0.8rem; }
+.notation-line { display:flex; align-items:center; gap:0.5rem; padding:0.5rem; background:var(--bg-app); border-radius:6px; min-height:40px; border:1px solid var(--border-color); flex-wrap:wrap; }
+.notation-clef { font-size:1.5rem; color:var(--text-secondary); }
+.notation-notes { font-family:monospace; font-size:1.2rem; letter-spacing:0.1em; word-break:break-all; flex:1; }
+.note-input-group { display:flex; flex-wrap:wrap; gap:4px; margin-top:0.5rem; }
+.note-btn { width:32px; height:32px; border:1px solid var(--border-color); border-radius:6px; background:var(--bg-input); color:var(--text-primary); font-size:0.8rem; font-weight:600; cursor:pointer; transition:all 0.2s; font-family:monospace; touch-action:manipulation; }
+.note-btn:hover { background:var(--color-primary); border-color:var(--color-secondary); }
+.partitur-preview { background:var(--bg-card); border-radius:12px; border:1px solid var(--border-color); padding:0.75rem; }
+.preview-content { padding:0.5rem; background:var(--bg-input); border-radius:6px; min-height:40px; font-family:monospace; font-size:1rem; border:1px solid var(--border-color); }
+
+/* DASHBOARD */
+.dashboard-container { display:grid; grid-template-columns:1fr; gap:0.75rem; }
+.dashboard-card { background:var(--bg-card); border-radius:12px; border:1px solid var(--border-color); overflow:hidden; }
+.card-header { display:flex; align-items:center; gap:8px; padding:0.5rem 0.75rem; background:var(--bg-sidebar); border-bottom:1px solid var(--border-color); }
+.card-header .card-icon { font-size:1.2rem; }
+.card-header h3 { font-size:0.9rem; font-weight:600; flex:1; }
+.card-status { font-size:0.55rem; padding:0.1rem 0.5rem; border-radius:12px; font-weight:600; text-transform:uppercase; }
+.card-status.online { background:rgba(76,175,80,0.2); color:#4CAF50; }
+.card-status.warning { background:rgba(255,193,7,0.2); color:#FFC107; }
+.card-body { padding:0.75rem; }
+.design-specs, .process-metrics, .market-data { display:flex; flex-wrap:wrap; gap:0.5rem; font-size:0.75rem; }
+.market-item { display:flex; justify-content:space-between; width:100%; padding:0.15rem 0; border-bottom:1px solid var(--border-color); }
+.market-recommendation { display:flex; justify-content:space-between; margin-top:0.5rem; padding-top:0.5rem; border-top:1px solid var(--border-color); font-weight:600; }
+.trainer-modules .module-item { display:flex; justify-content:space-between; padding:0.15rem 0; font-size:0.8rem; }
+.module-progress { color:var(--color-secondary); }
+
+/* TUTORIAL & ABOUT */
+.tutorial-container { background:var(--bg-card); border-radius:12px; border:1px solid var(--border-color); padding:1rem; }
+.tutorial-container .tutorial-note { background:var(--bg-sidebar); padding:0.5rem 0.75rem; border-radius:6px; border-left:3px solid var(--color-secondary); margin:0.5rem 0; }
+.about-container { max-width:100%; }
+.about-card { background:var(--bg-card); border-radius:12px; border:1px solid var(--border-color); padding:1rem; margin-bottom:1rem; }
+.about-grid { display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin-bottom:1rem; }
+.about-item { background:var(--bg-card); border-radius:12px; border:1px solid var(--border-color); padding:0.75rem; text-align:center; }
+.about-item h4 { font-size:0.9rem; color:var(--color-secondary); margin-bottom:0.25rem; }
+.about-item p { font-size:0.75rem; color:var(--text-secondary); }
+.about-credits { text-align:center; padding:0.75rem; background:var(--bg-card); border-radius:12px; border:1px solid var(--border-color); font-size:0.8rem; color:var(--text-muted); }
+
+/* FOOTER */
+.app-footer { padding:0.5rem 1rem; background:var(--bg-card); border-top:1px solid var(--border-color); font-size:0.65rem; color:var(--text-muted); text-align:center; }
+
+/* MODAL */
+.modal-overlay {
+    position: fixed; top:0; left:0; width:100%; height:100%;
+    background:rgba(0,0,0,0.8); backdrop-filter:blur(8px);
+    z-index:10000; display:none; align-items:center; justify-content:center; padding:1rem;
+}
+.modal-overlay.show { display:flex !important; }
+.modal-content { background:var(--bg-card); border-radius:20px; max-width:600px; width:100%; max-height:90vh; overflow-y:auto; padding:2rem; position:relative; border:1px solid var(--border-color); }
+.modal-close { position:absolute; top:12px; right:16px; background:none; border:none; color:var(--text-secondary); font-size:1.8rem; cursor:pointer; }
+
+/* RESPONSIVE */
+@media (max-width:768px) {
+    .app-header { padding:0.3rem 0.5rem; flex-wrap:wrap; }
+    .header-left { flex:1; }
+    .app-title { font-size:0.85rem; }
+    .tab-nav { order:3; width:100%; background:transparent; padding:0; }
+    .tab-btn { font-size:0.65rem; padding:0.15rem 0.4rem; }
+    .menu-toggle { display:block; }
+    .sidebar { position:fixed; top:var(--header-height); left:-280px; width:280px; height:calc(100vh - var(--header-height)); z-index:50; transition:left 0.3s ease; box-shadow:4px 0 20px rgba(0,0,0,0.5); }
+    .sidebar.open { left:0; }
+    .content-area { padding:0.5rem; }
+    .tab-header h2 { font-size:1.1rem; }
+    #landing-page .landing-title { font-size:2rem; }
+    #landing-page .landing-logo { width:100px; height:100px; }
+    #btnMulai { padding:0.7rem 2rem; font-size:1rem; }
+    #splash-screen .splash-title { font-size:1.8rem; }
+    #splash-screen .splash-logo { width:80px; height:80px; }
+}
+@media (max-width:480px) {
+    .content-area { padding:0.3rem; }
+    .tab-btn { font-size:0.55rem; padding:0.1rem 0.3rem; }
+    .app-title { font-size:0.75rem; }
+    .header-logo { width:28px; height:28px; }
+    .about-grid { grid-template-columns:1fr; }
 }
