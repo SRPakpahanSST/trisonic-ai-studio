@@ -1,7 +1,6 @@
-// ============================================================
+// ================================================================
 // aiComposer.js - AI Composer (20 Nada per Oktaf)
-// TriSonic AI Studio
-// ============================================================
+// ================================================================
 
 class AIComposer {
     constructor() {
@@ -12,21 +11,10 @@ class AIComposer {
         this.sequenceIndex = 0;
     }
 
-    /**
-     * Inisialisasi dengan AudioEngine
-     */
     init(audioEngine) {
         this.audioEngine = audioEngine;
     }
 
-    /**
-     * Generate komposisi
-     * @param {string} genre - 'classical', 'jazz', 'ambient', 'ethnic', 'experimental'
-     * @param {number} length - Jumlah nada
-     * @param {number} tempo - BPM
-     * @param {number} baseOctave - Oktaf dasar
-     * @returns {Array} Array dari { note, frequency, duration }
-     */
     generateComposition(genre = 'classical', length = 8, tempo = 120, baseOctave = 4) {
         const composition = [];
         const noteDuration = 60 / tempo;
@@ -91,7 +79,7 @@ class AIComposer {
             
             const noteName = window.getNoteName ? window.getNoteName(noteIndex) : 'E';
             const fullName = noteName + octave;
-            const freq = window.getFrequency ? window.getFrequency(noteIndex, octave) : 440;
+            const freq = window.getFrequencyFromNote ? window.getFrequencyFromNote(fullName) : 440;
             
             composition.push({
                 note: fullName,
@@ -109,9 +97,6 @@ class AIComposer {
         return composition;
     }
 
-    /**
-     * Memainkan komposisi
-     */
     playComposition(composition, onNotePlay = null, onComplete = null) {
         if (!this.audioEngine) return;
         if (!composition || composition.length === 0) return;
@@ -144,9 +129,6 @@ class AIComposer {
         playNext();
     }
 
-    /**
-     * Menghentikan komposisi
-     */
     stopComposition() {
         this.isPlaying = false;
         if (this.compositionTimeout) {
@@ -159,9 +141,6 @@ class AIComposer {
         this.sequenceIndex = 0;
     }
 
-    /**
-     * Mendapatkan statistik komposisi
-     */
     getCompositionStats(composition) {
         if (!composition || composition.length === 0) return null;
         
@@ -177,7 +156,6 @@ class AIComposer {
     }
 }
 
-// Export untuk browser
 if (typeof window !== 'undefined') {
     window.AIComposer = AIComposer;
 }
